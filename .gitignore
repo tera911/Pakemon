@@ -11,3 +11,12 @@
 *.lai
 *.la
 *.a
+
+#window
+*.opensdf
+*.sdf
+
+/Release
+/ipch
+/Debug
+
