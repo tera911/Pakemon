@@ -1,4 +1,5 @@
 #include "headall.h"
+#include "GameMap.h"
 
 // グローバル変数:
 HINSTANCE hInst;		// 現在のインターフェイス
@@ -87,6 +88,7 @@ private:
 };
 
 Nyancat * nyan1;
+GameMap * gameMap;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -216,7 +218,7 @@ HRESULT InitD3D( HWND hWnd )
 								"sysfont.tga",		// .tgaファイルの名前
 								&(sys_tex)	);		// 読み込むメモリー
 	nyan1 = new Nyancat(g_pd3dDevice,10,30);		//プレイヤー Nyancat生成
-	
+	gameMap = new GameMap(g_pd3dDevice);
 	return S_OK;
 }
 
@@ -296,6 +298,7 @@ void Render(void)
 			g_pFont->DrawTextA(NULL, "Linux",-1, &rc, NULL, 0xFF88FF88);
 			nyan1->render(g_pd3dDevice);
 
+			gameMap->render(g_pd3dDevice);
 
 			g_pd3dDevice->EndScene();						// Direct3Dによる描画の終了
 		}
