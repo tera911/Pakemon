@@ -1,5 +1,23 @@
+#define WIN32
+#define WPCAP
+#define HAVE_REMOTE
+
+#pragma comment(lib, "Packet.lib")
+#pragma comment(lib, "wpcap.lib")
+#pragma comment(lib, "ws2_32.lib")
+
+#include <iostream>
+#include <iomanip>
+#include <stdio.h>
+#include <pcap.h>
+#include <WinSock2.h>
 #include "headall.h"
 #include "GameMap.h"
+#include "packet/Map.h"
+
+#define LINE_LEN 16
+#define PACKET_FILE "icmpPacket.pcap"
+
 
 // グローバル変数:
 HINSTANCE hInst;		// 現在のインターフェイス
@@ -16,6 +34,10 @@ void				Render(void);
 void				Cleanup(void);
 void	CALLBACK	TimerProc(UINT uID, UINT uMsg, DWORD dwUser,DWORD dw1, DWORD dw2);	// (タイマーID, 予約, ユーザー定義, 予約, 予約)
 
+//プロトタイプ宣言
+void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_char *pkt_data);
+int getMap(char map[46][18]);
+
 
 // 頂点フォーマット
 #define	FVF_TLVERTEX (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_SPECULAR | D3DFVF_TEX1)
@@ -27,6 +49,25 @@ typedef struct _tlvertex{	// 上記頂点フォーマットに合わせた構造体を定義
 	D3DCOLOR specular;
 	float tu,tv;
 }TLVERTEX;
+
+class PacketCapcure{
+private:
+	struct ip_header icmpPacket[1020];
+public:
+	int addPacket(ip_header * packet){
+		static int i = 0;
+		if(i < 1000){
+			memcpy(&icmpPacket[i],packet,sizeof(ip_header));
+			i++;
+			return 0;
+		}else{
+			return -1;
+		}
+	};
+	ip_header* getPacket(){
+		return &icmpPacket[200];
+	};
+};
 
 class Nyancat{
 public:
@@ -87,6 +128,8 @@ private:
 	bool jump;
 };
 
+
+PacketCapcure packet;
 Nyancat * nyan1;
 GameMap * gameMap;
 
@@ -112,7 +155,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	
 	RegisterClassEx(&wcex);		// ウィンドウクラスの登録
 	hWnd = CreateWindow(	"AppClass",
-							"DirectX",
+							"javac Oic2c",
 							WS_OVERLAPPEDWINDOW,
 							CW_USEDEFAULT,		// ウィンドウの左座標
 							CW_USEDEFAULT,		// ウィンドウの上座標
@@ -131,6 +174,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	TimerID = timeSetEvent(16, 1, TimerProc, 0, TIME_PERIODIC);	// 16ms(1/60s) 毎に TimerFunc を呼び出す。
 	if( !TimerID )	return -1;	// タイマーが働かなければゲームを動かせないので、エラー終了します。
 	
+	//パケットロード
+	
+
 	ZeroMemory( &msg, sizeof(msg) );	// MSG 構造体を初期化します
 	while( msg.message!=WM_QUIT ){
 		if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) ){
@@ -219,6 +265,7 @@ HRESULT InitD3D( HWND hWnd )
 								&(sys_tex)	);		// 読み込むメモリー
 	nyan1 = new Nyancat(g_pd3dDevice,10,30);		//プレイヤー Nyancat生成
 	gameMap = new GameMap(g_pd3dDevice);
+	getMap(gameMap->map);
 	return S_OK;
 }
 
@@ -318,4 +365,55 @@ void Cleanup(void)
 void CALLBACK TimerProc(UINT uID, UINT uMsg, DWORD dwUser,DWORD dw1, DWORD dw2)
 {
 	Timer16ms = 1;		// 16ms経過したことを示すフラグ
+}
+
+int getMap(char map[46][18]){
+	pcap_t * fp;
+	char errbuf[PCAP_ERRBUF_SIZE];
+	Map packetMap;
+
+	if((fp = pcap_open_offline(PACKET_FILE, errbuf)) == NULL){
+		return 0;
+	}
+
+	pcap_loop(fp, 0, packet_handler, NULL);
+	
+	
+	packetMap.buildMap(packet.getPacket(), 1000);
+
+	for(int y = 0; y < 18; y++){
+		for(int x = 0; x < 46; x++){
+			map[x][y] = packetMap.map[x][y];
+		}
+	}
+
+	return 1;
+}
+void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_char *pkt_data){
+	ip_header *ih;
+	tcp_header *th;
+	u_int ip_len;
+	u_short sport,dport;
+	ih = (ip_header *)(pkt_data + 14);
+	
+	ip_len = (ih->ver_ihl & 0xf) * 4;
+	th = (tcp_header *)((u_char *)ih + ip_len);
+
+
+	packet.addPacket(ih);//パケットを保存
+
+	/*sport = ntohs( th->sport);
+	dport = ntohs( th->dport);
+
+	 printf("%d.%d.%d.%d.%d -> %d.%d.%d.%d.%d\n",
+        ih->saddr.byte1,
+        ih->saddr.byte2,
+        ih->saddr.byte3,
+        ih->saddr.byte4,
+        sport,
+        ih->daddr.byte1,
+        ih->daddr.byte2,
+        ih->daddr.byte3,
+        ih->daddr.byte4,
+        dport);*/
 }

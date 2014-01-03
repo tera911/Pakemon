@@ -53,22 +53,26 @@ void GameMap::render_block(LPDIRECT3DDEVICE9 g_pd3dDev, int block_type, int x, i
 	int block_x, block_y;
 	block_x =  x * 32;
 	block_y  = y * 32;
-	TLVERTEX vertex[4];
-	g_pd3dDev->SetFVF(FVF_TLVERTEX);
 	switch(block_type){
-		case 1:
+		case 'A':
 			g_pd3dDev->SetTexture(0, block_brick);
 		break;
-		case 2:
+		case 'S':
 			g_pd3dDev->SetTexture(0, block_ware);
 		break;
-		case 3:
+		case 'I':
 			g_pd3dDev->SetTexture(0, block_hatena);
 		break;
-		case 4:
+		case 'C':
 			g_pd3dDev->SetTexture(0, block_packet);
 		break;
+		default:
+			return;
+		break;
 	}
+	TLVERTEX vertex[4];
+	g_pd3dDev->SetFVF(FVF_TLVERTEX);
+	
 	
 	vertex[0].rhw = vertex[1].rhw = vertex[2].rhw = vertex[3].rhw = 1.0f;
 	vertex[0].diffuse = D3DCOLOR_RGBA(255,255,255,255); //各頂点（左上）の色

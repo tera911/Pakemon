@@ -4,7 +4,6 @@
 
 class GameMap{
 private:
-	char map[46][18];
 	LPDIRECT3DTEXTURE9 block_brick;
 	LPDIRECT3DTEXTURE9 block_hatena;
 	LPDIRECT3DTEXTURE9 block_normal;
@@ -12,12 +11,12 @@ private:
 	LPDIRECT3DTEXTURE9 block_ware;
 
 public:
+	char map[46][18];
 	static const int MAP_WIDTH = 46;
 	static const int MAP_HEIGHT = 18;
 	GameMap(LPDIRECT3DDEVICE9 g_pd3dDev);
 	void render(LPDIRECT3DDEVICE9 g_pd3dDev);
 	void render_block(LPDIRECT3DDEVICE9 g_pd3dDev, int block_type, int x, int y);
-
 };
 
 #endif
