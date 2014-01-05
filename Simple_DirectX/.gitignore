@@ -1,7 +1,0 @@
-#Simple_DirectX folder
-*.filters
-*.user
-
-/Release
-/Debug
-
