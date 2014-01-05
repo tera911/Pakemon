@@ -1,0 +1,87 @@
+// ここにサンプルプログラムをペーストしてください
+// 初期状態では LoadGraphScreen のサンプルプログラムが入力されています。
+#include <DxLib.h>
+#include <mmsystem.h>
+#include "Nyancat.h"
+#include "Fps.h"
+
+#pragma comment(lib, "winmm.lib")
+
+#define SCREEN_WIDTH	(800)	//スクリーンの横幅
+#define SCREEN_HEIGHT	(600)	//スクリーンの縦幅
+#define CHIP_SIZE		(32)	//一つのチップのサイズ
+#define MAP_WIDTH		(46)
+#define	MAP_HEIGHT		(18)
+
+
+
+int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
+				 LPSTR lpCmdLine, int nCmdShow ){
+	int GraphHandle;
+
+	SetGraphMode(800, 600, 32, 60);
+	ChangeWindowMode(true);
+	if( DxLib_Init() == -1 )	// ＤＸライブラリ初期化処理
+	{
+		 return -1;				// エラーが起きたら直ちに終了
+	}
+	SetDrawScreen(DX_SCREEN_BACK);//描画先を裏画面にする
+	Nyancat player;
+	Fps fpsCounter;
+
+	GraphHandle = LoadGraph("test1.bmp");
+	while(1){
+		ClearDrawScreen();	//画面に描かれているものを全部消す
+		fpsCounter.Update();
+		/////////////////////////////////////////////////////////////////
+		//							描画開始						   //
+		/////////////////////////////////////////////////////////////////
+		
+		fpsCounter.Draw();
+		// ＢＭＰ画像の表示
+		DrawGraph(0, 0, GraphHandle, false);
+		player.render();
+		
+
+		/////////////////////////////////////////////////////////////////
+		//							描画おしり						   //
+		//							キー入力待ち開始				   //
+		/////////////////////////////////////////////////////////////////
+
+
+		if(CheckHitKey(KEY_INPUT_LEFT) > 0){
+			player.moveLeft();
+		}
+		if(CheckHitKey(KEY_INPUT_RIGHT) > 0){
+			player.moveRight();
+		}
+		if(CheckHitKey(KEY_INPUT_DOWN) > 0){
+			player.moveDown();
+		}
+		if(CheckHitKey(KEY_INPUT_C) > 0){
+			player.moveUp();
+		}
+		/////////////////////////////////////////////////////////////////
+		//							キー入力待ちおしり				   //
+		/////////////////////////////////////////////////////////////////
+
+		ScreenFlip();			//裏画面の内容を表画面に反映させる
+		fpsCounter.Wait();		//待機
+		//Windows コールバックを処理する
+		if(ProcessMessage() == -1) break; //異常が発生したらループから抜ける
+
+		//エスケープキーが押されたらループから抜ける
+		if(CheckHitKey(KEY_INPUT_ESCAPE) == 1) break;
+	}
+
+	//WaitKey() ;					// キーの入力待ち((7-3)『WaitKey』を使用)
+
+	DxLib_End() ;				// ＤＸライブラリ使用の終了処理
+
+	return 0 ;					// ソフトの終了
+}
+
+
+/*
+ﾎｳｾｲ...ﾏｲ、ﾌﾚﾝﾄﾞ...
+*/
