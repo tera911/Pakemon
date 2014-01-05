@@ -63,9 +63,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		
 		fpsCounter.Draw();
 		// ‚a‚l‚o‰æ‘œ‚Ì•\¦
-		player.render();
+		
 		gameMap.render();
-
+		gameMap.checkMapHit(&player);
+		player.render();
 		/////////////////////////////////////////////////////////////////
 		//							•`‰æ‚¨‚µ‚è						   //
 		//							ƒL[“ü—Í‘Ò‚¿ŠJn				   //

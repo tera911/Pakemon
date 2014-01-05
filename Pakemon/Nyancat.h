@@ -28,6 +28,7 @@ public:
 		left = 0;
 		right = 0;
 		jump = false;
+		GA = 0;
 		
 		sound[0]=LoadSoundMem( "nyanVoice\\nyan01.wav" ) ;
 		sound[1]=LoadSoundMem( "nyanVoice\\nyan02.wav" ) ;
@@ -71,22 +72,27 @@ public:
 		nyan_y +=7;
 	}
 	void moveLeft(){
-		left = 5;
+		left = 3;
 	}
 	void moveRight(){
-		right = 5;
+		right = 3;
 	}
 	void grabity(){
 		GA-=0.5
 			;
-		if( nyan_y > 500 )
+		if( nyan_y > 475 )
 		{
-			nyan_y = 500 ;
+			nyan_y = 475 ;
 			GA = 0 ;
 		}
-
-		
-		
+	}
+	//ニャンがいるX座標を取得
+	float getNyanX(){
+		return nyan_x;
+	}
+	//ニャンがいるY座標を取得
+	float getNyanY(){
+		return nyan_y;
 	}
 
 };
