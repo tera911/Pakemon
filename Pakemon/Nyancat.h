@@ -1,6 +1,8 @@
 #ifndef __NYANCAT_
 #define __NYANCAT_
 #include <DxLib.h>
+#include <iostream>
+#include <time.h>
 
 
 class Nyancat{
@@ -13,6 +15,9 @@ private:
 	float right;
 	bool jump;
 	float GA;
+	int sound[5];
+	int voice;
+	
 	
 public:
 	Nyancat(){
@@ -24,7 +29,16 @@ public:
 		right = 0;
 		jump = false;
 		
+		sound[0]=LoadSoundMem( "nyanVoice\\nyan01.wav" ) ;
+		sound[1]=LoadSoundMem( "nyanVoice\\nyan02.wav" ) ;
+		sound[2]=LoadSoundMem( "nyanVoice\\nyan03.wav" ) ;
+		sound[3]=LoadSoundMem( "nyanVoice\\nyan04.wav" ) ;
+		sound[4]=LoadSoundMem( "nyanVoice\\nyan05.wav" ) ;
+		sound[5]=LoadSoundMem( "nyanVoice\\nyan06.wav" ) ;
+
+		
 	}
+	
 
 	void render(){
 		DrawGraph(nyan_x, nyan_y, handle[3], true);
@@ -45,8 +59,13 @@ public:
 		}
 	}
 	void moveUp(){
+		srand((unsigned) time(NULL));
+		voice=rand();
+		voice%=5;
 		top += 20.0f;
-		PlaySoundFile("nyan01.wav",1);
+		if(CheckSoundMem(sound[voice])==0) 
+		PlaySoundMem(sound[voice],DX_PLAYTYPE_BACK);
+		 
 	}
 	void moveDown(){
 		nyan_y +=7;
