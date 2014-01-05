@@ -1,7 +1,6 @@
-#include <iostream>
-#include <iomanip>
 #include "packet.h"
 #include "Map.h"
+
 using namespace std;
 
 int Map::rand(struct ip_address ip, int mod){
@@ -101,13 +100,5 @@ void Map::buildMap(ip_header* ih, int size){
 			}
 			ih++;
 		}
-	}
-}
-void Map::showMap(){
-	for(int y = 0; y < 18; y++){
-		for(int x = 0; x < 46; x++){
-			cout << setw(1) << map[x][y];
-		}
-		cout << "|"<< endl;
 	}
 }

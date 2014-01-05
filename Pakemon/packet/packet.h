@@ -1,5 +1,5 @@
-#ifndef __PACKET_
-#define __PACKET_
+#ifndef __GAMEPACKET_
+#define __GAMEPACKET_
 #include <WinSock2.h>
 
 /* 4 bytes IP address */

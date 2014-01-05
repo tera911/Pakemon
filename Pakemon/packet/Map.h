@@ -4,7 +4,6 @@
 
 class Map{
 private:
-	
 	int rand(struct ip_address, int mod);
 	int randblock(struct ip_address);
 	enum BLOCK {AIR,ASHIBA = 'A' ,SHOGAI = 'S',ITEM = 'I',COIN = 'C' ,SWITCH = 'W',ROUTER = 'R'};	

@@ -1,34 +1,62 @@
-/*#ifndef GAME_MAP
+#ifndef GAME_MAP
 #define GAME_MAP
+#include <DxLib.h>
 
+#define MAP_WIDTH		(46)
+#define	MAP_HEIGHT		(18)
 
 class GameMap{
 private:
 	float screen_x;
-	LPDIRECT3DTEXTURE9 block_brick;
-	LPDIRECT3DTEXTURE9 block_hatena;
-	LPDIRECT3DTEXTURE9 block_normal;
-	LPDIRECT3DTEXTURE9 block_packet;
-	LPDIRECT3DTEXTURE9 block_ware;
-	typedef struct _tlvertex{	// 上記頂点フォーマットに合わせた構造体を定義
-		float x,y,z;
-		float rhw;
-		D3DCOLOR diffuse;
-		D3DCOLOR specular;
-		float tu,tv;
-	}TLVERTEX;
-	TLVERTEX vertex[4];
-
+	int block_brick;
+	int block_hatena;
+	int block_normal;
+	int block_packet;
+	int block_ware;
 public:
 	char map[46][18];
-	static const int MAP_WIDTH = 46;
-	static const int MAP_HEIGHT = 18;
-	GameMap(LPDIRECT3DDEVICE9 g_pd3dDev);
-	void render(LPDIRECT3DDEVICE9 g_pd3dDev);
-	void render_block(LPDIRECT3DDEVICE9 g_pd3dDev, int block_type, int x, int y);
+	GameMap(){
+		screen_x = 0;
+		block_brick		= LoadGraph("./block/brick.png", true);
+		block_hatena	= LoadGraph("./block/hatena.png", true);
+		block_normal	= LoadGraph("./block/normal.png", true);
+		block_packet	= LoadGraph("./block/packet.png", true);
+		block_ware		= LoadGraph("./block/ware.png", true);
+	}
+	void render(){
+		int i, j;
+		for(i = 0; i < MAP_WIDTH; i++){
+			for(j = 0; j < MAP_HEIGHT; j++){
+				render_block(map[i][j], i, j);		
+			}
+		}
+	}
+	void render_block(int block_type, int x, int y){
+		if(block_type == 0){
+			return;
+		}
+		int block_x, block_y;
+		block_x =  x * 32 - screen_x * 4;
+		block_y  = y * 32;
+		switch(block_type){
+			case 'A':
+				DrawGraph(block_x, block_y, block_brick, true);
+			break;
+			case 'S':
+				DrawGraph(block_x, block_y, block_ware, true);
+			break;
+			case 'I':
+				DrawGraph(block_x, block_y, block_hatena, true);
+			break;
+			case 'C':
+				DrawGraph(block_x, block_y, block_packet, true);
+			break;
+			default:
+				return;
+			break;
+		}
+	}
 	void screenScroll_x(int value);
 };
 
 #endif
-
-*/

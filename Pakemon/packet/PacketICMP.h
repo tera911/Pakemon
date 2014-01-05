@@ -2,11 +2,11 @@
 
 class PacketICMP{
 private:
-	ip_header icmp[1000];
+	struct ip_header icmp[1020];
 public:
 	int addPacket(ip_header * packet){
 		static int i = 0;
-		if(i < 100){
+		if(i < 1000){
 			memcpy(&icmp[i],packet,sizeof(ip_header));
 			i++;
 			return 0;
@@ -14,7 +14,7 @@ public:
 			return -1;
 		}
 	}
-	ip_header getPacket(int i){
-		return icmp[i];
-	}
-}
+	ip_header* getPacket(){
+		return &icmp[200];
+	};
+};

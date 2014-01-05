@@ -16,7 +16,7 @@
 *.opensdf
 *.sdf
 
-/Release
-/ipch
-/Debug
-/old
+Release/
+ipch/
+Debug/
+old/

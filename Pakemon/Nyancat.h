@@ -10,37 +10,44 @@ public:
 		nyan_x = 0;
 		nyan_y = 0;
 		jump = false;
+		
 	}
 
 	void render(){
 		DrawGraph(nyan_x, nyan_y, handle[3], true);
 		grabity();
+		nyan_y -= GA ;
 	}
 	void moveUp(){
-		jump = true;
+		
+		nyan_y -=10;
 	}
 	void moveDown(){
-		nyan_y = nyan_y +  7;
+		nyan_y +=7;
 	}
 	void moveLeft(){
-		nyan_x = nyan_x -  5;
+		nyan_x -=5;
 	}
 	void moveRight(){
-		nyan_x = nyan_x +  5;
+		nyan_x +=5;
 	}
 	void grabity(){
-		if(jump){
-			nyan_y -= 40.0f;
-			jump=false;
-		}else if(nyan_y < 450){
-			nyan_y += 5.5f;
+		GA-=1;
+		if( nyan_y > 500 )
+		{
+			nyan_y = 500 ;
+			GA = 0 ;
 		}
+
+		
+		
 	}
 private:
 	int handle[6];
 	float nyan_x;
 	float nyan_y;
 	bool jump;
+	float GA;
 	
 };
 #endif

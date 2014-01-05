@@ -67,14 +67,11 @@
   <ItemGroup>
     <ClCompile Include="Fps.h" />
     <ClCompile Include="GameMap.cpp" />
-    <ClCompile Include="loadPacket.cpp" />
     <ClCompile Include="packet\Map.cpp" />
-    <ClCompile Include="packet\PacketICMP.cpp" />
     <ClCompile Include="Pakemon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMap.h" />
-    <ClInclude Include="loadPacket.h" />
     <ClInclude Include="Nyancat.h" />
     <ClInclude Include="packet\Map.h" />
     <ClInclude Include="packet\packet.h" />
