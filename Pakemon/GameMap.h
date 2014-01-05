@@ -70,6 +70,13 @@ public:
 
 		//‚Ü‚¸‚Íã‚©‚ç
 
+		//‰º‚ÉƒuƒƒbƒN‚ª‚ ‚Á‚½ê‡
+		if(map[cb[0]][cb[1]+1] == 'A'){
+			nyan->offFall();
+		}else{
+			nyan->onFall();
+		}
+
 		int block_x = (nyan_x / 32) + 1;
 		int block_y = (nyan_y / 32) + 1;
 		DrawBox(cb[0] * 32, cb[1] * 32, (cb[0] * 32) + 32,(cb[1] * 32) +  32, GetColor(255,0,0), true);

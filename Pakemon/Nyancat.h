@@ -13,7 +13,7 @@ private:
 	float top;
 	float left;
 	float right;
-	bool jump;
+	bool fall;	//自由落下
 	float GA;
 	int sound[5];
 	int voice;
@@ -27,7 +27,7 @@ public:
 		top = 0;
 		left = 0;
 		right = 0;
-		jump = false;
+		fall = true;
 		GA = 0;
 		
 		sound[0]=LoadSoundMem( "nyanVoice\\nyan01.wav" ) ;
@@ -47,7 +47,7 @@ public:
 		nyan_x += right;
 		nyan_y -= top;
 		grabity();
-		nyan_y -= GA ;
+		nyan_y += GA ;
 		
 		if(left > 0){
 			left -= 0.5;
@@ -59,7 +59,8 @@ public:
 			top -= 20.0f;
 		}
 	}
-	void moveUp(){
+	void jump(){
+		onFall();
 		srand((unsigned) time(NULL));
 		voice=rand();
 		voice%=5;
@@ -78,13 +79,23 @@ public:
 		right = 3;
 	}
 	void grabity(){
-		GA-=0.5
-			;
-		if( nyan_y > 475 )
-		{
-			nyan_y = 475 ;
+		if(fall){
+			GA  = 9.8f;
+		}else{
 			GA = 0 ;
 		}
+		if(nyan_y > 650){
+			GA = 0;
+		}
+	}
+
+	//自由落下開始
+	void onFall(){
+		fall = true;
+	}
+	//自由落下終了
+	void offFall(){
+		fall = false;
 	}
 	//ニャンがいるX座標を取得
 	float getNyanX(){

@@ -83,7 +83,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			player.moveDown();
 		}
 		if(CheckHitKey(KEY_INPUT_C) > 0){
-			player.moveUp();
+			player.jump();
 		}
 		/////////////////////////////////////////////////////////////////
 		//							ƒL[“ü—Í‘Ò‚¿‚¨‚µ‚è				   //
