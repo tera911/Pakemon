@@ -34,9 +34,18 @@ void				Render(void);
 void				Cleanup(void);
 void	CALLBACK	TimerProc(UINT uID, UINT uMsg, DWORD dwUser,DWORD dw1, DWORD dw2);	// (タイマーID, 予約, ユーザー定義, 予約, 予約)
 
+
+LPD3DXFONT g_pFont = NULL; //文字
+
+//FPS 測定
+static DWORD backTickCount, nowTickCount; //時間制御用
+int fps = 0;
+
 //プロトタイプ宣言
 void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_char *pkt_data);
 int getMap(char map[46][18]);
+void drawFPS();
+void setFPS();
 
 
 // 頂点フォーマット
@@ -69,6 +78,10 @@ public:
 	};
 };
 
+/**
+プレイヤーのクラス
+Nyancatが表示される
+*/
 class Nyancat{
 public:
 	Nyancat(LPDIRECT3DDEVICE9 g_pd3dDev, int x, int y){
@@ -76,12 +89,6 @@ public:
 		nyan_x = x;
 		nyan_y = y;
 		jump = false;
-	}
-	void render(LPDIRECT3DDEVICE9 g_pd3dDev){
-		TLVERTEX vertex[4];
-		
-		g_pd3dDev->SetFVF(FVF_TLVERTEX);
-		g_pd3dDev->SetTexture(0,nyan);
 		vertex[0].rhw = vertex[1].rhw = vertex[2].rhw = vertex[3].rhw = 1.0f;
 		vertex[0].diffuse = D3DCOLOR_RGBA(255,255,255,255); //各頂点（左上）の色
 		vertex[1].diffuse = D3DCOLOR_RGBA(255,255,255,255); //各頂点（右上）の色
@@ -89,17 +96,24 @@ public:
 		vertex[3].diffuse = D3DCOLOR_RGBA(255,255,255,255); 
 		vertex[0].specular = vertex[1].specular = vertex[2].specular = vertex[3].specular = D3DCOLOR_XRGB(0,0,0); //Specular スポットライト
 
+		vertex[0].tu = 0.0f;		vertex[0].tv = 0.0f;
+		vertex[1].tu = 0.167f;		vertex[1].tv = 0.0f;
+		vertex[2].tu = 0.0f;		vertex[2].tv = 1.0f;
+		vertex[3].tu = 0.167f;		vertex[3].tv = 1.0f;
+	}
+
+	void render(LPDIRECT3DDEVICE9 g_pd3dDev){
+		g_pd3dDev->SetFVF(FVF_TLVERTEX);
+		g_pd3dDev->SetTexture(0,nyan);
+
 		vertex[0].x = 0.0f  + nyan_x;		vertex[0].y = 0.0f  + nyan_y;	vertex[0].z = 0.0f;		// １頂点のスクリーン座標
 		vertex[1].x = 32.0f + nyan_x;		vertex[1].y = 0.0f  + nyan_y;	vertex[1].z = 0.0f;		// ２頂点のスクリーン座標
 		vertex[2].x = 0.0f  + nyan_x;		vertex[2].y = 32.0f + nyan_y;	vertex[2].z = 0.0f;		// ３頂点のスクリーン座標
 		vertex[3].x = 32.0f + nyan_x;		vertex[3].y = 32.0f + nyan_y;	vertex[3].z = 0.0f;
 		
-		vertex[0].tu = 0.0f;		vertex[0].tv = 0.0f;
-		vertex[1].tu = 0.167f;		vertex[1].tv = 0.0f;
-		vertex[2].tu = 0.0f;		vertex[2].tv = 1.0f;
-		vertex[3].tu = 0.167f;		vertex[3].tv = 1.0f;
-
+		//プレイヤーの描画
 		g_pd3dDev->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP,2,vertex, sizeof(TLVERTEX));
+
 		grabity();
 	}
 	void moveUp(){
@@ -116,7 +130,8 @@ public:
 	}
 	void grabity(){
 		if(jump){
-			nyan_y -= 20.0f;
+			nyan_y -= 40.0f;
+			jump=false;
 		}else if(nyan_y < 450){
 			nyan_y += 5.5f;
 		}
@@ -126,6 +141,7 @@ private:
 	float nyan_x;
 	float nyan_y;
 	bool jump;
+	TLVERTEX vertex[4];
 };
 
 
@@ -174,6 +190,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	TimerID = timeSetEvent(16, 1, TimerProc, 0, TIME_PERIODIC);	// 16ms(1/60s) 毎に TimerFunc を呼び出す。
 	if( !TimerID )	return -1;	// タイマーが働かなければゲームを動かせないので、エラー終了します。
 	
+	backTickCount = 0; //FPS測定の初期設定
 	//パケットロード
 	
 
@@ -212,6 +229,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 			case VK_RIGHT:
 				nyan1->moveRight();
+				gameMap->screenScroll_x(2);
 			break;
 			case VK_LEFT:
 				nyan1->moveLeft();
@@ -219,11 +237,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_KEYUP:
-		switch(wParam){
-		case 67:
-			
-		break;
-		}
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
@@ -266,90 +279,49 @@ HRESULT InitD3D( HWND hWnd )
 	nyan1 = new Nyancat(g_pd3dDevice,10,30);		//プレイヤー Nyancat生成
 	gameMap = new GameMap(g_pd3dDevice);
 	getMap(gameMap->map);
+	//Fontテスト
+	D3DXCreateFont(g_pd3dDevice,
+			50,
+			50,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			"Linux",
+			&g_pFont);
 	return S_OK;
 }
 
 
 
 
-float	g_radian;	// 頂点の回転計算のための角度カウンタ（０に初期化されることを期待しています）
-LPD3DXFONT g_pFont = NULL;
-RECT rc;
-void Render(void)
-{
-	TLVERTEX	vertex[4];	// 正方形になるように４点をファンで描画します
-	float		x[4] = {-100.0f, 100.0f, 100.0f, -100.0f};	// 頂点の回転計算のためのワーク
-	float		y[4] = {-100.0f, -100.0f, 100.0f, 100.0f};	// 原点中心に三角形を用意しています（形は適当、、）
-	
+
+RECT rc = {0, 0, 800, 600};
+void Render(void){
 	if( Timer16ms ){
 		Timer16ms = 0;		// 次のタイミングまで
-		
-		// 描画データの準備 S
-		g_radian += 1.0f / 180.0f * 3.1415926535f;
-		if( g_radian > (2.0f * 3.1415926535f) )		g_radian = 0.0f;
-		
-		vertex[0].x = x[0] * cos(g_radian) - y[0] * sin(g_radian)  +  320.0f;
-		vertex[0].y = x[0] * sin(g_radian) + y[0] * cos(g_radian)  +  240.0f;
-		vertex[1].x = x[1] * cos(g_radian) - y[1] * sin(g_radian)  +  320.0f;
-		vertex[1].y = x[1] * sin(g_radian) + y[1] * cos(g_radian)  +  240.0f;
-		vertex[2].x = x[2] * cos(g_radian) - y[2] * sin(g_radian)  +  320.0f;
-		vertex[2].y = x[2] * sin(g_radian) + y[2] * cos(g_radian)  +  240.0f;
-		vertex[3].x = x[3] * cos(g_radian) - y[3] * sin(g_radian)  +  320.0f;
-		vertex[3].y = x[3] * sin(g_radian) + y[3] * cos(g_radian)  +  240.0f;
-		vertex[0].z = vertex[1].z = vertex[2].z = vertex[3].z = 0.0f;
-		
-		vertex[0].rhw = vertex[1].rhw = vertex[2].rhw = vertex[3].rhw = 1.0f;	// テクスチャのパースペクティブコレクト用
-		
-		vertex[0].diffuse = D3DCOLOR_RGBA(255,0,0,255);		// １頂点目の色
-		vertex[1].diffuse = D3DCOLOR_RGBA(0,255,0,255);		// ２頂点目の色
-		vertex[2].diffuse = D3DCOLOR_RGBA(0,0,255,255); 	// ３頂点目の色
-		vertex[3].diffuse = D3DCOLOR_RGBA(255,255,255,255);	// ４頂点目の色
-		
-		vertex[0].specular = vertex[1].specular = vertex[2].specular = vertex[3].specular = D3DCOLOR_XRGB(0,0,0);	// Specularは加えない
-		
-		vertex[0].tu = 0.0f;	vertex[0].tv = 0.0f;	// テクスチャーを張るので座標を指定
-		vertex[1].tu = 1.0f;	vertex[1].tv = 0.0f;
-		vertex[2].tu = 1.0f;	vertex[2].tv = 1.0f;
-		vertex[3].tu = 0.0f;	vertex[3].tv = 1.0f;
+		setFPS();
+	
 		// 描画データの準備 E
-		//Fontテスト
-		D3DXCreateFont(g_pd3dDevice,
-				50,
-				50,
-				0,
-				0,
-				0,
-				0,
-				0,
-				0,
-				0,
-				"Linux",
-				&g_pFont);
 
-		rc.left = 0;
-		rc.top	= 0;
-		rc.right= 800;
-		rc.bottom= 600;
-		
 		// ↓バックバッファ＆Ｚバッファのクリア
 		g_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,0), 1.0f, 0 );
 		if( SUCCEEDED( g_pd3dDevice->BeginScene() ) ){		// Direct3Dによる描画の開始
 			
-			g_pd3dDevice->SetFVF(FVF_TLVERTEX);				// 頂点フォーマットの設定
-			g_pd3dDevice->SetTexture(0,sys_tex);			// アスキーフォントをセット
-			
-			g_pd3dDevice->DrawPrimitiveUP(D3DPT_TRIANGLEFAN,2,vertex,sizeof(TLVERTEX));	// ポリゴンの描画（ファンで三角形２枚）
+			g_pFont->DrawTextA(NULL, "Linux",-1, &rc, NULL, 0xFF88FF88); //文字の表示テスト
+			nyan1->render(g_pd3dDevice);	//プレイヤーの描画
 
+			gameMap->render(g_pd3dDevice); //マップの描画
 
-			
-			g_pFont->DrawTextA(NULL, "Linux",-1, &rc, NULL, 0xFF88FF88);
-			nyan1->render(g_pd3dDevice);
-
-			gameMap->render(g_pd3dDevice);
+			drawFPS();
 
 			g_pd3dDevice->EndScene();						// Direct3Dによる描画の終了
 		}
 		g_pd3dDevice->Present( NULL, NULL, NULL, NULL );	// バックバッファとフロントバッファの入れ替え
+
 	}
 }
 
@@ -416,4 +388,40 @@ void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_cha
         ih->daddr.byte3,
         ih->daddr.byte4,
         dport);*/
+}
+
+void setFPS(){
+	static int nowfps = 0;
+	nowTickCount = timeGetTime();
+	nowfps++;
+	if(nowTickCount - backTickCount >= 1000){
+		backTickCount = nowTickCount;
+		fps = nowfps;
+		nowfps = 0;
+	}
+}
+void drawFPS(){
+	static char text[40];
+	RECT rc;
+	rc.left =	200;
+	rc.top	=	100;
+	rc.right= 800;
+	rc.bottom= 600;
+	static LPD3DXFONT g_pFont;
+	D3DXCreateFont(g_pd3dDevice,
+			32,
+			32,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			"Linux",
+			&g_pFont);
+	wsprintf(text, "%04d FPS\n", fps);
+	OutputDebugString(text);
+	g_pFont->DrawTextA(NULL, text ,-1, &rc, NULL, 0xFF88FF88); //文字の表示テスト
+	g_pFont->Release();
 }
