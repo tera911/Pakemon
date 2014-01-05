@@ -46,6 +46,7 @@ public:
 	}
 	void moveUp(){
 		top += 20.0f;
+		PlaySoundFile("nyan01.wav",1);
 	}
 	void moveDown(){
 		nyan_y +=7;
