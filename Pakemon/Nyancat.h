@@ -3,7 +3,7 @@
 #include <DxLib.h>
 #include <iostream>
 #include <time.h>
-
+#include "GameMap.h"
 
 class Nyancat{
 private:
@@ -18,7 +18,7 @@ private:
 	int sound[5];
 	int voice;
 	bool ground;
-	
+	GameMap* map;
 	
 public:
 	Nyancat(){
@@ -30,7 +30,7 @@ public:
 		right = 0;
 		fall = true;
 		GA = 0;
-		
+		map = new GameMap();
 		
 		sound[0]=LoadSoundMem( "nyanVoice\\nyan01.wav" ) ;
 		sound[1]=LoadSoundMem( "nyanVoice\\nyan02.wav" ) ;
@@ -38,14 +38,18 @@ public:
 		sound[3]=LoadSoundMem( "nyanVoice\\nyan04.wav" ) ;
 		sound[4]=LoadSoundMem( "nyanVoice\\nyan05.wav" ) ;
 		sound[5]=LoadSoundMem( "nyanVoice\\nyan06.wav" ) ;
-			}
-	
+
+	}
 
 	void render(){
+		if(map == NULL){
+			return;
+		}
+		map->render();
 		DrawGraph(nyan_x, nyan_y, handle[3], true);
 		nyan_x -= left;
 		nyan_x += right;
-		nyan_y -= top;
+		//nyan_y -= map->checkMapHit1(nyan_x, nyan_y, 0, top);
 		grabity();
 		nyan_y += GA ;
 		
@@ -56,19 +60,21 @@ public:
 			right -= 0.5;
 		}
 		if(top > 0){
-			top -= 20.0f;
+			onFall();
+			top -= 3.0f;
+		}else{
+			top = 0;
 		}
 	}
 	void jump(){
-		onFall();
-		srand((unsigned) time(NULL));
-		voice=rand();
-		voice%=5;
-		if(ground){
-		top += 40.0f;
-		}
-		if(CheckSoundMem(sound[voice])==0) {
-		PlaySoundMem(sound[voice],DX_PLAYTYPE_BACK);
+		if(!fall){
+			top = 25.0f;
+			srand((unsigned) time(NULL));
+			voice=rand();
+			voice%=5;
+			if(CheckSoundMem(sound[voice])==0){ 
+				PlaySoundMem(sound[voice],DX_PLAYTYPE_BACK);
+			}
 		}
 	}
 	void moveDown(){
@@ -82,7 +88,7 @@ public:
 	}
 	void grabity(){
 		if(fall){
-			GA  = 6.0f;
+			GA  = 2.0f;
 		}else{
 			GA = 0 ;
 		}
@@ -105,7 +111,28 @@ public:
 	void offground(){
 		ground=false;
 	}
-	
+
+	//座標修正
+	// 0 = 上、 1 = 右、 2 = 下、 3 = 左
+	void revisePosition(int direction, int value){
+		char test[40];
+		wsprintf(test, "%d\n",value);
+		OutputDebugString(test);
+		switch(direction){
+		case 0:
+			nyan_y = nyan_y + value;
+		break;
+		case 1:
+			nyan_x = nyan_x + value;
+		break;
+		case 2:
+			nyan_y = nyan_y - value;
+		break;
+		case 3:
+			nyan_x = nyan_x - value;
+		break;
+		}
+	}
 	//ニャンがいるX座標を取得
 	float getNyanX(){
 		return nyan_x;

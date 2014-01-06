@@ -1,3 +1,5 @@
+#ifndef __PACKET_ICMP_
+#define __PACKET_ICMP_
 #include "packet.h"
 
 class PacketICMP{
@@ -15,6 +17,7 @@ public:
 		}
 	}
 	ip_header* getPacket(){
-		return &icmp[200];
+		return &icmp[100];
 	};
 };
+#endif

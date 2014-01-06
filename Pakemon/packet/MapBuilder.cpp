@@ -1,13 +1,18 @@
 #include "packet.h"
-#include "Map.h"
+#include "MapBuilder.h"
+#include "PacketICMP.h"
 
-using namespace std;
+#define LINE_LEN 16
+#define PACKET_FILE "icmpPacket.pcap"
 
-int Map::rand(struct ip_address ip, int mod){
+
+PacketICMP packet;
+
+int MapBuilder::rand(struct ip_address ip, int mod){
 	//return ((ip.byte1 * ip.byte2) + (ip.byte3 * ip.byte4)) % mod;
 	return ((ip.byte1 * ip.byte2) | (ip.byte3 + ip.byte4)) % mod;
 }
-int Map::randblock(struct ip_address ip){
+int MapBuilder::randblock(struct ip_address ip){
 /*
 	0 = 空気
 	1 = 足場
@@ -43,7 +48,7 @@ int Map::randblock(struct ip_address ip){
 	return normal_map[rand(ip,100)];
 }
 
-void Map::buildMap(ip_header* ih, int size){
+void MapBuilder::buildMap(ip_header* ih, int size){
 	for(int i = 0;i < 46; i++){
 		for(int k = 0; k < 10; k++){
 			char blockpos[18] = {0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
@@ -101,4 +106,55 @@ void Map::buildMap(ip_header* ih, int size){
 			ih++;
 		}
 	}
+}
+void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_char *pkt_data){
+	ip_header *ih;
+	tcp_header *th;
+	u_int ip_len;
+	u_short sport,dport;
+	ih = (ip_header *)(pkt_data + 14);
+	
+	ip_len = (ih->ver_ihl & 0xf) * 4;
+	th = (tcp_header *)((u_char *)ih + ip_len);
+
+
+	packet.addPacket(ih);//パケットを保存
+
+	/*sport = ntohs( th->sport);
+	dport = ntohs( th->dport);
+
+	 printf("%d.%d.%d.%d.%d -> %d.%d.%d.%d.%d\n",
+        ih->saddr.byte1,
+        ih->saddr.byte2,
+        ih->saddr.byte3,
+        ih->saddr.byte4,
+        sport,
+        ih->daddr.byte1,
+        ih->daddr.byte2,
+        ih->daddr.byte3,
+        ih->daddr.byte4,
+        dport);*/
+}
+
+
+int MapBuilder::getMap(char distmap[46][18]){
+	pcap_t * fp;
+	char errbuf[PCAP_ERRBUF_SIZE];
+
+	if((fp = pcap_open_offline(PACKET_FILE, errbuf)) == NULL){
+		return 0;
+	}
+
+	pcap_loop(fp, 0, packet_handler, NULL);
+	
+	
+	buildMap(packet.getPacket(), 1000);
+
+	for(int y = 0; y < 18; y++){
+		for(int x = 0; x < 46; x++){
+			distmap[x][y] = map[x][y];
+		}
+	}
+
+	return 1;
 }

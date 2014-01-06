@@ -1,9 +1,9 @@
-#ifndef GAME_MAP
-#define GAME_MAP
+#ifndef __GAME_MAP
+#define __GAME_MAP
 
 #include <math.h>
 #include <DxLib.h>
-
+#include "packet/MapBuilder.h"
 #define MAP_WIDTH		(46)
 #define	MAP_HEIGHT		(18)
 #define round(fp) (int)((fp) >= 0 ? (fp) + 0.5 : - 0.5)
@@ -25,6 +25,9 @@ public:
 		block_normal	= LoadGraph("./block/normal.png", true);
 		block_packet	= LoadGraph("./block/packet.png", true);
 		block_ware		= LoadGraph("./block/ware.png", true);
+		MapBuilder builder;
+		builder.getMap(map);
+
 	}
 	void render(){
 		int i, j;
@@ -60,18 +63,56 @@ public:
 			break;
 		}
 	}
-	int checkMapHit(Nyancat *nyan){
+	//自キャラX、自キャラY、　方向、　移動させたい距離
+	int checkMapHit1(float nyan_x, float nyan_y, int direction, float value){
+		int tb[2], bb[2], cb[2],lb[2], rb[2];		//上、下、中央、左、右ブロック [x,y] 
+		cb[0] = round(nyan_x / 32.0f);	//自キャラのX座標
+		cb[1] = round(nyan_y / 32.0f);	//自キャラのY座標
+		
+		tb[0] = cb[0];		//自キャラの上ブロックの座標
+		tb[1] = cb[1] -1;	//自キャラの上ブロックの座標
+		
+		bb[0] = cb[0];		//自キャラの上ブロックの座標
+		bb[1] = cb[1] +1;	//自キャラの上ブロックの座標
+
+		switch(direction){
+		case 0:
+			//上
+			if(map[tb[0]][tb[1]] == 'A' || map[tb[0]][tb[1]] == 'S' || map[tb[0]][tb[1]] == 'I'){
+					int next_value = nyan_y - cb[1] * 32;
+					if(next_value > value){
+						return next_value;
+					}else{
+						value;
+					}
+				}
+		break;
+		}
+		return 0;
+	}
+
+/*	int checkMapHit(Nyancat *nyan){
 		float nyan_x = nyan->getNyanX();
 		float nyan_y = nyan->getNyanY();
 		int tb[2], bb[2], cb[2],lb[2], rb[2];		//上、下、中央、左、右ブロック [x,y] 
 
-		cb[0] = round(nyan_x / 32.0f);
-		cb[1] = round(nyan_y / 32.0f);
+		cb[0] = round(nyan_x / 32.0f);	//自キャラのX座標
+		cb[1] = round(nyan_y / 32.0f);	//自キャラのY座標
+		
+		tb[0] = cb[0];		//自キャラの上ブロックの座標
+		tb[1] = cb[1] -1;	//自キャラの上ブロックの座標
+		
+		bb[0] = cb[0];		//自キャラの上ブロックの座標
+		bb[1] = cb[1] +1;	//自キャラの上ブロックの座標
 
 		//まずは上から
+		if(map[tb[0]][tb[1]] == 'A' || map[tb[0]][tb[1]] == 'S' || map[tb[0]][tb[1]] == 'I'){
+		//	nyan->revisePosition(0, nyan_y - tb[1] * 32);
+		}
+		
 
-		//下にブロックがあった場合
-		if(map[cb[0]][cb[1]+1] == 'A'){
+		//下に足場ブロックがあった場合
+		if(map[bb[0]][bb[1]] == 'A' || map[bb[0]][bb[1]] == 'S' || map[bb[0]][bb[1]] == 'I'){
 			nyan->offFall();
 			nyan->onground();
 			
@@ -87,7 +128,7 @@ public:
 			DrawString(500, 100, "接触", GetColor(255,255,255));
 		}
 		return 0;
-	}
+	}*/
 	void screenScroll_x(int value);
 };
 

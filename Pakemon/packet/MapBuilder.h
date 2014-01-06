@@ -1,15 +1,19 @@
 #ifndef DANMAKU_MAP
 #define DANMAKU_MAP
 #include "packet.h"
+#include <pcap.h>
+#include "PacketICMP.h"
 
-class Map{
+
+
+class MapBuilder{
 private:
 	int rand(struct ip_address, int mod);
 	int randblock(struct ip_address);
 	enum BLOCK {AIR,ASHIBA = 'A' ,SHOGAI = 'S',ITEM = 'I',COIN = 'C' ,SWITCH = 'W',ROUTER = 'R'};	
 public:
 	char map[46][18];
-	Map(){
+	MapBuilder(){
 		for(int i = 0; i < 46; i++){
 			for(int k = 0; k < 18; k++){
 				map[i][k] = 0;
@@ -17,7 +21,7 @@ public:
 		}
 	}
 	void buildMap(ip_header* ih, int size);
-//	char** getMap();
+	int getMap(char map[46][18]);
 	void showMap();
 };
 
