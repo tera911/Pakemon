@@ -38,9 +38,7 @@ public:
 		sound[3]=LoadSoundMem( "nyanVoice\\nyan04.wav" ) ;
 		sound[4]=LoadSoundMem( "nyanVoice\\nyan05.wav" ) ;
 		sound[5]=LoadSoundMem( "nyanVoice\\nyan06.wav" ) ;
-
-		
-	}
+			}
 	
 
 	void render(){
@@ -66,11 +64,12 @@ public:
 		srand((unsigned) time(NULL));
 		voice=rand();
 		voice%=5;
-		if(ground)
+		if(ground){
 		top += 40.0f;
-		if(CheckSoundMem(sound[voice])==0) 
+		}
+		if(CheckSoundMem(sound[voice])==0) {
 		PlaySoundMem(sound[voice],DX_PLAYTYPE_BACK);
-		 
+		}
 	}
 	void moveDown(){
 		nyan_y +=7;
@@ -83,7 +82,7 @@ public:
 	}
 	void grabity(){
 		if(fall){
-			GA  = 9.8f;
+			GA  = 6.0f;
 		}else{
 			GA = 0 ;
 		}
@@ -106,6 +105,7 @@ public:
 	void offground(){
 		ground=false;
 	}
+	
 	//ƒjƒƒƒ“‚ª‚¢‚éXÀ•W‚ğæ“¾
 	float getNyanX(){
 		return nyan_x;
