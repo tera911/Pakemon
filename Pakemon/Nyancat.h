@@ -14,9 +14,10 @@ private:
 	float left;
 	float right;
 	bool fall;	//自由落下
-	float GA;
+	float GA;	//落下速度
 	int sound[5];
 	int voice;
+	bool ground;
 	
 	
 public:
@@ -29,6 +30,7 @@ public:
 		right = 0;
 		fall = true;
 		GA = 0;
+		
 		
 		sound[0]=LoadSoundMem( "nyanVoice\\nyan01.wav" ) ;
 		sound[1]=LoadSoundMem( "nyanVoice\\nyan02.wav" ) ;
@@ -64,7 +66,8 @@ public:
 		srand((unsigned) time(NULL));
 		voice=rand();
 		voice%=5;
-		top += 20.0f;
+		if(ground)
+		top += 40.0f;
 		if(CheckSoundMem(sound[voice])==0) 
 		PlaySoundMem(sound[voice],DX_PLAYTYPE_BACK);
 		 
@@ -84,9 +87,7 @@ public:
 		}else{
 			GA = 0 ;
 		}
-		if(nyan_y > 650){
-			GA = 0;
-		}
+		
 	}
 
 	//自由落下開始
@@ -96,6 +97,14 @@ public:
 	//自由落下終了
 	void offFall(){
 		fall = false;
+	}
+	//接地判定ON
+	void onground(){
+		ground=true;
+	}
+	//接地判定OFF
+	void offground(){
+		ground=false;
 	}
 	//ニャンがいるX座標を取得
 	float getNyanX(){

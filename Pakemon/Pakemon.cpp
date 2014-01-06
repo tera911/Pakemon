@@ -71,6 +71,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//							描画おしり						   //
 		//							キー入力待ち開始				   //
 		/////////////////////////////////////////////////////////////////
+		
 
 
 		if(CheckHitKey(KEY_INPUT_LEFT) > 0){
@@ -82,6 +83,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		if(CheckHitKey(KEY_INPUT_DOWN) > 0){
 			player.moveDown();
 		}
+
 		if(CheckHitKey(KEY_INPUT_C) > 0){
 			player.jump();
 		}

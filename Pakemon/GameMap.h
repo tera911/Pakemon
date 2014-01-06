@@ -73,8 +73,11 @@ public:
 		//‰º‚ÉƒuƒƒbƒN‚ª‚ ‚Á‚½ê‡
 		if(map[cb[0]][cb[1]+1] == 'A'){
 			nyan->offFall();
+			nyan->onground();
+			
 		}else{
 			nyan->onFall();
+			nyan->offground();
 		}
 
 		int block_x = (nyan_x / 32) + 1;
