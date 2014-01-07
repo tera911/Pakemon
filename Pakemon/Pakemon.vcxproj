@@ -69,6 +69,7 @@
   <ItemGroup>
     <ClCompile Include="Fps.h" />
     <ClCompile Include="GameMap.cpp" />
+    <ClCompile Include="Nyancat.cpp" />
     <ClCompile Include="packet\MapBuilder.cpp" />
     <ClCompile Include="Pakemon.cpp" />
   </ItemGroup>
