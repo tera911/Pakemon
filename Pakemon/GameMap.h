@@ -12,7 +12,6 @@ class Nyancat;
 
 class GameMap{
 private:
-	float screen_x;
 	int block_brick;
 	int block_hatena;
 	int block_normal;
@@ -21,6 +20,7 @@ private:
 	
 public:
 	char map[46][18];
+	float screen_x;
 	GameMap(){
 		screen_x = 0;
 		block_brick		= LoadGraph("./block/brick.png", true);

@@ -7,7 +7,7 @@ void GameMap::render(){
 			render_block(map[x][y], x, y);		
 		}
 	}
-	screenScroll_x(0.02f);
+	screenScroll_x(0.005f);
 }
 void GameMap::render_block(int block_type, int x, int y){
 	if(block_type == 0){
@@ -28,6 +28,9 @@ void GameMap::render_block(int block_type, int x, int y){
 		break;
 		case 'C':
 			DrawGraph(block_x, block_y, block_packet, true);
+		break;
+		case 'N':
+			DrawGraph(block_x, block_y, block_normal, true);
 		break;
 		default:
 			DrawString(block_x + 16, block_y + 16, "1", GetColor(255,255,255));
@@ -64,13 +67,16 @@ int GameMap::checkMapHit(Nyancat* nyan){
 
 		//上に飛び出てるか
 		if(cb[1] * 32 > nyan_y){
-			if(map[tb[0]][tb[1]] == 'A' || map[tb[0]][tb[1]] == 'S' || map[tb[0]][tb[1]] == 'I'){
+			if(map[tb[0]][tb[1]] == 'A' || map[tb[0]][tb[1]] == 'S' || map[tb[0]][tb[1]] == 'I' || map[tb[0]][tb[1]] == 'N'){
 				nyan->revisePosition(2, nyan_y - cb[1] * 32);	//位置修正
+			}
+			if(map[tb[0]][tb[1]] == 'I'){
+				map[tb[0]][tb[1]] = 'N';
 			}
 		}
 		//下方向に飛び出た場合
 		if(cb[1] * 32 + 11 < nyan_y){	//本当は cb[1] * 32 + 32 < nyan_y + 32だけど高速化のため ;キャラクタのサイズが20のため + 12
-			if(map[bb[0]][bb[1]] == 'A' || map[bb[0]][bb[1]] == 'S' || map[bb[0]][bb[1]] == 'I'){
+			if(map[bb[0]][bb[1]] == 'A' || map[bb[0]][bb[1]] == 'S' || map[bb[0]][bb[1]] == 'I' || map[bb[0]][bb[1]] == 'N'){
 				nyan->revisePosition(0, (cb[1] * 32 + 12) - nyan_y);	//位置修正
 				nyan->offFall();
 				nyan->onground();
@@ -81,30 +87,30 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		}
 		//左に飛び出た
 		if(cb[0] * 32 > (nyan_x + screen_x * 32)){
-			if(map[lb[0]][lb[1]] == 'A' || map[lb[0]][lb[1]] == 'S' || map[lb[0]][lb[1]] == 'I'){
+			if(map[lb[0]][lb[1]] == 'A' || map[lb[0]][lb[1]] == 'S' || map[lb[0]][lb[1]] == 'I' || map[lb[0]][lb[1]] == 'N'){
 				nyan->revisePosition(1, cb[0] * 32 - (nyan_x + screen_x * 32));	//位置修正
 			}
 		}
 		//右に飛び出た
 		if(cb[0] * 32 < (nyan_x + screen_x * 32)){
-			if(map[rb[0]][rb[1]] == 'A' || map[rb[0]][rb[1]] == 'S' || map[rb[0]][rb[1]] == 'I'){
+			if(map[rb[0]][rb[1]] == 'A' || map[rb[0]][rb[1]] == 'S' || map[rb[0]][rb[1]] == 'I' || map[rb[0]][rb[1]] == 'N'){
 				nyan->revisePosition(3, (nyan_x + screen_x * 32) - cb[0] * 32);	//位置修正
 			}
 		}
 		//自キャラがブロックにめり込んだ場合　
-		if(map[cb[0]][cb[1]] == 'A' || map[cb[0]][cb[1]] == 'S' || map[cb[0]][cb[1]] == 'I'){
+		if(map[cb[0]][cb[1]] == 'A' || map[cb[0]][cb[1]] == 'S' || map[cb[0]][cb[1]] == 'I' || map[cb[0]][cb[1]] == 'N'){
 			float block_pos[2];
 			block_pos[0] = cb[0] * 32 + 16;	//ブロックの中心座標 x
-			block_pos[1] = cb[1] * 32 + 16;	//ブロックの中心座標 y
+			block_pos[1] = cb[1] * 32 + 20;	//ブロックの中心座標 y
 		
-			if(block_pos[1] > nyan_y){
-				nyan->revisePosition(0, block_pos[1] - nyan_y);
+			if(block_pos[1] > nyan_y + 32){
+				nyan->revisePosition(0, block_pos[1] - (nyan_y + 32));
 			}else if(block_pos[1] < nyan_y){
 				nyan->revisePosition(2, nyan_y - block_pos[1]);
 			}else if(block_pos[0] > (nyan_x + screen_x * 32)){
 				nyan->revisePosition(3, block_pos[0] - (nyan_x + screen_x * 32));
-			}else if(block_pos[0] < (nyan_x + screen_x * 32)){
-				nyan->revisePosition(1, (nyan_x + screen_x * 32) - block_pos[0]);
+			}else if(block_pos[0] < (nyan_x + 32 + screen_x * 32)){
+				nyan->revisePosition(1, (nyan_x + 32 + screen_x * 32) - block_pos[0]);
 			}
 		}
 
@@ -113,6 +119,10 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			map[cb[0]][cb[1]] = 0;	//パケット消える
 		}
 		
+		if(cb[1] > 18){
+			nyan->offFall();
+			nyan->onground();
+		}
 
 		int block_x = ((nyan_x + screen_x * 32) / 32) + 1;
 		int block_y = (nyan_y / 32) + 1;

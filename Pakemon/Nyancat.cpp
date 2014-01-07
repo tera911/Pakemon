@@ -47,7 +47,6 @@ Nyancat::Nyancat(){
 			top = 0;
 		}
 		//yç¿ïWà íuí≤êÆ
-		//nyan_y = floor(nyan_y / 32) * 32 + 10;
 		DrawFormatString(500, 100, 0, "nyan_y = %f", nyan_y);
 	}
 	void Nyancat::jump(){
