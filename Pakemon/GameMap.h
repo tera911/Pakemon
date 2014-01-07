@@ -18,6 +18,7 @@ private:
 	int block_normal;
 	int block_packet;
 	int block_ware;
+	
 public:
 	char map[46][18];
 	GameMap(){

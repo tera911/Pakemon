@@ -8,6 +8,7 @@
 #include "Nyancat.h"
 #include <DxLib.h>
 #include "Fps.h"
+#include <stdlib.h>
 
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "Packet.lib")
@@ -31,6 +32,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				 LPSTR lpCmdLine, int nCmdShow ){
 
 
+
 	SetGraphMode(800, 600, 32, 60);
 	ChangeWindowMode(true);
 	SetMainWindowText("Pakemon");
@@ -45,9 +47,16 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	//ClearDrawScreen();	//画面に描かれているものを全部消す
 	//ScreenFlip();			//裏画面の内容を表画面に反映させる
-		
+	int limittime=60;
+	int start_time=GetNowCount();
+	char nowtime[256];
 	while(ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0){
 		fpsCounter.Update();
+		limittime-=1;
+		itoa(limittime,nowtime,10);
+		DrawString(500,0,nowtime,GetColor(255,255,255));
+		
+		
 		/////////////////////////////////////////////////////////////////
 		//							描画開始						   //
 		/////////////////////////////////////////////////////////////////
@@ -84,16 +93,15 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//Sleep(300);
 		//Windows コールバックを処理する
 		if(ProcessMessage() == -1) break; //異常が発生したらループから抜ける
-
-		//エスケープキーが押されたらループから抜ける
-		if(CheckHitKey(KEY_INPUT_ESCAPE) == 1) break;
+		if(CheckHitKey(KEY_INPUT_ESCAPE) == 1) break;//エスケープキーが押されたらループから抜ける
+		if( GetNowCount()-start_time>=60000 ) break;//60秒経過したらループから抜ける
+	
 	}
-
+	DxLib_End() ;	// ＤＸライブラリ使用の終了処理
 	//WaitKey() ;					// キーの入力待ち((7-3)『WaitKey』を使用)
-
-	DxLib_End() ;				// ＤＸライブラリ使用の終了処理
-
-	return 0 ;					// ソフトの終了
+		
+	return 0 ;	
+					// ソフトの終了
 }
 
 
