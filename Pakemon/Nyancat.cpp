@@ -53,8 +53,8 @@ Nyancat::Nyancat(){
 	void Nyancat::jump(){
 		if(!fall){
 		//	top = 15.0f;
-			for(int i=0;i<8;i++){
-			top+=3;
+			for(int i=0;i<20;i++){
+			top+=1;
 			}
 			srand((unsigned) time(NULL));
 			voice=rand();
@@ -75,7 +75,7 @@ Nyancat::Nyancat(){
 	}
 	void Nyancat::grabity(){
 		if(fall){
-			GA  = 4.5f;
+			GA  = 4.9f;
 		}else{
 			GA = 0 ;
 		}
