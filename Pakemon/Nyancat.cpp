@@ -32,8 +32,8 @@ Nyancat::Nyancat(){
 		nyan_y -= top;
 		
 		grabity();
-		nyan_y += map->checkMapHit1(nyan_x, nyan_y, 0, GA);
-		
+		//nyan_y += map->checkMapHit1(nyan_x, nyan_y, 0, GA);
+		nyan_y += GA;
 		if(left > 0){
 			left -= 0.5;
 		}
@@ -42,7 +42,7 @@ Nyancat::Nyancat(){
 		}
 		if(top > 0){
 			onFall();
-			top -= 2.0f;
+			top -= 1.0f;
 		}else{
 			top = 0;
 		}
@@ -52,7 +52,7 @@ Nyancat::Nyancat(){
 	}
 	void Nyancat::jump(){
 		if(!fall){
-			top = 22.0f;
+			top = 15.0f;
 			srand((unsigned) time(NULL));
 			voice=rand();
 			voice%=5;
@@ -72,7 +72,7 @@ Nyancat::Nyancat(){
 	}
 	void Nyancat::grabity(){
 		if(fall){
-			GA  = 2.0f;
+			GA  = 1.5f;
 		}else{
 			GA = 0 ;
 		}
