@@ -1,9 +1,11 @@
 #ifndef __NYANCAT_
 #define __NYANCAT_
+
+#include "GameMap.h"
 #include <DxLib.h>
 #include <iostream>
 #include <time.h>
-#include "GameMap.h"
+class GameMap;
 
 class Nyancat{
 private:
@@ -21,126 +23,30 @@ private:
 	GameMap* map;
 	
 public:
-	Nyancat(){
-		LoadDivGraph("Nyan_s.png", 6, 6, 1, 32, 32, handle);
-		nyan_x = 200;
-		nyan_y = 0;
-		top = 0;
-		left = 0;
-		right = 0;
-		fall = true;
-		GA = 0;
-		map = new GameMap();
-		
-		sound[0]=LoadSoundMem( "nyanVoice\\nyan01.wav" ) ;
-		sound[1]=LoadSoundMem( "nyanVoice\\nyan02.wav" ) ;
-		sound[2]=LoadSoundMem( "nyanVoice\\nyan03.wav" ) ;
-		sound[3]=LoadSoundMem( "nyanVoice\\nyan04.wav" ) ;
-		sound[4]=LoadSoundMem( "nyanVoice\\nyan05.wav" ) ;
-		sound[5]=LoadSoundMem( "nyanVoice\\nyan06.wav" ) ;
-
-	}
-
-	void render(){
-		if(map == NULL){
-			return;
-		}
-		map->render();
-		DrawGraph(nyan_x, nyan_y, handle[3], true);
-		nyan_x -= left;
-		nyan_x += right;
-		//nyan_y -= map->checkMapHit1(nyan_x, nyan_y, 0, top);
-		grabity();
-		nyan_y += GA ;
-		
-		if(left > 0){
-			left -= 0.5;
-		}
-		if(right > 0){
-			right -= 0.5;
-		}
-		if(top > 0){
-			onFall();
-			top -= 3.0f;
-		}else{
-			top = 0;
-		}
-	}
-	void jump(){
-		if(!fall){
-			top = 25.0f;
-			srand((unsigned) time(NULL));
-			voice=rand();
-			voice%=5;
-			if(CheckSoundMem(sound[voice])==0){ 
-				PlaySoundMem(sound[voice],DX_PLAYTYPE_BACK);
-			}
-		}
-	}
-	void moveDown(){
-		nyan_y +=7;
-	}
-	void moveLeft(){
-		left = 3;
-	}
-	void moveRight(){
-		right = 3;
-	}
-	void grabity(){
-		if(fall){
-			GA  = 2.0f;
-		}else{
-			GA = 0 ;
-		}
-		
-	}
+	Nyancat();
+	void render();
+	void jump();
+	void moveDown();
+	void moveLeft();
+	void moveRight();
+	void grabity();
 
 	//自由落下開始
-	void onFall(){
-		fall = true;
-	}
+	void onFall();
 	//自由落下終了
-	void offFall(){
-		fall = false;
-	}
+	void offFall();
 	//接地判定ON
-	void onground(){
-		ground=true;
-	}
+	void onground();
 	//接地判定OFF
-	void offground(){
-		ground=false;
-	}
+	void offground();
 
 	//座標修正
 	// 0 = 上、 1 = 右、 2 = 下、 3 = 左
-	void revisePosition(int direction, int value){
-		char test[40];
-		wsprintf(test, "%d\n",value);
-		OutputDebugString(test);
-		switch(direction){
-		case 0:
-			nyan_y = nyan_y + value;
-		break;
-		case 1:
-			nyan_x = nyan_x + value;
-		break;
-		case 2:
-			nyan_y = nyan_y - value;
-		break;
-		case 3:
-			nyan_x = nyan_x - value;
-		break;
-		}
-	}
+	void revisePosition(int direction, int value);
 	//ニャンがいるX座標を取得
-	float getNyanX(){
-		return nyan_x;
-	}
+	float getNyanX();
 	//ニャンがいるY座標を取得
-	float getNyanY(){
-		return nyan_y;
-	}
+	float getNyanY();
 
 };
 #endif

@@ -7,10 +7,7 @@
 #include <WinSock2.h>
 #include "Nyancat.h"
 #include <DxLib.h>
-#include <pcap.h>
 #include "Fps.h"
-#include "packet/PacketICMP.h"
-
 
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "Packet.lib")
