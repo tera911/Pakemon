@@ -1,7 +1,7 @@
 #include "Nyancat.h"
 
 Nyancat::Nyancat(){
-		LoadDivGraph("Nyan_s.png", 6, 6, 1, 32, 32, handle);
+		LoadDivGraph("Nyan_s.png", 6, 6, 1, 32, 20, handle);
 		nyan_x = 200;
 		nyan_y = 0;
 		top = 0;
@@ -42,14 +42,17 @@ Nyancat::Nyancat(){
 		}
 		if(top > 0){
 			onFall();
-			top -= 3.0f;
+			top -= 2.0f;
 		}else{
 			top = 0;
 		}
+		//yç¿ïWà íuí≤êÆ
+		//nyan_y = floor(nyan_y / 32) * 32 + 10;
+		DrawFormatString(500, 100, 0, "nyan_y = %f", nyan_y);
 	}
 	void Nyancat::jump(){
 		if(!fall){
-			top = 25.0f;
+			top = 22.0f;
 			srand((unsigned) time(NULL));
 			voice=rand();
 			voice%=5;
@@ -59,7 +62,7 @@ Nyancat::Nyancat(){
 		}
 	}
 	void Nyancat::moveDown(){
-		nyan_y +=7;
+		nyan_y +=1;
 	}
 	void Nyancat::moveLeft(){
 		left = 3;

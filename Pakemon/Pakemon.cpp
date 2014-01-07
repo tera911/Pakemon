@@ -33,6 +33,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	SetGraphMode(800, 600, 32, 60);
 	ChangeWindowMode(true);
+	SetMainWindowText("Pakemon");
 	if( DxLib_Init() == -1 )	// ＤＸライブラリ初期化処理
 	{
 		 return -1;				// エラーが起きたら直ちに終了

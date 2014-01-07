@@ -66,32 +66,7 @@ public:
 		}
 	}
 	//自キャラX、自キャラY、　方向、　移動させたい距離
-	int checkMapHit1(float nyan_x, float nyan_y, int direction, float value){
-		int tb[2], bb[2], cb[2],lb[2], rb[2];		//上、下、中央、左、右ブロック [x,y] 
-		cb[0] = round(nyan_x / 32.0f);	//自キャラのX座標
-		cb[1] = round(nyan_y / 32.0f);	//自キャラのY座標
-		
-		tb[0] = cb[0];		//自キャラの上ブロックの座標
-		tb[1] = cb[1] -1;	//自キャラの上ブロックの座標
-		
-		bb[0] = cb[0];		//自キャラの上ブロックの座標
-		bb[1] = cb[1] +1;	//自キャラの上ブロックの座標
-
-		switch(direction){
-		case 0:
-			//上
-			if(map[tb[0]][tb[1]] == 'A' || map[tb[0]][tb[1]] == 'S' || map[tb[0]][tb[1]] == 'I'){
-					int next_value = nyan_y - cb[1] * 32;
-					if(next_value > value){
-						return next_value;
-					}else{
-						return value;
-					}
-				}
-		break;
-		}
-		return value;
-	}
+	int checkMapHit1(float nyan_x, float nyan_y, int direction, float value);
 
 	int checkMapHit(Nyancat* nyan);
 	void screenScroll_x(int value);
