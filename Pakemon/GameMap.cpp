@@ -48,7 +48,7 @@ void GameMap::render_block(int block_type, int x, int y){
 		break;
 		case COIN_HTTPS:
 			DrawGraph(block_x, block_y, block_packet, true);
-			DrawString(block_x + 2, block_y + 10, "443", GetColor(255,255,255));
+			DrawString(block_x , block_y + 10, "443", GetColor(255,255,255));
 		break;
 		case ITEM_NORMAL:
 			DrawGraph(block_x, block_y, block_normal, true);
@@ -137,6 +137,23 @@ int GameMap::checkMapHit(Nyancat* nyan){
 
 		//自キャラがパケットを取得した場合
 		if(map[cb[0]][cb[1]] & COIN_ALL){
+			nyan->sumScore(50);	//スコア加算
+
+			//自キャラのポート番号変更
+			int block = map[cb[0]][cb[1]];
+			if(block & COIN_FTP){
+				nyan->changePortNumber(21);
+			}else if(block & COIN_SSH){
+				nyan->changePortNumber(22);
+			}else if(block & COIN_SMTP){
+				nyan->changePortNumber(25);
+			}else if(block & COIN_DNS){
+				nyan->changePortNumber(53);
+			}else if(block & COIN_HTTP){
+				nyan->changePortNumber(80);
+			}else if(block & COIN_HTTPS){
+				nyan->changePortNumber(443);
+			}
 			map[cb[0]][cb[1]] = 0;	//パケット消える
 		}
 		
@@ -148,12 +165,12 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		int block_x = ((nyan_x + screen_x * 32) / 32) + 1;
 		int block_y = (nyan_y / 32) + 1;
 
-		DrawBox(cb[0] * 32 - screen_x * 32,
+		/*DrawBox(cb[0] * 32 - screen_x * 32,
 			cb[1] * 32, 
 			(cb[0] * 32 - screen_x * 32) + 32, 
 			(cb[1] * 32) +  32, 
 			GetColor(255,0,0), 
-			true);
+			true);*/
 
 		if(map[cb[0]][cb[1]] != 0){
 			DrawString(500, 100, "接触", GetColor(255,255,255));

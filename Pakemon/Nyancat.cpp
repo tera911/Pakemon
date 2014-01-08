@@ -1,31 +1,51 @@
 #include "Nyancat.h"
 
 Nyancat::Nyancat(){
+		//Nyanの描画
 		LoadDivGraph("Nyan_s.png", 6, 6, 1, 32, 20, handle);
+
+		//デフォルトの座標
 		nyan_x = 200;
 		nyan_y = 0;
+
+		//1フレームごとの移動量
 		top = 0;
 		left = 0;
 		right = 0;
-		fall = true;
-		GA = 0;
-		map = new GameMap();
-		
-		sound[0]=LoadSoundMem( "nyanVoice\\nyan01.wav" ) ;
-		sound[1]=LoadSoundMem( "nyanVoice\\nyan02.wav" ) ;
-		sound[2]=LoadSoundMem( "nyanVoice\\nyan03.wav" ) ;
-		sound[3]=LoadSoundMem( "nyanVoice\\nyan04.wav" ) ;
-		sound[4]=LoadSoundMem( "nyanVoice\\nyan05.wav" ) ;
-		sound[5]=LoadSoundMem( "nyanVoice\\nyan06.wav" ) ;
 
+		//ポート番号
+		nyan_port = 0;
+
+				fall = true;
+		GA = 0;
+
+		//マップの初期化
+		map1 = new GameMap();
+		map2 = 0;
+		map3 = 0;
+		map4 = 0;
+		map5 = 0;
+		nowMap = 0;
+
+		nowMap = map1;
+
+		//音楽のロード
+		sound[0]	=	LoadSoundMem( "nyanVoice\\nyan01.wav" ) ;
+		sound[1]	=	LoadSoundMem( "nyanVoice\\nyan02.wav" ) ;
+		sound[2]	=	LoadSoundMem( "nyanVoice\\nyan03.wav" ) ;
+		sound[3]	=	LoadSoundMem( "nyanVoice\\nyan04.wav" ) ;
+		sound[4]	=	LoadSoundMem( "nyanVoice\\nyan05.wav" ) ;
+		sound[5]	=	LoadSoundMem( "nyanVoice\\nyan06.wav" ) ;
+
+		score = 0;
 	}
 
 	void Nyancat::render(){
-		if(map == NULL){
+		if(nowMap == NULL){
 			return;
 		}
-		map->render();
-		map->checkMapHit(this);
+		nowMap->render();
+		nowMap->checkMapHit(this);
 		DrawGraph(nyan_x, nyan_y, handle[3], true);
 		nyan_x -= left;
 		nyan_x += right;
@@ -48,6 +68,12 @@ Nyancat::Nyancat(){
 		}
 		//y座標位置調整
 		DrawFormatString(500, 100, 0, "nyan_y = %f", nyan_y);
+		//スコア表示
+		DrawFormatString(100, 50, GetColor(255,255,255), "SCORE : %d", score);
+		//自キャラのポート番号表示
+		if(nyan_port != 0){
+		DrawFormatString(nyan_x + 5, nyan_y - 15, GetColor(255,255,255), "%d", nyan_port);
+		}
 	}
 	void Nyancat::jump(){
 		if(!fall){
@@ -131,4 +157,14 @@ Nyancat::Nyancat(){
 	//ニャンがいるY座標を取得
 	float Nyancat::getNyanY(){
 		return nyan_y;
+	}
+
+	//スコアを加算する
+	void Nyancat::sumScore(int value){
+		score = score + value;
+	}
+
+	//自キャラのポート番号を変更
+	void Nyancat::changePortNumber(int port){
+		nyan_port = port;
 	}
