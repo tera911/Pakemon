@@ -58,10 +58,15 @@ Nyancat::Nyancat(){
 			srand((unsigned) time(NULL));
 			voice=rand();
 			voice%=5;
+
+			/*printfDx("%d",voice);
+			voice=GetRand(6);*/
 			if(CheckSoundMem(sound[voice])==0){ 
 				PlaySoundMem(sound[voice],DX_PLAYTYPE_BACK);
+				
 			}
 		}
+		
 	}
 	void Nyancat::moveDown(){
 		nyan_y +=1;
