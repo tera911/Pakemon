@@ -17,9 +17,9 @@ private:
 	int block_normal;
 	int block_packet;
 	int block_ware;
-	
+	enum BLOCK {AIR = 0 ,ASHIBA = 0x2 ,SHOGAI = 0x4 ,ITEM = 0x8, ITEM_NORMAL = 0x10 ,SWITCH = 0x20, ROUTER = 0x40 , COIN = 0x80};	
 public:
-	char map[46][18];
+	int map[46][18];
 	float screen_x;
 	GameMap(){
 		screen_x = 0;

@@ -9,10 +9,10 @@
 class MapBuilder{
 private:
 	int rand(struct ip_address, int mod);
-	int randblock(struct ip_address);
-	enum BLOCK {AIR,ASHIBA = 'A' ,SHOGAI = 'S',ITEM = 'I',COIN = 'C' ,SWITCH = 'W',ROUTER = 'R'};	
+	int randblock(struct ip_address);	
 public:
-	char map[46][18];
+	int map[46][18];
+	enum BLOCK {AIR = 0 ,ASHIBA = 0x2 ,SHOGAI = 0x4 ,ITEM = 0x8, ITEM_NORMAL = 0x10 ,SWITCH = 0x20, ROUTER = 0x40 , COIN = 0x80};	
 	MapBuilder(){
 		for(int i = 0; i < 46; i++){
 			for(int k = 0; k < 18; k++){
@@ -21,7 +21,7 @@ public:
 		}
 	}
 	void buildMap(ip_header* ih, int size);
-	int getMap(char map[46][18]);
+	int getMap(int map[46][18]);
 	void showMap();
 };
 

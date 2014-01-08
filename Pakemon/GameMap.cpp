@@ -17,19 +17,19 @@ void GameMap::render_block(int block_type, int x, int y){
 	block_x =  x * 32 - screen_x * 32;
 	block_y  = y * 32;
 	switch(block_type){
-		case 'A':
+		case ASHIBA:
 			DrawGraph(block_x, block_y, block_brick, true);
 		break;
-		case 'S':
+		case SHOGAI:
 			DrawGraph(block_x, block_y, block_ware, true);
 		break;
-		case 'I':
+		case ITEM:
 			DrawGraph(block_x, block_y, block_hatena, true);
 		break;
-		case 'C':
+		case COIN:
 			DrawGraph(block_x, block_y, block_packet, true);
 		break;
-		case 'N':
+		case ITEM_NORMAL:
 			DrawGraph(block_x, block_y, block_normal, true);
 		break;
 		default:
@@ -67,16 +67,16 @@ int GameMap::checkMapHit(Nyancat* nyan){
 
 		//上に飛び出てるか
 		if(cb[1] * 32 > nyan_y){
-			if(map[tb[0]][tb[1]] == 'A' || map[tb[0]][tb[1]] == 'S' || map[tb[0]][tb[1]] == 'I' || map[tb[0]][tb[1]] == 'N'){
+			if(map[tb[0]][tb[1]] & ASHIBA || map[tb[0]][tb[1]] & SHOGAI || map[tb[0]][tb[1]] & ITEM || map[tb[0]][tb[1]] & ITEM_NORMAL){
 				nyan->revisePosition(2, nyan_y - cb[1] * 32);	//位置修正
 			}
-			if(map[tb[0]][tb[1]] == 'I'){
-				map[tb[0]][tb[1]] = 'N';
+			if(map[tb[0]][tb[1]] & ITEM){
+				map[tb[0]][tb[1]] = ITEM_NORMAL;
 			}
 		}
 		//下方向に飛び出た場合
 		if(cb[1] * 32 + 11 < nyan_y){	//本当は cb[1] * 32 + 32 < nyan_y + 32だけど高速化のため ;キャラクタのサイズが20のため + 12
-			if(map[bb[0]][bb[1]] == 'A' || map[bb[0]][bb[1]] == 'S' || map[bb[0]][bb[1]] == 'I' || map[bb[0]][bb[1]] == 'N'){
+			if(map[bb[0]][bb[1]] & ASHIBA || map[bb[0]][bb[1]] & SHOGAI || map[bb[0]][bb[1]] & ITEM || map[bb[0]][bb[1]] & ITEM_NORMAL){
 				nyan->revisePosition(0, (cb[1] * 32 + 12) - nyan_y);	//位置修正
 				nyan->offFall();
 				nyan->onground();
@@ -87,18 +87,18 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		}
 		//左に飛び出た
 		if(cb[0] * 32 > (nyan_x + screen_x * 32)){
-			if(map[lb[0]][lb[1]] == 'A' || map[lb[0]][lb[1]] == 'S' || map[lb[0]][lb[1]] == 'I' || map[lb[0]][lb[1]] == 'N'){
+			if(map[lb[0]][lb[1]] & ASHIBA || map[lb[0]][lb[1]] & SHOGAI || map[lb[0]][lb[1]] & ITEM || map[lb[0]][lb[1]] & ITEM_NORMAL){
 				nyan->revisePosition(1, cb[0] * 32 - (nyan_x + screen_x * 32));	//位置修正
 			}
 		}
 		//右に飛び出た
 		if(cb[0] * 32 < (nyan_x + screen_x * 32)){
-			if(map[rb[0]][rb[1]] == 'A' || map[rb[0]][rb[1]] == 'S' || map[rb[0]][rb[1]] == 'I' || map[rb[0]][rb[1]] == 'N'){
+			if(map[rb[0]][rb[1]] & ASHIBA || map[rb[0]][rb[1]] & SHOGAI || map[rb[0]][rb[1]] & ITEM || map[rb[0]][rb[1]] & ITEM_NORMAL){
 				nyan->revisePosition(3, (nyan_x + screen_x * 32) - cb[0] * 32);	//位置修正
 			}
 		}
 		//自キャラがブロックにめり込んだ場合　
-		if(map[cb[0]][cb[1]] == 'A' || map[cb[0]][cb[1]] == 'S' || map[cb[0]][cb[1]] == 'I' || map[cb[0]][cb[1]] == 'N'){
+		if(map[cb[0]][cb[1]] & ASHIBA || map[cb[0]][cb[1]] & SHOGAI || map[cb[0]][cb[1]] & ITEM || map[cb[0]][cb[1]] & ITEM_NORMAL){
 			float block_pos[2];
 			block_pos[0] = cb[0] * 32 + 16;	//ブロックの中心座標 x
 			block_pos[1] = cb[1] * 32 + 20;	//ブロックの中心座標 y
@@ -115,7 +115,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		}
 
 		//自キャラがパケットを取得した場合
-		if(map[cb[0]][cb[1]] == 'C'){
+		if(map[cb[0]][cb[1]] & COIN){
 			map[cb[0]][cb[1]] = 0;	//パケット消える
 		}
 		

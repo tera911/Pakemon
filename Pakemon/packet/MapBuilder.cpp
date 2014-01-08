@@ -137,7 +137,7 @@ void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_cha
 }
 
 
-int MapBuilder::getMap(char distmap[46][18]){
+int MapBuilder::getMap(int distmap[46][18]){
 	pcap_t * fp;
 	char errbuf[PCAP_ERRBUF_SIZE];
 
