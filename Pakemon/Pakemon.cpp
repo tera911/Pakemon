@@ -47,14 +47,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	//ClearDrawScreen();	//‰æ–Ê‚É•`‚©‚ê‚Ä‚¢‚é‚à‚Ì‚ğ‘S•”Á‚·
 	//ScreenFlip();			//— ‰æ–Ê‚Ì“à—e‚ğ•\‰æ–Ê‚É”½‰f‚³‚¹‚é
-	float limittime=60;
 	int start_time=GetNowCount();
-	char nowtime[256];
 	while(ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0){
 		fpsCounter.Update();
-		limittime-=0.016666666666666;
-		itoa(limittime,nowtime,10);
-		DrawString(500,0,nowtime,GetColor(255,255,255));
+		DrawFormatString(500,0,GetColor(255,255,255),"%d",(60000-(GetNowCount()-start_time))/1000); 
 		
 		
 		/////////////////////////////////////////////////////////////////
