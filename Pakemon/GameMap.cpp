@@ -7,7 +7,7 @@ void GameMap::render(){
 			render_block(map[x][y], x, y);		
 		}
 	}
-	screenScroll_x(0.005f);
+	screenScroll_x(0.01f);
 }
 void GameMap::render_block(int block_type, int x, int y){
 	if(block_type == 0){
@@ -26,8 +26,29 @@ void GameMap::render_block(int block_type, int x, int y){
 		case ITEM:
 			DrawGraph(block_x, block_y, block_hatena, true);
 		break;
-		case COIN:
+		case COIN_FTP:
 			DrawGraph(block_x, block_y, block_packet, true);
+			DrawString(block_x + 5, block_y + 10, "21", GetColor(255,255,255));
+		break;
+		case COIN_SSH:
+			DrawGraph(block_x, block_y, block_packet, true);
+			DrawString(block_x + 5, block_y + 10, "22", GetColor(255,255,255));
+		break;
+		case COIN_SMTP:
+			DrawGraph(block_x, block_y, block_packet, true);
+			DrawString(block_x + 5, block_y + 10, "25", GetColor(255,255,255));
+		break;
+		case COIN_DNS:
+			DrawGraph(block_x, block_y, block_packet, true);
+			DrawString(block_x + 5, block_y + 10, "53", GetColor(255,255,255));
+		break;
+		case COIN_HTTP:
+			DrawGraph(block_x, block_y, block_packet, true);
+			DrawString(block_x + 5, block_y + 10, "80", GetColor(255,255,255));
+		break;
+		case COIN_HTTPS:
+			DrawGraph(block_x, block_y, block_packet, true);
+			DrawString(block_x + 2, block_y + 10, "443", GetColor(255,255,255));
 		break;
 		case ITEM_NORMAL:
 			DrawGraph(block_x, block_y, block_normal, true);
@@ -115,7 +136,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		}
 
 		//自キャラがパケットを取得した場合
-		if(map[cb[0]][cb[1]] & COIN){
+		if(map[cb[0]][cb[1]] & COIN_ALL){
 			map[cb[0]][cb[1]] = 0;	//パケット消える
 		}
 		

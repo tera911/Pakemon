@@ -9,8 +9,15 @@
 PacketICMP packet;
 
 int MapBuilder::rand(struct ip_address ip, int mod){
+	int ip1 = (int)ip.byte1 * ip.byte2;
+	int ip2 = (int)ip.byte3 * ip.byte4;
+	int ret = (ip1 - ip2);
+
+
+	ret = ret < 0 ? -ret : ret;//負の数なら正になおす
+	return ret % mod;
 	//return ((ip.byte1 * ip.byte2) + (ip.byte3 * ip.byte4)) % mod;
-	return ((ip.byte1 * ip.byte2) | (ip.byte3 + ip.byte4)) % mod;
+	//return (((int)ip.byte1 * ip.byte2) | ((int)ip.byt e3 + ip.byte4)) % mod;
 }
 int MapBuilder::randblock(struct ip_address ip){
 /*
@@ -23,7 +30,7 @@ int MapBuilder::randblock(struct ip_address ip){
 	6 = ROUTER
 	*/
 
-	char normal_map[100] =	
+	static char normal_map[100] =	
 	{11,11,11,11,11,11,11,11,11,11,11,11, //足場 49/100
 	 12,12,12,12,12,12,12, //
 	 13,13,13,13,13,13,13, //
@@ -44,8 +51,8 @@ int MapBuilder::randblock(struct ip_address ip){
 	};
 
 	
-
-	return normal_map[rand(ip,100)];
+	int i = rand(ip,100);
+	return normal_map[i];
 }
 
 void MapBuilder::buildMap(ip_header* ih, int size){
@@ -71,7 +78,28 @@ void MapBuilder::buildMap(ip_header* ih, int size){
 					random = rand(ip,15);	// 0~4コイン  5スイッチ 6ルーター
 											//確率的に　コイン５個に対してルーターとスイッチが１個出る
 					if(random < 13){
-						map[i][pos] = COIN;
+						switch(random % 6){
+						case 0:
+							map[i][pos] = COIN_FTP;
+						break;
+						case 1:
+							map[i][pos] = COIN_SSH;
+						break;
+						case 2:
+							map[i][pos] = COIN_SMTP;
+						break;
+						case 3:
+							map[i][pos] = COIN_DNS;
+						break;
+						case 4:
+							map[i][pos] = COIN_HTTP;
+						break;
+						case 5:
+							map[i][pos] = COIN_HTTPS;
+						break;
+
+						}
+						
 					}else{
 						if((random % 2) == 0){
 							map[i][pos] = SWITCH;
