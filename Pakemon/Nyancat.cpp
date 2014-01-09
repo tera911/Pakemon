@@ -128,6 +128,9 @@ Nyancat::Nyancat(){
 	void Nyancat::offground(){
 		ground=false;
 	}
+	bool Nyancat::isMoveNyan(){
+		return (fall);
+	}
 
 	//座標修正
 	// 0 = 上、 1 = 右、 2 = 下、 3 = 左

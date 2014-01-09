@@ -46,12 +46,12 @@ public:
 	void onFall();
 	//自由落下終了
 	void offFall();
-	//自由落下中か？
-	void isFall();
 	//接地判定ON
 	void onground();
 	//接地判定OFF
 	void offground();
+	//プレイヤーが動いているならtrue
+	bool isMoveNyan();
 
 	//座標修正
 	// 0 = 上、 1 = 右、 2 = 下、 3 = 左

@@ -5,6 +5,7 @@
 
 GameMap::GameMap(){
 		screen_x = 0;
+		move_screen = 0;
 		screen_center_x = 12.0f * 32;
 		block_brick		= LoadGraph("./block/brick.png", true);
 		block_hatena	= LoadGraph("./block/hatena.png", true);
@@ -142,13 +143,13 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			block_pos[0] = cb[0] * 32 + 16;	//ブロックの中心座標 x
 			block_pos[1] = cb[1] * 32 + 20;	//ブロックの中心座標 y
 		
-			if(block_pos[1] > nyan_y + 32){
+			if(block_pos[1] > nyan_y + 32){		//上
 				nyan->revisePosition(0, block_pos[1] - (nyan_y + 32));
-			}else if(block_pos[1] < nyan_y){
+			}else if(block_pos[1] < nyan_y){	//下
 				nyan->revisePosition(2, nyan_y - block_pos[1]);
-			}else if(block_pos[0] > (nyan_x + screen_x * 32)){
+			}else if(block_pos[0] > (nyan_x + screen_x * 32)){		//右
 				nyan->revisePosition(3, block_pos[0] - (nyan_x + screen_x * 32));
-			}else if(block_pos[0] < (nyan_x + 32 + screen_x * 32)){
+			}else if(block_pos[0] < (nyan_x + 32 + screen_x * 32)){	//左
 				nyan->revisePosition(1, (nyan_x + 32 + screen_x * 32) - block_pos[0]);
 			}
 		}
@@ -184,19 +185,17 @@ int GameMap::checkMapHit(Nyancat* nyan){
 
 		//にゃんキャットと画面のスクロールを連動
 		if(nyan_x > screen_center_x){
-			int xdiff = nyan_x - screen_center_x;
-			screen_x = screen_x + xdiff / 32.0f;
+			float xdiff = nyan_x - screen_center_x;
+			screenScroll_x(xdiff / 32.0f);
 			if(xdiff > 0){
 				nyan->revisePosition(3, xdiff);	
 			}
 		}
-
-		/*DrawBox(cb[0] * 32 - screen_x * 32,
-			cb[1] * 32, 
-			(cb[0] * 32 - screen_x * 32) + 32, 
-			(cb[1] * 32) +  32, 
-			GetColor(255,0,0), 
-			true);*/
+		if(move_screen > 0){
+			move_screen = move_screen - 0.01f;
+			if(move_screen < 0.01f){move_screen = 0.0f;}
+			screen_x	= screen_x + move_screen;
+		}
 #ifdef __DEBUG_
 		if(map[cb[0]][cb[1]] != 0){
 			DrawString(500, 100, "接触", GetColor(255,255,255));
@@ -231,5 +230,5 @@ int GameMap::checkMapHit1(float nyan_x, float nyan_y, int direction, float value
 	return value;
 }
 void GameMap::screenScroll_x(float value){
-	screen_x = screen_x + value;
+	move_screen = value;
 }
