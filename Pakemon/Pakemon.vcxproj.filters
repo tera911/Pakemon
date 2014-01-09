@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Fps.h">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Pakemon.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMap.cpp">
+      <Filter>ソースファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="packet\MapBuilder.cpp">
+      <Filter>ソースファイル\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Nyancat.cpp">
+      <Filter>ソースファイル\Game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameMap.h">
+      <Filter>ヘッダーファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Nyancat.h">
+      <Filter>ヘッダーファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\packet.h">
+      <Filter>ヘッダーファイル\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\PacketICMP.h">
+      <Filter>ヘッダーファイル\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\MapBuilder.h">
+      <Filter>ヘッダーファイル\Packet</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ソースファイル">
+      <UniqueIdentifier>{d50c1127-1391-4a51-a866-e1e75e661e09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル">
+      <UniqueIdentifier>{98d5f1d8-ab3f-40a1-a9ba-19b164c60759}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Game">
+      <UniqueIdentifier>{473e2677-f5af-4cf6-9300-a8883524cb85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Packet">
+      <UniqueIdentifier>{cf203718-45ce-431a-81ab-3ffbb5f8ee64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Game">
+      <UniqueIdentifier>{13a1958d-2c4d-412f-b216-54d51da6ed98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Packet">
+      <UniqueIdentifier>{99dffc53-c8f7-4cf1-95eb-af9649588b01}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
