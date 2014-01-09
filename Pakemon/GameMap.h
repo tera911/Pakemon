@@ -17,22 +17,13 @@ private:
 	int block_normal;
 	int block_packet;
 	int block_ware;
+	float screen_center_x;
 	enum BLOCK {AIR = 0 ,ASHIBA = 0x2 ,SHOGAI = 0x4 ,ITEM = 0x8, ITEM_NORMAL = 0x10 ,SWITCH = 0x20, ROUTER = 0x40 , 
 				COIN_FTP = 0x80, COIN_SSH = 0x100, COIN_SMTP = 0x200, COIN_DNS = 0x400, COIN_HTTP = 0x800, COIN_HTTPS = 0x1000, COIN_ALL = 0x1F80};
 public:
 	int map[46][18];
 	float screen_x;
-	GameMap(){
-		screen_x = 0;
-		block_brick		= LoadGraph("./block/brick.png", true);
-		block_hatena	= LoadGraph("./block/hatena.png", true);
-		block_normal	= LoadGraph("./block/normal.png", true);
-		block_packet	= LoadGraph("./block/packet.png", true);
-		block_ware		= LoadGraph("./block/ware.png", true);
-		MapBuilder builder;
-		builder.getMap(map);
-
-	}
+	GameMap();
 	void render();
 	void render_block(int block_type, int x, int y);
 	//自キャラX、自キャラY、　方向、　移動させたい距離

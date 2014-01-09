@@ -11,7 +11,7 @@ PacketICMP packet;
 int MapBuilder::rand(struct ip_address ip, int mod){
 	int ip1 = (int)ip.byte1 * ip.byte2;
 	int ip2 = (int)ip.byte3 * ip.byte4;
-	int ret = (ip1 - ip2);
+	int ret = (ip1 & ip2);
 
 
 	ret = ret < 0 ? -ret : ret;//•‰‚Ì”‚È‚ç³‚É‚È‚¨‚·
@@ -56,7 +56,7 @@ int MapBuilder::randblock(struct ip_address ip){
 }
 
 void MapBuilder::buildMap(ip_header* ih, int size){
-	for(int i = 0;i < 46; i++){
+	for(int i = 0;i < 35; i++){
 		for(int k = 0; k < 10; k++){
 			char blockpos[18] = {0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 			ip_address ip = ih->daddr;	
