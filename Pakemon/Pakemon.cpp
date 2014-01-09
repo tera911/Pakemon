@@ -4,6 +4,7 @@
 #define WPCAP
 #define HAVE_REMOTE
 
+
 #include <WinSock2.h>
 #include "Nyancat.h"
 #include <DxLib.h>
@@ -50,7 +51,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	int start_time=GetNowCount();
 	while(ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0){
 		fpsCounter.Update();
-		DrawFormatString(500,0,GetColor(255,255,255),"%d",(60000-(GetNowCount()-start_time))/1000); 
+		DrawFormatString(500,0,GetColor(255,255,255),"%d",((GetNowCount()- start_time))/1000); 
 		
 		
 		/////////////////////////////////////////////////////////////////
@@ -90,7 +91,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//Windows コールバックを処理する
 		if(ProcessMessage() == -1) break; //異常が発生したらループから抜ける
 		if(CheckHitKey(KEY_INPUT_ESCAPE) == 1) break;//エスケープキーが押されたらループから抜ける
-		if( GetNowCount()-start_time>=60000 ) break;//60秒経過したらループから抜ける
+		if( GetNowCount()-start_time>=1200000 ) break;//60秒経過したらループから抜ける
 	
 	}
 	DxLib_End() ;	// ＤＸライブラリ使用の終了処理

@@ -1,13 +1,27 @@
 #include "GameMap.h"
 #include "Nyancat.h"
 
+#define __DEBUG_	//デバッグ時のみ
+
+GameMap::GameMap(){
+		screen_x = 0;
+		screen_center_x = 12.0f * 32;
+		block_brick		= LoadGraph("./block/brick.png", true);
+		block_hatena	= LoadGraph("./block/hatena.png", true);
+		block_normal	= LoadGraph("./block/normal.png", true);
+		block_packet	= LoadGraph("./block/packet.png", true);
+		block_ware		= LoadGraph("./block/ware.png", true);
+		MapBuilder builder;
+		builder.getMap(map);
+
+	}
 void GameMap::render(){
 	for(int x = 0; x < MAP_WIDTH; x++){
 		for(int y = 0; y < MAP_HEIGHT; y++){
 			render_block(map[x][y], x, y);		
 		}
 	}
-	screenScroll_x(0.01f);
+	//screenScroll_x(0.015f);
 }
 void GameMap::render_block(int block_type, int x, int y){
 	if(block_type == 0){
@@ -54,7 +68,10 @@ void GameMap::render_block(int block_type, int x, int y){
 			DrawGraph(block_x, block_y, block_normal, true);
 		break;
 		default:
+#ifdef __DEBUG_
 			DrawString(block_x + 16, block_y + 16, "1", GetColor(255,255,255));
+			DrawFormatString(100, 90, GetColor(255,255,255), "screen_x = %f",screen_x);
+#endif
 			return;
 		break;
 	}
@@ -80,9 +97,10 @@ int GameMap::checkMapHit(Nyancat* nyan){
 
 		rb[0] = cb[0] + 1;	//自キャラの左ブロックのx座標
 		rb[1] = cb[1];		//自キャラの左ブロックのy座標
-
+#ifdef __DEBUG_
 		DrawFormatString(600,70, GetColor(0,0,0), "x = %d",cb[0]);
 		DrawFormatString(600,90, GetColor(0,0,0), "y = %d",cb[1]);
+#endif
 		
 		//キャラクターがマップブロックから飛び出た場合
 
@@ -162,8 +180,16 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			nyan->onground();
 		}
 
-		int block_x = ((nyan_x + screen_x * 32) / 32) + 1;
-		int block_y = (nyan_y / 32) + 1;
+		
+
+		//にゃんキャットと画面のスクロールを連動
+		if(nyan_x > screen_center_x){
+			int xdiff = nyan_x - screen_center_x;
+			screen_x = screen_x + xdiff / 32.0f;
+			if(xdiff > 0){
+				nyan->revisePosition(3, xdiff);	
+			}
+		}
 
 		/*DrawBox(cb[0] * 32 - screen_x * 32,
 			cb[1] * 32, 
@@ -171,10 +197,11 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			(cb[1] * 32) +  32, 
 			GetColor(255,0,0), 
 			true);*/
-
+#ifdef __DEBUG_
 		if(map[cb[0]][cb[1]] != 0){
 			DrawString(500, 100, "接触", GetColor(255,255,255));
 		}
+#endif
 		return 0;
 	}
 int GameMap::checkMapHit1(float nyan_x, float nyan_y, int direction, float value){

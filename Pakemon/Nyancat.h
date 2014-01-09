@@ -46,6 +46,8 @@ public:
 	void onFall();
 	//自由落下終了
 	void offFall();
+	//自由落下中か？
+	void isFall();
 	//接地判定ON
 	void onground();
 	//接地判定OFF
