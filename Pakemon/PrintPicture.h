@@ -2,12 +2,13 @@
 #define WIDTH  7	// 数字グラフィック横幅
 #define HEIGHT 7	// 数字グラフィック高さ
 
-class PrintPicure{
+class PrintPicture{
 private:
-	int spritPicture[8];
+	static int spritPicture[10];
 
 
-public:
-	PrintPicure();
-	void NumDraw(int num);
-}
+
+public: 
+	PrintPicture();
+	 static void NumDraw(int num,int argx,int argy);
+};

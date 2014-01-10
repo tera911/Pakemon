@@ -16,6 +16,9 @@
     <ClCompile Include="Nyancat.cpp">
       <Filter>ソースファイル\Game</Filter>
     </ClCompile>
+    <ClCompile Include="PrintPicture.cpp">
+      <Filter>ソースファイル\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMap.h">
@@ -32,6 +35,9 @@
     </ClInclude>
     <ClInclude Include="packet\MapBuilder.h">
       <Filter>ヘッダーファイル\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="PrintPicture.h">
+      <Filter>ヘッダーファイル\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,8 +5,9 @@
 #include <DxLib.h>
 #include <iostream>
 #include <time.h>
+#include "PrintPicture.h"
 class GameMap;
-
+class PrintPicture;
 class Nyancat{
 private:
 	int handle[6];
@@ -30,8 +31,8 @@ private:
 	GameMap* map3;	//プレイするMapのポインタ
 	GameMap* map4;	//プレイするMapのポインタ
 	GameMap* map5;	//プレイするMapのポインタ
-
 	int score;
+	PrintPicture* printPic;
 	
 public:
 	Nyancat();

@@ -36,8 +36,9 @@ Nyancat::Nyancat(){
 		sound[3]	=	LoadSoundMem( "nyanVoice\\nyan04.wav" ) ;
 		sound[4]	=	LoadSoundMem( "nyanVoice\\nyan05.wav" ) ;
 		sound[5]	=	LoadSoundMem( "nyanVoice\\nyan06.wav" ) ;
-
+		printPic=new PrintPicture();
 		score = 0;
+		
 	}
 
 	void Nyancat::render(){
@@ -69,7 +70,8 @@ Nyancat::Nyancat(){
 		//y座標位置調整
 		DrawFormatString(500, 100, 0, "nyan_y = %f", nyan_y);
 		//スコア表示
-		DrawFormatString(100, 50, GetColor(255,255,255), "SCORE : %d", score);
+		//DrawFormatString(100, 50, GetColor(255,255,255), "SCORE : %d", score);
+		PrintPicture::NumDraw(score,100,50);
 		//自キャラのポート番号表示
 		if(nyan_port != 0){
 		DrawFormatString(nyan_x + 5, nyan_y - 15, GetColor(255,255,255), "%d", nyan_port);
