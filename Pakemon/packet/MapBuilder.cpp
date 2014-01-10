@@ -8,7 +8,7 @@
 
 PacketICMP packet;
 
-int MapBuilder::rand(struct ip_address ip, int mod){
+int MapBuilder::rand(struct ip_address ip, int mod, int seed = 0){
 	int ip1 = (int)ip.byte1 * ip.byte2;
 	int ip2 = (int)ip.byte3 * ip.byte4;
 	int ret = (ip1 & ip2);

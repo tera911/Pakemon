@@ -42,6 +42,8 @@ public:
 	void moveRight();
 	void grabity();
 
+	//DEBUG
+	void reset();
 	//自由落下開始
 	void onFall();
 	//自由落下終了

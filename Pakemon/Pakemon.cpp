@@ -82,6 +82,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		if(CheckHitKey(KEY_INPUT_C) > 0){
 			player.jump();
 		}
+		if(CheckHitKey(KEY_INPUT_R) > 0){
+			player.reset();
+		}
 		/////////////////////////////////////////////////////////////////
 		//							ƒL[“ü—Í‘Ò‚¿‚¨‚µ‚è				   //
 		/////////////////////////////////////////////////////////////////

@@ -1,5 +1,10 @@
 #include "Nyancat.h"
 
+#define SAFE_DELETE(x)	{\
+	delete (x);\
+	(x) = 0;\
+}
+
 Nyancat::Nyancat(){
 		//Nyanの描画
 		LoadDivGraph("Nyan_s.png", 6, 6, 1, 32, 20, handle);
@@ -111,7 +116,25 @@ Nyancat::Nyancat(){
 		}
 		
 	}
+	void Nyancat::reset(){
+		SAFE_DELETE(nowMap);
+		nowMap = new GameMap();
+		//デフォルトの座標
+		nyan_x = 200;
+		nyan_y = 0;
 
+		//1フレームごとの移動量
+		top = 0;
+		left = 0;
+		right = 0;
+
+		//ポート番号
+		nyan_port = 0;
+
+				fall = true;
+		GA = 0;
+		score = 0;
+	}
 	//自由落下開始
 	void Nyancat::onFall(){
 		fall = true;

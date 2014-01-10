@@ -8,7 +8,7 @@
 
 class MapBuilder{
 private:
-	int rand(struct ip_address, int mod);
+	int rand(struct ip_address, int mod, int seed);
 	int randblock(struct ip_address);	
 public:
 	int map[46][18];

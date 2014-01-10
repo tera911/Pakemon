@@ -1,9 +1,12 @@
 #include "GameMap.h"
 #include "Nyancat.h"
+#include <list>
 
+using namespace std;
 #define __DEBUG_	//デバッグ時のみ
 
 GameMap::GameMap(){
+
 		screen_x = 0;
 		move_screen = 0;
 		screen_center_x = 12.0f * 32;
@@ -16,7 +19,6 @@ GameMap::GameMap(){
 		block_switch	= LoadGraph("./block/switch.png", true);
 		MapBuilder builder;
 		builder.getMap(map);
-
 	}
 void GameMap::render(){
 	for(int x = 0; x < MAP_WIDTH; x++){
@@ -24,6 +26,7 @@ void GameMap::render(){
 			render_block(map[x][y], x, y);		
 		}
 	}
+//	Animation();
 	//screenScroll_x(0.015f);
 }
 void GameMap::render_block(int block_type, int x, int y){
@@ -186,6 +189,13 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			}else if(block & COIN_HTTPS){
 				nyan->changePortNumber(443);
 			}
+			/*Effect * effect = (Effect*)malloc(sizeof(Effect));
+			effect->blocktype = block;
+			effect->nyan = nyan;
+			effect->sx = nyan_x;
+			effect->sy = nyan_y;
+			effect->alpha = 255;
+			addAnimation(effect);*/
 			map[cb[0]][cb[1]] = 0;	//パケット消える
 		}
 		
@@ -244,4 +254,23 @@ int GameMap::checkMapHit1(float nyan_x, float nyan_y, int direction, float value
 }
 void GameMap::screenScroll_x(float value){
 	move_screen = value;
+}
+
+void GameMap::Animation(){
+	list<struct Effect>::iterator it = effectList.begin();
+	while(it != effectList.end()){
+		it->sx = (it->nyan->getNyanX() - it->sx) * 0.7;
+		it->sy = (it->nyan->getNyanY() - it->sy) * 0.7;
+		it->alpha = it->alpha - 0.01f;
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, it->alpha);
+		render_block(it->blocktype, it->sx, it->sy);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		if(it->alpha < 25){
+				it = effectList.erase(it);
+		}
+	}
+}
+
+void GameMap::addAnimation(Effect *effect){
+	effectList.push_front(*effect);
 }
