@@ -4,11 +4,13 @@
 
 class PrintPicture{
 private:
-	static int spritPicture[10];
-
-
-
-public: 
+	int spritPicture[10];
+	static PrintPicture *instance;
 	PrintPicture();
-	 static void NumDraw(int num,int argx,int argy);
+public: 
+	static PrintPicture* instance(){
+		static PrintPicture printPicture;
+		return &printPicture;
+	}
+	void NumDraw(int num,int argx,int argy);
 };
