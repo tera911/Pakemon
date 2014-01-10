@@ -21,9 +21,10 @@ GameMap::GameMap(){
 		builder.getMap(map);
 	}
 void GameMap::render(){
-	for(int x = 0; x < MAP_WIDTH; x++){
+	int size = floor(screen_x);
+	for(int x = size; x < SCREEN_WIDTH + size +1; x++){
 		for(int y = 0; y < MAP_HEIGHT; y++){
-			render_block(map[x][y], x, y);		
+			render_block(map[x][y], x, y);
 		}
 	}
 //	Animation();
