@@ -12,6 +12,8 @@ GameMap::GameMap(){
 		block_normal	= LoadGraph("./block/normal.png", true);
 		block_packet	= LoadGraph("./block/packet.png", true);
 		block_ware		= LoadGraph("./block/ware.png", true);
+		block_router	= LoadGraph("./block/router.png", true);
+		block_switch	= LoadGraph("./block/switch.png", true);
 		MapBuilder builder;
 		builder.getMap(map);
 
@@ -31,7 +33,7 @@ void GameMap::render_block(int block_type, int x, int y){
 	int block_x, block_y;
 	block_x =  x * 32 - screen_x * 32;
 	block_y  = y * 32;
-	switch(block_type){
+	switch(block_type & 0x1FFF){	//ANDââéZÇ≈ROUTERÇ∆SWITCHÇèúÇ≠
 		case ASHIBA:
 			DrawGraph(block_x, block_y, block_brick, true);
 		break;
@@ -67,6 +69,12 @@ void GameMap::render_block(int block_type, int x, int y){
 		break;
 		case ITEM_NORMAL:
 			DrawGraph(block_x, block_y, block_normal, true);
+		break;
+		case SWITCH: 
+			DrawModiGraph(block_x, block_y, block_x + 32, block_y, block_x + 32, block_y + 32, block_x, block_y + 32, block_switch, true); 
+		break;
+		case ROUTER:
+			DrawModiGraph(block_x, block_y, block_x + 32, block_y, block_x + 32, block_y + 32, block_x, block_y + 32, block_router, true); 
 		break;
 		default:
 #ifdef __DEBUG_
@@ -111,6 +119,11 @@ int GameMap::checkMapHit(Nyancat* nyan){
 				nyan->revisePosition(2, nyan_y - cb[1] * 32);	//à íuèCê≥
 			}
 			if(map[tb[0]][tb[1]] & ITEM){
+				if(map[tb[0]][tb[1]] & (ROUTER_FLAG & ~ITEM)){
+					map[tb[0]][tb[1]-1] = ROUTER;
+				}else{
+					map[tb[0]][tb[1]-1] = SWITCH;
+				}
 				map[tb[0]][tb[1]] = ITEM_NORMAL;
 			}
 		}

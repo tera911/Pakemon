@@ -75,43 +75,41 @@ void MapBuilder::buildMap(ip_header* ih, int size){
 				case 7:
 				case 9:
 				case 10:
-					random = rand(ip,15);	// 0~4コイン  5スイッチ 6ルーター
+					random = rand(ip,13);	// 0~4コイン  5スイッチ 6ルーター
 											//確率的に　コイン５個に対してルーターとスイッチが１個出る
-					if(random < 13){
-						switch(random % 6){
-						case 0:
-							map[i][pos] = COIN_FTP;
-						break;
-						case 1:
-							map[i][pos] = COIN_SSH;
-						break;
-						case 2:
-							map[i][pos] = COIN_SMTP;
-						break;
-						case 3:
-							map[i][pos] = COIN_DNS;
-						break;
-						case 4:
-							map[i][pos] = COIN_HTTP;
-						break;
-						case 5:
-							map[i][pos] = COIN_HTTPS;
-						break;
-
-						}
-						
-					}else{
-						if((random % 2) == 0){
-							map[i][pos] = SWITCH;
-						}else{
-							map[i][pos] = ROUTER;
-						}
-					}
+					switch(random % 6){
+					case 0:
+						map[i][pos] = COIN_FTP;
 					break;
+					case 1:
+						map[i][pos] = COIN_SSH;
+					break;
+					case 2:
+						map[i][pos] = COIN_SMTP;
+					break;
+					case 3:
+						map[i][pos] = COIN_DNS;
+					break;
+					case 4:
+						map[i][pos] = COIN_HTTP;
+					break;
+					case 5:
+						map[i][pos] = COIN_HTTPS;
+					break;
+					}
+				break;
 				case 5:
 				case 8:
 					if(rand(ip,5) == 0){
 						map[i][pos] = ITEM;
+						int itemtype = rand(ip, 4);
+						if(itemtype == 0){
+							map[i][pos] = SWITCH_FLAG;
+						}else if(itemtype == 1){
+							map[i][pos] = SWITCH_FLAG;
+						}else if(itemtype == 2){
+							map[i][pos] = ROUTER_FLAG;
+						}
 					}else{
 						map[i][pos] = SHOGAI;
 					}

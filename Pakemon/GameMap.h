@@ -17,10 +17,13 @@ private:
 	int block_normal;
 	int block_packet;
 	int block_ware;
+	int block_router;
+	int block_switch;
 	float screen_center_x;
 	float move_screen;
 	enum BLOCK {AIR = 0 ,ASHIBA = 0x2 ,SHOGAI = 0x4 ,ITEM = 0x8, ITEM_NORMAL = 0x10 ,SWITCH = 0x20, ROUTER = 0x40 , 
-				COIN_FTP = 0x80, COIN_SSH = 0x100, COIN_SMTP = 0x200, COIN_DNS = 0x400, COIN_HTTP = 0x800, COIN_HTTPS = 0x1000, COIN_ALL = 0x1F80};
+				COIN_FTP = 0x80, COIN_SSH = 0x100, COIN_SMTP = 0x200, COIN_DNS = 0x400, COIN_HTTP = 0x800, COIN_HTTPS = 0x1000, COIN_ALL = 0x1F80, 
+				ROUTER_FLAG = 0x2008, SWITCH_FLAG = 0x4008};
 public:
 	int map[46][18];
 	float screen_x;
