@@ -5,13 +5,25 @@
 #define LINE_LEN 16
 #define PACKET_FILE "icmpPacket.pcap"
 
+#define MAP_WIDTH (35)
+#define MAP_HEIGHT (18)
 
 PacketICMP packet;
 
 int MapBuilder::rand(struct ip_address ip, int mod, int seed = 0){
 	int ip1 = (int)ip.byte1 * ip.byte2;
 	int ip2 = (int)ip.byte3 * ip.byte4;
-	int ret = (ip1 & ip2);
+	int ret;
+	switch(seed){
+	case 0:	ret = (ip1 + ip2); break;
+	case 1:	ret = (ip1 - ip2); break;
+	case 2:	ret = (ip1 * ip2); break;
+	case 3:	ret = (ip1 / ip2); break;
+	case 4:	ret = (ip1 | ip2); break;
+	case 5:	ret = (ip1 & ip2); break;
+	default:ret = (ip1 + ip2); break;
+	}
+
 
 
 	ret = ret < 0 ? -ret : ret;//負の数なら正になおす
@@ -19,7 +31,7 @@ int MapBuilder::rand(struct ip_address ip, int mod, int seed = 0){
 	//return ((ip.byte1 * ip.byte2) + (ip.byte3 * ip.byte4)) % mod;
 	//return (((int)ip.byte1 * ip.byte2) | ((int)ip.byt e3 + ip.byte4)) % mod;
 }
-int MapBuilder::randblock(struct ip_address ip){
+int MapBuilder::randblock(struct ip_address ip, int seed = 0){
 /*
 	0 = 空気
 	1 = 足場
@@ -51,85 +63,87 @@ int MapBuilder::randblock(struct ip_address ip){
 	};
 
 	
-	int i = rand(ip,100);
+	int i = rand(ip,100, seed);
 	return normal_map[i];
 }
 
 void MapBuilder::buildMap(ip_header* ih, int size){
-	for(int i = 0;i < 35; i++){
-		for(int k = 0; k < 10; k++){
-			char blockpos[18] = {0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
-			ip_address ip = ih->daddr;	
-			int pos = randblock(ip);
-			if(map[i][pos] != 0){
-				break;
-			}
-			if(blockpos[pos] == 0){
-				map[i][pos] = 0;
-			}else{
-				int random = 0;
-				switch(pos){
-				case 3:
-				case 4:
-				case 6:
-				case 7:
-				case 9:
-				case 10:
-					random = rand(ip,13);	// 0~4コイン  5スイッチ 6ルーター
-											//確率的に　コイン５個に対してルーターとスイッチが１個出る
-					switch(random % 6){
-					case 0:
-						map[i][pos] = COIN_FTP;
-					break;
-					case 1:
-						map[i][pos] = COIN_SSH;
-					break;
-					case 2:
-						map[i][pos] = COIN_SMTP;
-					break;
-					case 3:
-						map[i][pos] = COIN_DNS;
-					break;
-					case 4:
-						map[i][pos] = COIN_HTTP;
-					break;
-					case 5:
-						map[i][pos] = COIN_HTTPS;
-					break;
-					}
-				break;
-				case 5:
-				case 8:
-					if(rand(ip,5) == 0){
-						map[i][pos] = ITEM;
-						int itemtype = rand(ip, 4);
-						if(itemtype == 0){
-							map[i][pos] = SWITCH_FLAG;
-						}else if(itemtype == 1){
-							map[i][pos] = SWITCH_FLAG;
-						}else if(itemtype == 2){
-							map[i][pos] = ROUTER_FLAG;
-						}
-					}else{
-						map[i][pos] = SHOGAI;
-					}
-					break;
-				case 11:
-				case 12:
-				case 13:
-				case 14:
-				case 15:
-				case 16:
-				case 17:
-					map[i][pos] = ASHIBA;
+	for(int seed = 0; seed < 6; seed++){
+		for(int i = 0;i < MAP_WIDTH * seed; i++){
+			for(int k = 0; k < 10; k++){
+				char blockpos[18] = {0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+				ip_address ip = ih->daddr;	
+				int pos = randblock(ip);
+				if(map[i][pos] != 0){
 					break;
 				}
-			}
+				if(blockpos[pos] == 0){
+					map[i][pos] = 0;
+				}else{
+					int random = 0;
+					switch(pos){
+					case 3:
+					case 4:
+					case 6:
+					case 7:
+					case 9:
+					case 10:
+						random = rand(ip,13);	// 0~4コイン  5スイッチ 6ルーター
+												//確率的に　コイン５個に対してルーターとスイッチが１個出る
+						switch(random % 6){
+						case 0:
+							map[i][pos] = COIN_FTP;
+						break;
+						case 1:
+							map[i][pos] = COIN_SSH;
+						break;
+						case 2:
+							map[i][pos] = COIN_SMTP;
+						break;
+						case 3:
+							map[i][pos] = COIN_DNS;
+						break;
+						case 4:
+							map[i][pos] = COIN_HTTP;
+						break;
+						case 5:
+							map[i][pos] = COIN_HTTPS;
+						break;
+						}
+					break;
+					case 5:
+					case 8:
+						if(rand(ip,5) == 0){
+							map[i][pos] = ITEM;
+							int itemtype = rand(ip, 4);
+							if(itemtype == 0){
+								map[i][pos] = SWITCH_FLAG;
+							}else if(itemtype == 1){
+								map[i][pos] = SWITCH_FLAG;
+							}else if(itemtype == 2){
+								map[i][pos] = ROUTER_FLAG;
+							}
+						}else{
+							map[i][pos] = SHOGAI;
+						}
+						break;
+					case 11:
+					case 12:
+					case 13:
+					case 14:
+					case 15:
+					case 16:
+					case 17:
+						map[i][pos] = ASHIBA;
+						break;
+					}
+				}
 
-			if(i * k -1 > size){
-				break;
+				if(i * k -1 > size){
+					break;
+				}
+				ih++;
 			}
-			ih++;
 		}
 	}
 }

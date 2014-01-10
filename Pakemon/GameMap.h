@@ -34,7 +34,7 @@ private:
 	float move_screen;
 		std::list<struct Effect> effectList;
 public:
-	int map[46][18];
+	int map[MAP_WIDTH * 6][MAP_HEIGHT];
 	float screen_x;
 	GameMap();
 	void render();
