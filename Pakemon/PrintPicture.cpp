@@ -1,9 +1,5 @@
 #include "PrintPicture.h"
 
-
-PrintPicture::PrintPicture(){
-	LoadDivGraph( "testfonts.png" , 10 , 10 , 1 , WIDTH , HEIGHT , spritPicture ) ;
-}
 // 数値をグラフィック表示する関数
   void  PrintPicture::NumDraw( int Num ,int argx,int argy )
 {

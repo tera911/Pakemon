@@ -5,8 +5,9 @@
 class PrintPicture{
 private:
 	int spritPicture[10];
-	static PrintPicture *instance;
-	PrintPicture();
+	PrintPicture() {
+		LoadDivGraph( "testfonts.png" , 10 , 10 , 1 , WIDTH , HEIGHT , spritPicture ) ;
+	}
 public: 
 	static PrintPicture* instance(){
 		static PrintPicture printPicture;
