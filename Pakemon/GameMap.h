@@ -5,7 +5,7 @@
 #include <math.h>
 #include <DxLib.h>
 #include <list>
-#define MAP_WIDTH		(46)
+#define MAP_WIDTH		(35)
 #define	MAP_HEIGHT		(18)
 #define SCREEN_WIDTH	(25)
 #define round(fp) (int)((fp) >= 0 ? (fp) + 0.5 : - 0.5)
