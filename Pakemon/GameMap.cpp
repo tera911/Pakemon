@@ -119,7 +119,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 
 		//上に飛び出てるか
 		if(cb[1] * 32 > nyan_y){
-			if(map[tb[0]][tb[1]] & ASHIBA || map[tb[0]][tb[1]] & SHOGAI || map[tb[0]][tb[1]] & ITEM || map[tb[0]][tb[1]] & ITEM_NORMAL){
+			if(map[tb[0]][tb[1]] & ALL_HIT_BLOCK){
 				nyan->revisePosition(2, nyan_y - cb[1] * 32);	//位置修正
 			}
 			if(map[tb[0]][tb[1]] & ITEM){
@@ -133,7 +133,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		}
 		//下方向に飛び出た場合
 		if(cb[1] * 32 + 11 < nyan_y){	//本当は cb[1] * 32 + 32 < nyan_y + 32だけど高速化のため ;キャラクタのサイズが20のため + 12
-			if(map[bb[0]][bb[1]] & ASHIBA || map[bb[0]][bb[1]] & SHOGAI || map[bb[0]][bb[1]] & ITEM || map[bb[0]][bb[1]] & ITEM_NORMAL){
+			if(map[bb[0]][bb[1]] & ALL_HIT_BLOCK){
 				nyan->revisePosition(0, (cb[1] * 32 + 12) - nyan_y);	//位置修正
 				nyan->offFall();
 				nyan->onground();
@@ -144,18 +144,18 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		}
 		//左に飛び出た
 		if(cb[0] * 32 > (nyan_x + screen_x * 32)){
-			if(map[lb[0]][lb[1]] & ASHIBA || map[lb[0]][lb[1]] & SHOGAI || map[lb[0]][lb[1]] & ITEM || map[lb[0]][lb[1]] & ITEM_NORMAL){
+			if(map[lb[0]][lb[1]] & ALL_HIT_BLOCK){
 				nyan->revisePosition(1, cb[0] * 32 - (nyan_x + screen_x * 32));	//位置修正
 			}
 		}
 		//右に飛び出た
 		if(cb[0] * 32 < (nyan_x + screen_x * 32)){
-			if(map[rb[0]][rb[1]] & ASHIBA || map[rb[0]][rb[1]] & SHOGAI || map[rb[0]][rb[1]] & ITEM || map[rb[0]][rb[1]] & ITEM_NORMAL){
+			if(map[rb[0]][rb[1]] & ALL_HIT_BLOCK){
 				nyan->revisePosition(3, (nyan_x + screen_x * 32) - cb[0] * 32);	//位置修正
 			}
 		}
 		//自キャラがブロックにめり込んだ場合　
-		if(map[cb[0]][cb[1]] & ASHIBA || map[cb[0]][cb[1]] & SHOGAI || map[cb[0]][cb[1]] & ITEM || map[cb[0]][cb[1]] & ITEM_NORMAL){
+		if(map[cb[0]][cb[1]] & ALL_HIT_BLOCK){
 			float block_pos[2];
 			block_pos[0] = cb[0] * 32 + 16;	//ブロックの中心座標 x
 			block_pos[1] = cb[1] * 32 + 20;	//ブロックの中心座標 y
@@ -169,6 +169,9 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			}else if(block_pos[0] < (nyan_x + 32 + screen_x * 32)){	//左
 				nyan->revisePosition(1, (nyan_x + 32 + screen_x * 32) - block_pos[0]);
 			}
+		}
+		if(cb[0] >= 208){
+				nyan->reset();
 		}
 
 		//自キャラがパケットを取得した場合
@@ -212,14 +215,18 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			float xdiff = nyan_x - screen_center_x;
 			screenScroll_x(xdiff / 32.0f);
 			if(xdiff > 0){
-				nyan->revisePosition(3, xdiff);	
+				if(screen_x < MAP_WIDTH * 6 - SCREEN_WIDTH){
+					nyan->revisePosition(3, xdiff);	
+				}
 			}
 		}
+		//画面スクロールについて
 		if(move_screen > 0){
 			move_screen = move_screen - 0.01f;
 			if(move_screen < 0.01f){move_screen = 0.0f;}
 			screen_x	= screen_x + move_screen;
 		}
+		
 #ifdef __DEBUG_
 		if(map[cb[0]][cb[1]] != 0){
 			DrawString(500, 100, "接触", GetColor(255,255,255));
@@ -254,7 +261,9 @@ int GameMap::checkMapHit1(float nyan_x, float nyan_y, int direction, float value
 	return value;
 }
 void GameMap::screenScroll_x(float value){
-	move_screen = value;
+	if(screen_x < MAP_WIDTH * 6 - SCREEN_WIDTH){
+		move_screen = value;
+	}
 }
 
 void GameMap::Animation(){

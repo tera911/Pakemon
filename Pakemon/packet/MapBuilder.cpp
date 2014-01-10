@@ -194,7 +194,7 @@ int MapBuilder::getMap(int distmap[][MAP_HEIGHT]){
 	buildMap(packet.getPacket(), 1000);
 
 	for(int y = 0; y < MAP_HEIGHT; y++){
-		for(int x = 0; x < MAP_WIDTH * 6; x++){
+		for(int x = 0; x < MAP_WIDTH * 6 + 10; x++){
 			distmap[x][y] = map[x][y];
 		}
 	}
