@@ -69,7 +69,8 @@ void GameMap::render_block(int block_type, int x, int y){
 		break;
 		case COIN_HTTPS:
 			DrawGraph(block_x, block_y, block_packet, true);
-			DrawString(block_x , block_y + 10, "443", GetColor(255,255,255));
+			//DrawString(block_x , block_y + 10, "443", GetColor(255,255,255));
+			PrintPicture::instance()->NumDraw(443,block_x+15,block_y+15);
 		break;
 		case ITEM_NORMAL:
 			DrawGraph(block_x, block_y, block_normal, true);

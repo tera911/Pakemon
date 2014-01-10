@@ -79,7 +79,8 @@ Nyancat::Nyancat(){
 		PrintPicture::instance()->NumDraw(score,100,50);
 		//自キャラのポート番号表示
 		if(nyan_port != 0){
-		DrawFormatString(nyan_x + 5, nyan_y - 15, GetColor(255,255,255), "%d", nyan_port);
+		//DrawFormatString(nyan_x + 5, nyan_y - 15, GetColor(255,255,255), "%d", nyan_port);
+		PrintPicture::instance()->NumDraw(nyan_port,nyan_x+15,nyan_y-10);
 		}
 	}
 	void Nyancat::jump(){
