@@ -49,7 +49,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	//ClearDrawScreen();	//画面に描かれているものを全部消す
 	//ScreenFlip();			//裏画面の内容を表画面に反映させる
 	int start_time=GetNowCount();
-	while(ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0){
+	while(ProcessMessage()==0 && ClearDrawScreen()==0){
 		fpsCounter.Update();
 		DrawFormatString(500,0,GetColor(255,255,255),"%d",((GetNowCount()- start_time))/1000); 
 		
@@ -88,8 +88,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		/////////////////////////////////////////////////////////////////
 		//							キー入力待ちおしり				   //
 		/////////////////////////////////////////////////////////////////
-
-		fpsCounter.Wait();		//待機
+		ScreenFlip();
+		//fpsCounter.Wait();		//待機
 		//Sleep(300);
 		//Windows コールバックを処理する
 		if(ProcessMessage() == -1) break; //異常が発生したらループから抜ける

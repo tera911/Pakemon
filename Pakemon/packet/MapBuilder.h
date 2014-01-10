@@ -25,7 +25,7 @@ public:
 		}
 	}
 	void buildMap(ip_header* ih, int size);
-	int getMap(int map[MAP_WIDTH * 6][MAP_HEIGHT]);
+	int getMap(int distmap[][MAP_HEIGHT]);
 	void showMap();
 };
 

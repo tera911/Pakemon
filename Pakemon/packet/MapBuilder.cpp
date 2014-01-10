@@ -69,16 +69,17 @@ int MapBuilder::randblock(struct ip_address ip, int seed = 0){
 
 void MapBuilder::buildMap(ip_header* ih, int size){
 	for(int seed = 0; seed < 6; seed++){
-		for(int i = 0;i < MAP_WIDTH * seed; i++){
+		for(int i = 0; i < MAP_WIDTH; i++){
+			int x = i + MAP_WIDTH * seed;	//x座標
 			for(int k = 0; k < 10; k++){
 				char blockpos[18] = {0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 				ip_address ip = ih->daddr;	
-				int pos = randblock(ip);
-				if(map[i][pos] != 0){
+				int pos = randblock(ip, seed);
+				if(map[x][pos] != 0){
 					break;
 				}
 				if(blockpos[pos] == 0){
-					map[i][pos] = 0;
+					map[x][pos] = 0;
 				}else{
 					int random = 0;
 					switch(pos){
@@ -88,43 +89,45 @@ void MapBuilder::buildMap(ip_header* ih, int size){
 					case 7:
 					case 9:
 					case 10:
-						random = rand(ip,13);	// 0~4コイン  5スイッチ 6ルーター
+						random = rand(ip,13, seed);	// 0~4コイン  5スイッチ 6ルーター
 												//確率的に　コイン５個に対してルーターとスイッチが１個出る
 						switch(random % 6){
 						case 0:
-							map[i][pos] = COIN_FTP;
+							map[x][pos] = COIN_FTP;
 						break;
 						case 1:
-							map[i][pos] = COIN_SSH;
+							map[x][pos] = COIN_SSH;
 						break;
 						case 2:
-							map[i][pos] = COIN_SMTP;
+							map[x][pos] = COIN_SMTP;
 						break;
 						case 3:
-							map[i][pos] = COIN_DNS;
+							map[x][pos] = COIN_DNS;
 						break;
 						case 4:
-							map[i][pos] = COIN_HTTP;
+							map[x][pos] = COIN_HTTP;
 						break;
 						case 5:
-							map[i][pos] = COIN_HTTPS;
+							map[x][pos] = COIN_HTTPS;
 						break;
 						}
 					break;
 					case 5:
 					case 8:
-						if(rand(ip,5) == 0){
-							map[i][pos] = ITEM;
-							int itemtype = rand(ip, 4);
+						if(rand(ip,5, seed) == 0){
+							map[x][pos] = ITEM;
+							int itemtype = rand(ip, 6);
 							if(itemtype == 0){
-								map[i][pos] = SWITCH_FLAG;
+								map[x][pos] = SWITCH_FLAG;
 							}else if(itemtype == 1){
-								map[i][pos] = SWITCH_FLAG;
+								map[x][pos] = SWITCH_FLAG;
 							}else if(itemtype == 2){
-								map[i][pos] = ROUTER_FLAG;
+								map[x][pos] = ROUTER_FLAG;
+							}else{
+								map[x][pos] = 0;
 							}
 						}else{
-							map[i][pos] = SHOGAI;
+							map[x][pos] = SHOGAI;
 						}
 						break;
 					case 11:
@@ -134,7 +137,7 @@ void MapBuilder::buildMap(ip_header* ih, int size){
 					case 15:
 					case 16:
 					case 17:
-						map[i][pos] = ASHIBA;
+						map[x][pos] = ASHIBA;
 						break;
 					}
 				}
@@ -177,7 +180,7 @@ void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_cha
 }
 
 
-int MapBuilder::getMap(int distmap[46][18]){
+int MapBuilder::getMap(int distmap[][MAP_HEIGHT]){
 	pcap_t * fp;
 	char errbuf[PCAP_ERRBUF_SIZE];
 
@@ -190,8 +193,8 @@ int MapBuilder::getMap(int distmap[46][18]){
 	
 	buildMap(packet.getPacket(), 1000);
 
-	for(int y = 0; y < 18; y++){
-		for(int x = 0; x < 46; x++){
+	for(int y = 0; y < MAP_HEIGHT; y++){
+		for(int x = 0; x < MAP_WIDTH * 6; x++){
 			distmap[x][y] = map[x][y];
 		}
 	}
