@@ -44,7 +44,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		fpsCounter.Draw();
 		// ＢＭＰ画像の表示
 		
-		window.update();
+		if(window.update()){
+			break;
+		}
 		/////////////////////////////////////////////////////////////////
 		//							描画おしり						   //
 		//							キー入力待ち開始				   //

@@ -3,6 +3,7 @@
 
 
 ParentWindow::ParentWindow(){
+	moveTo(TITLE);
 	mChild = new TitleWindow();
 }
 ParentWindow::~ParentWindow(){
@@ -10,6 +11,29 @@ ParentWindow::~ParentWindow(){
 }
 
 	//ŒJ‚è•Ô‚µŽÀs‚³‚ê‚é
-void ParentWindow::update(){
+int ParentWindow::update(){
 	mChild->update(this);
+
+	switch(nextSequence){
+		case TITLE:
+
+		break;
+		case PLAY:
+
+		break;
+		case RESULT:
+
+		break;
+		case OPTION:
+
+		break;
+		case EXIT:
+			return 1;
+		break;
+	}
+	return 0;
+}
+
+void ParentWindow::moveTo(STAT stat){
+	nextSequence = stat;
 }

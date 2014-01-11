@@ -4,12 +4,15 @@
 class Child;
 
 class ParentWindow{
-private:
-	Child* mChild;
 public:
+	enum STAT {TITLE, PLAY, RESULT, OPTION, EXIT};
 	ParentWindow();
 	~ParentWindow();
-	void update();
+	int update();
+	void moveTo(STAT);
+private:
+	Child* mChild;
+	STAT nextSequence;
 };
 
 

@@ -19,9 +19,6 @@
     <ClCompile Include="Title.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Pakemon1.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="ParentWindow.cpp">
       <Filter>ソースファイル\Window</Filter>
     </ClCompile>
@@ -30,6 +27,9 @@
     </ClCompile>
     <ClCompile Include="Fps.h">
       <Filter>ヘッダーファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Pakemon_main.cpp">
+      <Filter>ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

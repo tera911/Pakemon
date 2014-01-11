@@ -1,5 +1,10 @@
+#include "packet/MapBuilder.h"
 #include "GameMap.h"
 #include "Nyancat.h"
+#include <math.h>
+#include <DxLib.h>
+#include "PrintPicture.h"
+
 #include <list>
 
 using namespace std;

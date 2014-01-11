@@ -72,7 +72,7 @@
     <ClCompile Include="Nyancat.cpp" />
     <ClCompile Include="packet\MapBuilder.cpp" />
     <ClCompile Include="Pakemon.cpp" />
-    <ClCompile Include="Pakemon1.cpp" />
+    <ClCompile Include="Pakemon_main.cpp" />
     <ClCompile Include="ParentWindow.cpp" />
     <ClCompile Include="PrintPicture.cpp" />
     <ClCompile Include="Title.cpp" />

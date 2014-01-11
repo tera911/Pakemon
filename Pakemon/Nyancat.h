@@ -1,11 +1,6 @@
 #ifndef __NYANCAT_
 #define __NYANCAT_
 
-#include "GameMap.h"
-#include <DxLib.h>
-#include <iostream>
-#include <time.h>
-#include "PrintPicture.h"
 class GameMap;
 class PrintPicture;
 class Nyancat{

@@ -22,6 +22,21 @@
 			select_num++;
 		}else if(key[KEY_INPUT_DOWN] ==1){
 			select_num--;
+		}else if(key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_RETURN] == 1){
+			switch(select){
+				case START:
+					//スタート
+					parent->moveTo(ParentWindow::PLAY);
+				break;
+				case OPTION:
+					//オプション
+					parent->moveTo(ParentWindow::OPTION);
+				break;
+				case EXIT:
+					//おしり
+					parent->moveTo(ParentWindow::EXIT);
+				break;
+			}
 		}
 		if(select_num < 0){
 			select_num = 2;
@@ -29,6 +44,10 @@
 			select_num = 0;
 		}
 		select = static_cast<STAT>(select_num);
+
+		//Enter, Spaceが押されたら確定
+		
+		
 		//描画
 		render();
 	}
