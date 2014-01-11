@@ -4,7 +4,7 @@
 
 	//コンストラクタ
 	TitleWindow::TitleWindow(){
-		ZeroMemory(key, 256);
+		ZeroMemory(key, sizeof(int)*256);
 		arrow_y = 200;
 		select = START;
 		select_num = 0;
@@ -15,14 +15,15 @@
 	//繰り返し実行される
 	void TitleWindow::update(ParentWindow* parent){
 		//画面切り替えについて書<
-
 		//キー入力
-		GetHitKeyStateAll(key);
-		if(key[KEY_INPUT_UP] ==1){
-			select_num++;
-		}else if(key[KEY_INPUT_DOWN] ==1){
+		GetHitKeyStateAll_2(key);
+		if(key[KEY_INPUT_UP] == 1){
 			select_num--;
-		}else if(key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_RETURN] == 1){
+		}
+		if(key[KEY_INPUT_DOWN] == 1){
+			select_num++;
+		}
+		if(key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_RETURN] == 1){
 			switch(select){
 				case START:
 					//スタート
@@ -38,13 +39,14 @@
 				break;
 			}
 		}
+		
 		if(select_num < 0){
 			select_num = 2;
 		}else if(select_num > 2){
 			select_num = 0;
 		}
 		select = static_cast<STAT>(select_num);
-
+		
 		//Enter, Spaceが押されたら確定
 		
 		
@@ -70,6 +72,16 @@
 		break;
 		}
 	}
+
+int TitleWindow::GetHitKeyStateAll_2(int KeyStateBuf[]){
+    char GetHitKeyStateAll_Key[256];
+    GetHitKeyStateAll( GetHitKeyStateAll_Key );
+    for(int i=0;i<256;i++){
+            if(GetHitKeyStateAll_Key[i]==1) KeyStateBuf[i]++;
+            else                            KeyStateBuf[i]=0;
+    }
+    return 0;
+}
 
 	//デストラクタ
 	TitleWindow::~TitleWindow(){

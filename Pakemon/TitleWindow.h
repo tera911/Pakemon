@@ -11,8 +11,9 @@ public:
 	~TitleWindow();
 	void update(ParentWindow* parent);
 	void render();
+	int GetHitKeyStateAll_2(int[]);
 private:
-	char key[256];
+	int key[256];
 	float arrow_y;
 	enum STAT {START = 0, OPTION = 1, EXIT = 2};
 	STAT select;
