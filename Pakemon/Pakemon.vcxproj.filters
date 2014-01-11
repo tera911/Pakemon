@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Fps.h">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Pakemon.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -20,6 +17,18 @@
       <Filter>ソースファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="Title.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ParentWindow.cpp">
+      <Filter>ソースファイル\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleWindow.cpp">
+      <Filter>ソースファイル\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Fps.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Pakemon_main.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,6 +54,15 @@
     <ClInclude Include="Pakemon.h">
       <Filter>ヘッダーファイル\Game</Filter>
     </ClInclude>
+    <ClInclude Include="Child.h">
+      <Filter>ヘッダーファイル\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="ParentWindow.h">
+      <Filter>ヘッダーファイル\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleWindow.h">
+      <Filter>ヘッダーファイル\Window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソースファイル">
@@ -64,6 +82,12 @@
     </Filter>
     <Filter Include="ヘッダーファイル\Packet">
       <UniqueIdentifier>{99dffc53-c8f7-4cf1-95eb-af9649588b01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Window">
+      <UniqueIdentifier>{199ed1e5-4a7d-4153-92f6-c47e61e57b26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Window">
+      <UniqueIdentifier>{6f7efb6d-bcde-4ee5-b72f-bb471da52c44}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

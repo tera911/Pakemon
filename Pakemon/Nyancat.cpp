@@ -1,4 +1,8 @@
 #include "Nyancat.h"
+#include "GameMap.h"
+#include <DxLib.h>
+#include <time.h>
+#include "PrintPicture.h"
 
 #define SAFE_DELETE(x)	{\
 	delete (x);\

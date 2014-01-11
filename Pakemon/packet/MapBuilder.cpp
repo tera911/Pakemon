@@ -1,6 +1,7 @@
-#include "packet.h"
+
 #include "MapBuilder.h"
 #include "PacketICMP.h"
+#include <pcap.h>
 
 #define LINE_LEN 16
 #define PACKET_FILE "icmpPacket.pcap"

@@ -1,8 +1,6 @@
 #ifndef DANMAKU_MAP
 #define DANMAKU_MAP
 #include "packet.h"
-#include <pcap.h>
-#include "PacketICMP.h"
 
 #define MAP_WIDTH (35)
 #define MAP_HEIGHT (18)
@@ -10,6 +8,7 @@
 
 class MapBuilder{
 private:
+	
 	int rand(struct ip_address, int mod, int seed);
 	int randblock(struct ip_address, int seed);	
 public:

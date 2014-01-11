@@ -1,9 +1,6 @@
 #ifndef __GAME_MAP
 #define __GAME_MAP
 
-#include "packet/MapBuilder.h"
-#include <math.h>
-#include <DxLib.h>
 #include <list>
 #define MAP_WIDTH		(35)
 #define	MAP_HEIGHT		(18)
