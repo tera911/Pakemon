@@ -72,17 +72,23 @@
     <ClCompile Include="Nyancat.cpp" />
     <ClCompile Include="packet\MapBuilder.cpp" />
     <ClCompile Include="Pakemon.cpp" />
+    <ClCompile Include="Pakemon1.cpp" />
+    <ClCompile Include="ParentWindow.cpp" />
     <ClCompile Include="PrintPicture.cpp" />
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Child.h" />
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="Nyancat.h" />
     <ClInclude Include="packet\MapBuilder.h" />
     <ClInclude Include="packet\packet.h" />
     <ClInclude Include="packet\PacketICMP.h" />
     <ClInclude Include="Pakemon.h" />
+    <ClInclude Include="ParentWindow.h" />
     <ClInclude Include="PrintPicture.h" />
+    <ClCompile Include="TitleWindow.cpp" />
+    <ClInclude Include="TitleWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

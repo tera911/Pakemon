@@ -33,7 +33,7 @@ int WINAPI Game(  ){
 
 
 
-	SetGraphMode(800, 600, 32, 60);
+	SetGraphMode(800, 600, 32, 120);
 	ChangeWindowMode(true);
 	SetMainWindowText("Pakemon");
 	if( DxLib_Init() == -1 )	// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‰Šú‰»ˆ—

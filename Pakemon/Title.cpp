@@ -18,12 +18,12 @@ void disp(int White,int y){
         DrawString( 330 , 460 , "EXIT"   , White );
 }
 
-int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
+int mainnn( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				LPSTR lpCmdLine, int nCmdShow ){
 	int White , y=420;  
 	int Key[256];
 	White=GetColor( 255 , 255 , 255 ) ; 
-	SetGraphMode(800, 600, 32, 60);
+	SetGraphMode(800, 600, 32, 120);
 	ChangeWindowMode(true);
 	SetMainWindowText("Pakemon");
 	SetDrawScreen(DX_SCREEN_BACK);//ï`âÊêÊÇó†âÊñ Ç…Ç∑ÇÈ
@@ -74,5 +74,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			ScreenFlip();//ó†âÊñ îΩâf
 			
 	}
+	return 0;
 }
 
