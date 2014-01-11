@@ -3,6 +3,7 @@
 #include <DxLib.h>
 #include <time.h>
 #include "PrintPicture.h"
+#include "ParentWindow.h"
 
 #define SAFE_DELETE(x)	{\
 	delete (x);\
@@ -25,19 +26,12 @@ Nyancat::Nyancat(){
 		//ポート番号
 		nyan_port = 0;
 
-				fall = true;
+		fall = true;
 		GA = 0;
 
 		//マップの初期化
-		map1 = new GameMap();
-		map2 = 0;
-		map3 = 0;
-		map4 = 0;
-		map5 = 0;
-		nowMap = 0;
-
-		nowMap = map1;
-
+		nowMap = new GameMap();
+	
 		//音楽のロード
 		sound[0]	=	LoadSoundMem( "nyanVoice\\nyan01.wav" ) ;
 		sound[1]	=	LoadSoundMem( "nyanVoice\\nyan02.wav" ) ;
@@ -47,9 +41,26 @@ Nyancat::Nyancat(){
 		sound[5]	=	LoadSoundMem( "nyanVoice\\nyan06.wav" ) ;
 //		printPic=new PrintPicture();
 		score = 0;
-		leftflag=false;
+		leftflag = false;
+		goalFlag = false;
+		deadFlag = false;
 	}
-
+	void Nyancat::update(ParentWindow* parent){
+		if(goalFlag){
+			parent->moveTo(ParentWindow::TITLE);
+		}
+		GetHitKeyStateAll(key);
+		if(key[KEY_INPUT_C] == 1){
+			jump();
+		}
+		if(key[KEY_INPUT_LEFT] == 1){
+			moveLeft();
+		}
+		if(key[KEY_INPUT_RIGHT] == 1){
+			moveRight();
+		}
+		render();
+	}
 	void Nyancat::render(){
 		if(nowMap == NULL){
 			return;
@@ -158,6 +169,10 @@ Nyancat::Nyancat(){
 		GA = 0;
 		score = 0;
 	}
+	//ゴール
+	void Nyancat::goal(){
+		goalFlag = true;
+	}
 	//自由落下開始
 	void Nyancat::onFall(){
 		fall = true;
@@ -216,4 +231,7 @@ Nyancat::Nyancat(){
 	//自キャラのポート番号を変更
 	void Nyancat::changePortNumber(int port){
 		nyan_port = port;
+	}
+	Nyancat::~Nyancat(){
+		SAFE_DELETE(nowMap);
 	}

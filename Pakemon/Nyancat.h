@@ -1,9 +1,13 @@
 #ifndef __NYANCAT_
 #define __NYANCAT_
+#include "Child.h"
+
 
 class GameMap;
+class ParentWindow;
 class PrintPicture;
-class Nyancat{
+
+class Nyancat : public Child{
 private:
 	int handle[6];
 	float nyan_x;	//プレイヤの座標 x
@@ -21,17 +25,16 @@ private:
 	int voice;		
 	
 	GameMap* nowMap;
-	GameMap* map1;	//プレイするMapのポインタ
-	GameMap* map2;	//プレイするMapのポインタ
-	GameMap* map3;	//プレイするMapのポインタ
-	GameMap* map4;	//プレイするMapのポインタ
-	GameMap* map5;	//プレイするMapのポインタ
 	int score;
 	PrintPicture* printPic;
 	bool leftflag;
-	
+	char key[256];
+	bool goalFlag;
+	bool deadFlag;
 public:
 	Nyancat();
+	~Nyancat();
+	void update(ParentWindow*);
 	void render();
 	void jump();
 	void moveDown();
@@ -41,6 +44,8 @@ public:
 
 	//DEBUG
 	void reset();
+	void goal();
+	void dead();
 	//自由落下開始
 	void onFall();
 	//自由落下終了

@@ -10,9 +10,6 @@
     <ClCompile Include="packet\MapBuilder.cpp">
       <Filter>ソースファイル\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="Nyancat.cpp">
-      <Filter>ソースファイル\Game</Filter>
-    </ClCompile>
     <ClCompile Include="PrintPicture.cpp">
       <Filter>ソースファイル\Game</Filter>
     </ClCompile>
@@ -31,12 +28,12 @@
     <ClCompile Include="Pakemon_main.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Nyancat.cpp">
+      <Filter>ソースファイル\Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMap.h">
-      <Filter>ヘッダーファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Nyancat.h">
       <Filter>ヘッダーファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="packet\packet.h">
@@ -61,6 +58,9 @@
       <Filter>ヘッダーファイル\Window</Filter>
     </ClInclude>
     <ClInclude Include="TitleWindow.h">
+      <Filter>ヘッダーファイル\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Nyancat.h">
       <Filter>ヘッダーファイル\Window</Filter>
     </ClInclude>
   </ItemGroup>

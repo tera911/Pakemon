@@ -1,6 +1,11 @@
 #include "ParentWindow.h"
 #include "TitleWindow.h"
+#include "Nyancat.h"
 
+#define SAFE_DELETE(x)	{\
+	delete (x);\
+	(x) = 0;\
+}
 
 ParentWindow::ParentWindow(){
 	moveTo(TITLE);
@@ -12,24 +17,29 @@ ParentWindow::~ParentWindow(){
 
 	//ŒJ‚è•Ô‚µŽÀs‚³‚ê‚é
 int ParentWindow::update(){
+	STAT next = nextSequence;
 	mChild->update(this);
 
-	switch(nextSequence){
-		case TITLE:
-
-		break;
-		case PLAY:
-
-		break;
-		case RESULT:
-
-		break;
-		case OPTION:
-
-		break;
-		case EXIT:
-			return 1;
-		break;
+	if(nextSequence != next){
+		switch(nextSequence){
+			case TITLE:
+				SAFE_DELETE(mChild);
+				mChild = new TitleWindow();
+			break;
+			case PLAY:
+				SAFE_DELETE(mChild);
+				mChild = new Nyancat();
+			break;
+			case RESULT:
+				SAFE_DELETE(mChild);
+			break;
+			case OPTION:
+				SAFE_DELETE(mChild);
+			break;
+			case EXIT:
+				return 1;
+			break;
+		}
 	}
 	return 0;
 }

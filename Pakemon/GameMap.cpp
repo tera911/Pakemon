@@ -179,7 +179,8 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			}
 		}
 		if(cb[0] >= 208){
-				nyan->reset();
+				//nyan->reset();
+			nyan->goal();
 		}
 
 		//自キャラがパケットを取得した場合

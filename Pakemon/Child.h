@@ -1,5 +1,5 @@
 #ifndef __WINDOW_CHILD_
-#define __WINDOW_CHILD
+#define __WINDOW_CHILD_
 
 
 class ParentWindow;
