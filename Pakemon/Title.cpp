@@ -50,7 +50,23 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			y=460;
 			}	
         }
-		  
+			switch (y){
+			case 420:
+				//If文でゲーム開始処理
+				break;
+			case 440:
+				//If文でオプション開始処理
+				break;
+			case 460:
+				//ゲーム終了処理
+				if(Key[KEY_INPUT_RETURN]){
+				return -1;
+				}
+				break;
+			default:
+				break;
+			}
+
 			ScreenFlip();//裏画面反映
 			
 	}
