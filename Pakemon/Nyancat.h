@@ -33,6 +33,7 @@ private:
 	GameMap* map5;	//プレイするMapのポインタ
 	int score;
 	PrintPicture* printPic;
+	bool leftflag;
 	
 public:
 	Nyancat();

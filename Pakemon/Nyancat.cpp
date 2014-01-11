@@ -43,7 +43,7 @@ Nyancat::Nyancat(){
 		sound[5]	=	LoadSoundMem( "nyanVoice\\nyan06.wav" ) ;
 //		printPic=new PrintPicture();
 		score = 0;
-		
+		leftflag=false;
 	}
 
 	void Nyancat::render(){
@@ -52,16 +52,25 @@ Nyancat::Nyancat(){
 		}
 		nowMap->render();
 		nowMap->checkMapHit(this);
-		DrawGraph(nyan_x, nyan_y, handle[3], true);
+		if(left){
+			DrawTurnGraph(nyan_x,nyan_y,handle[3],true);
+		}
+		else
+		{
+			DrawGraph(nyan_x, nyan_y, handle[3], true);
+		}
+		
 		nyan_x -= left;
 		nyan_x += right;
 		nyan_y -= top;
+		
 		
 		grabity();
 		//nyan_y += map->checkMapHit1(nyan_x, nyan_y, 0, GA);
 		nyan_y += GA;
 		if(left > 0){
 			left -= 0.5;
+			
 		}
 		if(right > 0){
 			right -= 0.5;
@@ -72,16 +81,20 @@ Nyancat::Nyancat(){
 		}else{
 			top = 0;
 		}
+		
 		//y座標位置調整
 		DrawFormatString(500, 100, 0, "nyan_y = %f", nyan_y);
 		//スコア表示
 		//DrawFormatString(100, 50, GetColor(255,255,255), "SCORE : %d", score);
-		PrintPicture::instance()->NumDraw(score,100,50);
+		PrintPicture::instance()->NumDraw(score,400,0);
 		//自キャラのポート番号表示
 		if(nyan_port != 0){
-		//DrawFormatString(nyan_x + 5, nyan_y - 15, GetColor(255,255,255), "%d", nyan_port);
-		PrintPicture::instance()->NumDraw(nyan_port,nyan_x+15,nyan_y-10);
-		}
+			if(nyan_port==443){
+			PrintPicture::instance()->NumDraw(nyan_port,nyan_x+20,nyan_y-10);
+			}else{
+			PrintPicture::instance()->NumDraw(nyan_port,nyan_x+15,nyan_y-10);
+				}
+			}
 	}
 	void Nyancat::jump(){
 		if(!fall){
@@ -107,9 +120,12 @@ Nyancat::Nyancat(){
 	}
 	void Nyancat::moveLeft(){
 		left = 3;
+		leftflag=true;
+
 	}
 	void Nyancat::moveRight(){
 		right = 3;
+		leftflag=false;
 	}
 	void Nyancat::grabity(){
 		if(fall){
