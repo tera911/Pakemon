@@ -73,6 +73,7 @@
     <ClCompile Include="packet\MapBuilder.cpp" />
     <ClCompile Include="Pakemon.cpp" />
     <ClCompile Include="PrintPicture.cpp" />
+    <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMap.h" />
