@@ -49,28 +49,30 @@ void GameMap::render_block(int block_type, int x, int y){
 		break;
 		case COIN_FTP:
 			DrawGraph(block_x, block_y, block_packet, true);
-			DrawString(block_x + 5, block_y + 10, "21", GetColor(255,255,255));
+			PrintPicture::instance()->NumDraw(21,block_x+13,block_y+15);
+			
 		break;
 		case COIN_SSH:
 			DrawGraph(block_x, block_y, block_packet, true);
-			DrawString(block_x + 5, block_y + 10, "22", GetColor(255,255,255));
+			PrintPicture::instance()->NumDraw(22,block_x+13,block_y+15);
+			
 		break;
 		case COIN_SMTP:
 			DrawGraph(block_x, block_y, block_packet, true);
-			DrawString(block_x + 5, block_y + 10, "25", GetColor(255,255,255));
+			PrintPicture::instance()->NumDraw(25,block_x+13,block_y+15);
+			
 		break;
 		case COIN_DNS:
 			DrawGraph(block_x, block_y, block_packet, true);
-			DrawString(block_x + 5, block_y + 10, "53", GetColor(255,255,255));
+			PrintPicture::instance()->NumDraw(53,block_x+13,block_y+15);
 		break;
 		case COIN_HTTP:
 			DrawGraph(block_x, block_y, block_packet, true);
-			DrawString(block_x + 5, block_y + 10, "80", GetColor(255,255,255));
+			PrintPicture::instance()->NumDraw(80,block_x+13,block_y+15);
 		break;
 		case COIN_HTTPS:
 			DrawGraph(block_x, block_y, block_packet, true);
-			//DrawString(block_x , block_y + 10, "443", GetColor(255,255,255));
-			PrintPicture::instance()->NumDraw(443,block_x+15,block_y+15);
+			PrintPicture::instance()->NumDraw(443,block_x+17,block_y+15);
 		break;
 		case ITEM_NORMAL:
 			DrawGraph(block_x, block_y, block_normal, true);
