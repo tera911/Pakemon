@@ -1,4 +1,5 @@
 #include "DxLib.h"
+#include "Pakemon.h"
 
 int GetHitKeyStateAll_2(int KeyStateBuf[]){
         char GetHitKeyStateAll_Key[256];
@@ -53,6 +54,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			switch (y){
 			case 420:
 				//If文でゲーム開始処理
+				if(Key[KEY_INPUT_RETURN]){
+				Game();
+				}
 				break;
 			case 440:
 				//If文でオプション開始処理

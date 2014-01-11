@@ -29,8 +29,7 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-int WINAPI Game( HINSTANCE hInstance, HINSTANCE hPrevInstance,
-				 LPSTR lpCmdLine, int nCmdShow ){
+int WINAPI Game(  ){
 
 
 

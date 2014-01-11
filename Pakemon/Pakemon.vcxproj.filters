@@ -42,6 +42,9 @@
     <ClInclude Include="PrintPicture.h">
       <Filter>ヘッダーファイル\Game</Filter>
     </ClInclude>
+    <ClInclude Include="Pakemon.h">
+      <Filter>ヘッダーファイル\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソースファイル">

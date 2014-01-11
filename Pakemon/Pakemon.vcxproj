@@ -81,6 +81,7 @@
     <ClInclude Include="packet\MapBuilder.h" />
     <ClInclude Include="packet\packet.h" />
     <ClInclude Include="packet\PacketICMP.h" />
+    <ClInclude Include="Pakemon.h" />
     <ClInclude Include="PrintPicture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
