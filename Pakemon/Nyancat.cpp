@@ -106,13 +106,13 @@ Nyancat::Nyancat(){
 		DrawFormatString(500, 100, 0, "nyan_y = %f", nyan_y);
 		//スコア表示
 		//DrawFormatString(100, 50, GetColor(255,255,255), "SCORE : %d", score);
-		PrintPicture::instance()->NumDraw(score,400,0);
+		PrintPicture::instance()->NumDraw(score,400,0,3);
 		//自キャラのポート番号表示
 		if(nyan_port != 0){
 			if(nyan_port==443){
-				PrintPicture::instance()->NumDraw(nyan_port, (int)(nyan_x + 20.0f),(int)(nyan_y - 10.0f));
+				PrintPicture::instance()->NumDraw(nyan_port, (int)(nyan_x + 20.0f),(int)(nyan_y - 10.0f),1);
 			}else{
-				PrintPicture::instance()->NumDraw(nyan_port, (int)(nyan_x + 15.0f),(int)(nyan_y - 10.0f));
+				PrintPicture::instance()->NumDraw(nyan_port, (int)(nyan_x + 15.0f),(int)(nyan_y - 10.0f),1);
 				}
 			}
 	}

@@ -14,6 +14,8 @@ public :
 private:
 	int key[256];
 	int frame;	//フレームをカウントする用
+	enum YES {YES = 0, NO = 1};
+
 };
 
 #endif

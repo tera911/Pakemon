@@ -15,13 +15,13 @@ void ResultWindow::update(ParentWindow* parent){
 	if(frame > 10){
 		KeyBoardTools::GetHitKeyStateAll_2(key);
 	}
-
 	if(key[KEY_INPUT_SPACE] == 1){
 		parent->moveTo(ParentWindow::TITLE);
 	}
 	if(frame < 60){
 		frame++;
 	}
+
 	render();//•`‰æ
 }
 

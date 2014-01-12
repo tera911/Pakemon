@@ -65,9 +65,9 @@
 	void TitleWindow::render(){
 		DrawGraph(126, 60, TitleLogo, true);	//ƒƒS
 		DrawGraph(240, 80, NyanTitle, true);	//‚É‚á‚ñ‚«‚á‚Á‚Æ
-		PrintPicture::instance()->StringDraw("START",	358,450);
-        PrintPicture::instance()->StringDraw("OPTION",	358,480);
-		PrintPicture::instance()->StringDraw("EXIT",	358,510);
+		PrintPicture::instance()->StringDraw("START",	358,450,2);
+        PrintPicture::instance()->StringDraw("OPTION",	358,480,2);
+		PrintPicture::instance()->StringDraw("EXIT",	358,510,2);
 		switch(select){
 			//–îˆó‚ÌêŠ
 		case START:
