@@ -59,7 +59,7 @@ public:
 
 	//座標修正
 	// 0 = 上、 1 = 右、 2 = 下、 3 = 左
-	void revisePosition(int direction, int value);
+	void revisePosition(int direction, float value);
 	//ニャンがいるX座標を取得
 	float getNyanX();
 	//ニャンがいるY座標を取得

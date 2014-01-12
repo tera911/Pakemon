@@ -26,7 +26,7 @@ GameMap::GameMap(){
 		builder.getMap(map);
 	}
 void GameMap::render(){
-	int size = floor(screen_x);
+	int size = (int)floor(screen_x);
 	for(int x = size; x < SCREEN_WIDTH + size +1; x++){
 		for(int y = 0; y < MAP_HEIGHT; y++){
 			render_block(map[x][y], x, y);
@@ -41,7 +41,7 @@ void GameMap::render_block(int block_type, int x, int y){
 		//return;
 	}
 	int block_x, block_y;
-	block_x =  (x - screen_x) * 32;
+	block_x =  (int)floor((x - screen_x) * 32);
 	block_y  = y * 32;
 	switch(block_type & 0x1FFF){	//AND演算でROUTERとSWITCHを除く
 		case ASHIBA:
@@ -106,11 +106,11 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		int tb[2], bb[2], cb[2],lb[2], rb[2];		//上、下、中央、左、右ブロック [x,y] 
 		float fcb_32[2];
 		//ブロックにめり込むのを防ぐ
-		cb[0] = round((nyan_x + screen_x * 32) / 32.0f);	//自キャラのX座標
-		cb[1] = round((nyan_y) / 32.0f);	//自キャラのY座標
+		cb[0] = round((nyan_x + screen_x * 32) / 32);	//自キャラのX座標
+		cb[1] = round((nyan_y) / 32);	//自キャラのY座標
 
-		fcb_32[0] = cb[0] * 32;	//cb[0] * 32 を事前に計算したやつ
-		fcb_32[1] = cb[1] * 32;	//cb[0] * 32 を事前に計算したやつ
+		fcb_32[0] = cb[0] * 32.0f;	//cb[0] * 32 を事前に計算したやつ
+		fcb_32[1] = cb[1] * 32.0f;	//cb[0] * 32 を事前に計算したやつ
 
 		tb[0] = cb[0];		//自キャラの上ブロックのx座標
 		tb[1] = cb[1] -1;	//自キャラの上ブロックのy座標
@@ -158,20 +158,20 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		//左に飛び出た
 		if(fcb_32[0] > (nyan_x + screen_x * 32)){
 			if(map[lb[0]][lb[1]] & ALL_HIT_BLOCK){
-				nyan->revisePosition(1, cb[0] * 32 - (nyan_x + screen_x * 32));	//位置修正
+				nyan->revisePosition(1, cb[0] * 32 - (nyan_x + screen_x * 32.0f));	//位置修正
 			}
 		}
 		//右に飛び出た
 		if(fcb_32[0] < (nyan_x + screen_x * 32)){
 			if(map[rb[0]][rb[1]] & ALL_HIT_BLOCK){
-				nyan->revisePosition(3, (nyan_x + screen_x * 32) - cb[0] * 32);	//位置修正
+				nyan->revisePosition(3, (nyan_x + screen_x * 32.0f) - cb[0] * 32.0f);	//位置修正
 			}
 		}
 		//自キャラがブロックにめり込んだ場合　
 		if(map[cb[0]][cb[1]] & ALL_HIT_BLOCK){
 			float block_pos[2];
-			block_pos[0] = cb[0] * 32 + 16;	//ブロックの中心座標 x
-			block_pos[1] = cb[1] * 32 + 20;	//ブロックの中心座標 y
+			block_pos[0] = (float)(cb[0] * 32 + 16);	//ブロックの中心座標 x
+			block_pos[1] = (float)(cb[1] * 32 + 20);	//ブロックの中心座標 y
 		
 			if(block_pos[1] > nyan_y + 32){		//上
 				nyan->revisePosition(0, block_pos[1] - (nyan_y + 32));
@@ -183,6 +183,20 @@ int GameMap::checkMapHit(Nyancat* nyan){
 				nyan->revisePosition(1, (nyan_x + 32 + screen_x * 32) - block_pos[0]);
 			}
 		}
+
+		//アイテムを取得した処理
+		if(map[cb[0]][cb[1]] & DROPITEM){
+			if(map[cb[0]][cb[1]] == SWITCH){
+				switchAction(nyan);
+				map[cb[0]][cb[1]] = BLOCK_NONE;
+			}
+		}
+
+		//スクロール後に画面左に入れないようにする
+		if(0 > nyan_x){
+			nyan->revisePosition(1, 0 - nyan_x);
+		}
+		//ゴール地点に到達した時の処理
 		if(cb[0] >= 208){
 				//nyan->reset();
 			nyan->goal();
@@ -218,13 +232,16 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		}
 		
 		if(cb[1] > 18){
+			nyan->dead();
+#ifdef __DEBUG_
 			nyan->offFall();
 			nyan->onground();
+#endif
 		}
 
 		
 
-		//にゃんキャットと画面のスクロールを連動
+		//にゃんキャットの動きと画面のスクロールを連動
 		if(nyan_x > screen_center_x){
 			float xdiff = nyan_x - screen_center_x;
 			screenScroll_x(xdiff / 32.0f);
@@ -234,6 +251,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 				}
 			}
 		}
+		
 		//画面スクロールについて
 		if(move_screen > 0){
 			move_screen = move_screen - 0.01f;
@@ -242,6 +260,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		}
 		
 #ifdef __DEBUG_
+		//DrawBox((int)(cb[0] - screen_x) * 32, cb[1] * 32, (int)(cb[0] - screen_x) *32 + 32, cb[1] * 32 + 32, GetColor(200,0,0),true);
 		if(map[cb[0]][cb[1]] != 0){
 			DrawString(500, 100, "接触", GetColor(255,255,255));
 		}
@@ -257,11 +276,11 @@ void GameMap::screenScroll_x(float value){
 void GameMap::Animation(){
 	list<struct Effect>::iterator it = effectList.begin();
 	while(it != effectList.end()){
-		it->sx = (it->nyan->getNyanX() - it->sx) * 0.7;
-		it->sy = (it->nyan->getNyanY() - it->sy) * 0.7;
+		it->sx = (it->nyan->getNyanX() - it->sx) * 0.7f;
+		it->sy = (it->nyan->getNyanY() - it->sy) * 0.7f;
 		it->alpha = it->alpha - 0.01f;
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, it->alpha);
-		render_block(it->blocktype, it->sx, it->sy);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)it->alpha);
+		render_block(it->blocktype, (int)it->sx, (int)it->sy);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		if(it->alpha < 25){
 				it = effectList.erase(it);
@@ -276,6 +295,14 @@ void GameMap::addAnimation(Effect *effect){
 void GameMap::nextSegment(){
 
 }
-void GameMap::switchAction(){
-
+void GameMap::switchAction(Nyancat* nyan){
+	int size = (int)floor(screen_x);
+	for(int x = size; x < SCREEN_WIDTH + size; x++){
+		for(int y = 0; y < MAP_HEIGHT; y++){
+			if(map[x][y] & COIN_ALL){
+				nyan->sumScore(50);
+				map[x][y] = 0;
+			}
+		}
+	}
 }

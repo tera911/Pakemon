@@ -73,11 +73,11 @@ Nyancat::Nyancat(){
 		nowMap->render();
 		nowMap->checkMapHit(this);
 		if(left){
-			DrawTurnGraph(nyan_x,nyan_y,handle[3],true);
+			DrawTurnGraph((int)nyan_x, (int)nyan_y,handle[3],true);
 		}
 		else
 		{
-			DrawGraph(nyan_x, nyan_y, handle[3], true);
+			DrawGraph((int)nyan_x, (int)nyan_y, handle[3], true);
 		}
 		
 		nyan_x -= left;
@@ -110,9 +110,9 @@ Nyancat::Nyancat(){
 		//自キャラのポート番号表示
 		if(nyan_port != 0){
 			if(nyan_port==443){
-			PrintPicture::instance()->NumDraw(nyan_port,nyan_x+20,nyan_y-10);
+				PrintPicture::instance()->NumDraw(nyan_port, (int)(nyan_x + 20.0f),(int)(nyan_y - 10.0f));
 			}else{
-			PrintPicture::instance()->NumDraw(nyan_port,nyan_x+15,nyan_y-10);
+				PrintPicture::instance()->NumDraw(nyan_port, (int)(nyan_x + 15.0f),(int)(nyan_y - 10.0f));
 				}
 			}
 	}
@@ -178,6 +178,9 @@ Nyancat::Nyancat(){
 	void Nyancat::goal(){
 		goalFlag = true;
 	}
+	void Nyancat::dead(){
+		deadFlag = true;
+	}
 	//自由落下開始
 	void Nyancat::onFall(){
 		fall = true;
@@ -200,10 +203,7 @@ Nyancat::Nyancat(){
 
 	//座標修正
 	// 0 = 上、 1 = 右、 2 = 下、 3 = 左
-	void Nyancat::revisePosition(int direction, int value){
-		char test[40];
-		wsprintf(test, "%d\n",value);
-		OutputDebugString(test);
+	void Nyancat::revisePosition(int direction, float value){
 		switch(direction){
 		case 0:
 			nyan_y = nyan_y + value;
