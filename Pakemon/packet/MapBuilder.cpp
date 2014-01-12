@@ -19,7 +19,7 @@ int MapBuilder::rand(struct ip_address ip, int mod, int seed = 0){
 	case 0:	ret = (ip1 + ip2); break;
 	case 1:	ret = (ip1 - ip2); break;
 	case 2:	ret = (ip1 * ip2); break;
-	case 3:	ret = (ip1 / ip2); break;
+	case 3:	ret = (ip1 ^ ip2); break;
 	case 4:	ret = (ip1 | ip2); break;
 	case 5:	ret = (ip1 & ip2); break;
 	default:ret = (ip1 + ip2); break;
@@ -80,7 +80,7 @@ void MapBuilder::buildMap(ip_header* ih, int size){
 					break;
 				}
 				if(blockpos[pos] == 0){
-					map[x][pos] = 0;
+					map[x][pos] = BLOCK_NONE;
 				}else{
 					int random = 0;
 					switch(pos){
@@ -117,7 +117,7 @@ void MapBuilder::buildMap(ip_header* ih, int size){
 					case 8:
 						if(rand(ip,5, seed) == 0){
 							map[x][pos] = ITEM;
-							int itemtype = rand(ip, 6);
+							int itemtype = rand(ip, 10);
 							if(itemtype == 0){
 								map[x][pos] = SWITCH_FLAG;
 							}else if(itemtype == 1){
@@ -125,7 +125,7 @@ void MapBuilder::buildMap(ip_header* ih, int size){
 							}else if(itemtype == 2){
 								map[x][pos] = ROUTER_FLAG;
 							}else{
-								map[x][pos] = 0;
+								map[x][pos] = ITEM;
 							}
 						}else{
 							map[x][pos] = SHOGAI;
