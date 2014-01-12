@@ -54,9 +54,9 @@ Nyancat::Nyancat(){
 		if(goalFlag){
 			parent->moveTo(ParentWindow::RESULT);
 		}
-		if(deadFlag){
+		/*if(deadFlag){
 			parent->moveTo(ParentWindow::RESULT);
-		}
+		}*/
 		GetHitKeyStateAll(key);
 		if(key[KEY_INPUT_C] == 1){
 			jump();
