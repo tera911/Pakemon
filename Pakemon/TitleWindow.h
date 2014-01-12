@@ -20,6 +20,8 @@ private:
 	STAT select;
 	int select_num;
 	int Nyan[6];
+	int TitleLogo;
+	int NyanTitle;
 
 };
 
