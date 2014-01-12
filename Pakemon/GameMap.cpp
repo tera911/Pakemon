@@ -11,7 +11,7 @@ using namespace std;
 #define __DEBUG_	//デバッグ時のみ
 
 GameMap::GameMap(){
-
+		segment = -1;
 		screen_x = 0;
 		move_screen = 0;
 		screen_center_x = 12.0f * 32;
@@ -34,6 +34,7 @@ void GameMap::render(){
 	}
 //	Animation();
 	//screenScroll_x(0.015f);
+	segment = (int)screen_x / MAP_WIDTH;
 	
 }
 void GameMap::render_block(int block_type, int x, int y){
@@ -126,6 +127,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 #ifdef __DEBUG_
 		DrawFormatString(600,70, GetColor(0,0,0), "x = %d",cb[0]);
 		DrawFormatString(600,90, GetColor(0,0,0), "y = %d",cb[1]);
+		DrawFormatString(600,120, GetColor(0,0,0), "segment = %d",segment);
 #endif
 		
 		//キャラクターがマップブロックから飛び出た場合
@@ -149,10 +151,8 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			if(map[bb[0]][bb[1]] & ALL_HIT_BLOCK){
 				nyan->revisePosition(0, (cb[1] * 32 + 12) - nyan_y);	//位置修正
 				nyan->offFall();
-				nyan->onground();
 			}else{
 				nyan->onFall();
-				nyan->offground();
 			}
 		}
 		//左に飛び出た
@@ -188,6 +188,9 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		if(map[cb[0]][cb[1]] & DROPITEM){
 			if(map[cb[0]][cb[1]] == SWITCH){
 				switchAction(nyan);
+				map[cb[0]][cb[1]] = BLOCK_NONE;
+			}else if(map[cb[0]][cb[1]] == ROUTER){
+				nextSegment(nyan);
 				map[cb[0]][cb[1]] = BLOCK_NONE;
 			}
 		}
@@ -235,7 +238,6 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			nyan->dead();
 #ifdef __DEBUG_
 			nyan->offFall();
-			nyan->onground();
 #endif
 		}
 
@@ -292,8 +294,12 @@ void GameMap::addAnimation(Effect *effect){
 	effectList.push_front(*effect);
 }
 
-void GameMap::nextSegment(){
-
+void GameMap::nextSegment(Nyancat* nyan){
+	if(segment < 5){
+		screen_x = (segment+ 1) * MAP_WIDTH;
+		nyan->flyday();
+		nyan->onFall();
+	}
 }
 void GameMap::switchAction(Nyancat* nyan){
 	int size = (int)floor(screen_x);

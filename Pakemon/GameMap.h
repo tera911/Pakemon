@@ -31,7 +31,7 @@ private:
 	float screen_center_x;
 	float move_screen;
 	std::list<struct Effect> effectList;
-	
+	int segment;	
 public:
 	int map[MAP_WIDTH * 6 + 10][MAP_HEIGHT];
 	float screen_x;
@@ -42,7 +42,7 @@ public:
 	void screenScroll_x(float value);
 	void Animation();
 	void addAnimation(Effect *effect);
-	void nextSegment();		//move to the next Segment!!!!!!!!!!
+	void nextSegment(Nyancat*);		//move to the next Segment!!!!!!!!!!
 	void switchAction(Nyancat*);	//スクリーンに映ってるパけっとを取得するん？
 };
 #endif

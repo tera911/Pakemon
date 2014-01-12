@@ -133,7 +133,6 @@ Nyancat::Nyancat(){
 				
 			}
 		}
-		
 	}
 	void Nyancat::moveDown(){
 		nyan_y +=1;
@@ -141,7 +140,6 @@ Nyancat::Nyancat(){
 	void Nyancat::moveLeft(){
 		left = 3;
 		leftflag=true;
-
 	}
 	void Nyancat::moveRight(){
 		right = 3;
@@ -153,7 +151,6 @@ Nyancat::Nyancat(){
 		}else{
 			GA = 0 ;
 		}
-		
 	}
 	void Nyancat::reset(){
 		SAFE_DELETE(nowMap);
@@ -170,7 +167,7 @@ Nyancat::Nyancat(){
 		//ポート番号
 		nyan_port = 0;
 
-				fall = true;
+		fall = true;
 		GA = 0;
 		score = 0;
 	}
@@ -188,14 +185,6 @@ Nyancat::Nyancat(){
 	//自由落下終了
 	void Nyancat::offFall(){
 		fall = false;
-	}
-	//接地判定ON
-	void Nyancat::onground(){
-		ground=true;
-	}
-	//接地判定OFF
-	void Nyancat::offground(){
-		ground=false;
 	}
 	bool Nyancat::isMoveNyan(){
 		return (fall);
@@ -236,6 +225,12 @@ Nyancat::Nyancat(){
 	//自キャラのポート番号を変更
 	void Nyancat::changePortNumber(int port){
 		nyan_port = port;
+	}
+	//セグメント移動用
+	//ニャンキャットの位置を左上にする
+	void Nyancat::flyday(){
+		nyan_x = 100;
+		nyan_y = 0;
 	}
 	Nyancat::~Nyancat(){
 		SAFE_DELETE(nowMap);

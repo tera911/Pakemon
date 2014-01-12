@@ -19,7 +19,6 @@ private:
 
 	bool fall;		//自由落下
 	float GA;		//落下速度
-	bool ground;
 
 	int sound[5];
 	int voice;		
@@ -50,10 +49,6 @@ public:
 	void onFall();
 	//自由落下終了
 	void offFall();
-	//接地判定ON
-	void onground();
-	//接地判定OFF
-	void offground();
 	//プレイヤーが動いているならtrue
 	bool isMoveNyan();
 
@@ -67,5 +62,8 @@ public:
 
 	void sumScore(int value);
 	void changePortNumber(int port);
+	//セグメント移動用
+	//ニャンキャットの位置を左上にする
+	void flyday();
 };
 #endif
