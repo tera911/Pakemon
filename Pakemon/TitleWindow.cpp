@@ -4,14 +4,14 @@
 
 	//コンストラクタ
 	TitleWindow::TitleWindow(){
-		ZeroMemory(key, sizeof(int)*256);
+		ZeroMemory(key, sizeof(int)	*	256);
 		arrow_y = 200;
 		select = START;
 		select_num = 0;
 		//画像読み込み
 		LoadDivGraph("Nyan_s.png", 6, 6, 1, 32, 20, Nyan);
-		TitleLogo=LoadGraph("titlelogo_oic.png");
-		NyanTitle=LoadGraph("title_nyancat_oic.png");
+		TitleLogo	=	LoadGraph("title/title_logo_oic.png");
+		NyanTitle	=	LoadGraph("title/title_nyancat_oic.png");
 
 	}
 
@@ -58,21 +58,21 @@
 	}
 	//描画用
 	void TitleWindow::render(){
-		DrawGraph(125,125,TitleLogo,true);
-		//DrawString(200,200,"みかん",GetColor(255,255,255));
-		PrintPicture::instance()->StringDraw("START",330,420);
-        PrintPicture::instance()->StringDraw("OPTION",330,440);
-		PrintPicture::instance()->StringDraw("EXIT",330,460);
+		DrawGraph(126, 60, TitleLogo, true);	//ロゴ
+		DrawGraph(240, 80, NyanTitle, true);	//にゃんきゃっと
+		PrintPicture::instance()->StringDraw("START",	358,450);
+        PrintPicture::instance()->StringDraw("OPTION",	358,480);
+		PrintPicture::instance()->StringDraw("EXIT",	358,510);
 		switch(select){
 			//矢印の場所
 		case START:
-			DrawGraph(290, 417, Nyan[3], true);
+			DrawGraph(300, 445, Nyan[3], true);
 		break;
 		case OPTION:
-			DrawGraph(290, 437, Nyan[3], true);
+			DrawGraph(300, 475, Nyan[3], true);
 		break;
 		case EXIT:
-			DrawGraph(290, 457, Nyan[3], true);
+			DrawGraph(300, 505, Nyan[3], true);
 		break;
 		}
 	}
