@@ -19,7 +19,8 @@ private:
 	enum STAT {START = 0, OPTION = 1, EXIT = 2};
 	STAT select;
 	int select_num;
-	PrintPicture* printPic;
+	int Nyan[6];
+
 };
 
 #endif

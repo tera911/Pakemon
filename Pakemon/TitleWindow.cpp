@@ -9,6 +9,7 @@
 		select = START;
 		select_num = 0;
 		//âÊëúì«Ç›çûÇ›
+		LoadDivGraph("Nyan_s.png", 6, 6, 1, 32, 20, Nyan);
 
 	}
 
@@ -57,20 +58,21 @@
 	void TitleWindow::render(){
 		DrawString(200,200,"Ç›Ç©ÇÒ",GetColor(255,255,255));
 		PrintPicture::instance()->StringDraw("START",330,420);
-       // DrawString( 330 , 440 , "OPTION" , GetColor(255,255,255) );
         PrintPicture::instance()->StringDraw("OPTION",330,440);
-		//DrawString( 330 , 460 , "EXIT"   , GetColor(255,255,255) );
 		PrintPicture::instance()->StringDraw("EXIT",330,460);
 		switch(select){
 			//ñÓàÛÇÃèÍèä
 		case START:
-			DrawString( 300 , 420   , "Å®"    , GetColor(255,255,255) );
+		//	DrawString( 300 , 420   , "Å®"    , GetColor(255,255,255) );
+			DrawGraph(290, 417, Nyan[3], true);
 		break;
 		case OPTION:
-			DrawString( 300 , 440   , "Å®"    , GetColor(255,255,255) );
+		//	DrawString( 300 , 440   , "Å®"    , GetColor(255,255,255) );
+			DrawGraph(290, 437, Nyan[3], true);
 		break;
 		case EXIT:
-			DrawString( 300 , 460   , "Å®"    , GetColor(255,255,255) );
+		//	DrawString( 300 , 460   , "Å®"    , GetColor(255,255,255) );
+			DrawGraph(290, 457, Nyan[3], true);
 		break;
 		}
 	}
