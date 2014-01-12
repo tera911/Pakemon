@@ -31,6 +31,15 @@
     <ClCompile Include="Nyancat.cpp">
       <Filter>ソースファイル\Window</Filter>
     </ClCompile>
+    <ClCompile Include="ResultWindow.cpp">
+      <Filter>ソースファイル\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionWindow.cpp">
+      <Filter>ソースファイル\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyBoardTools.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMap.h">
@@ -62,6 +71,15 @@
     </ClInclude>
     <ClInclude Include="Nyancat.h">
       <Filter>ヘッダーファイル\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultWindow.h">
+      <Filter>ヘッダーファイル\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionWindow.h">
+      <Filter>ヘッダーファイル\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyBoardTools.h">
+      <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

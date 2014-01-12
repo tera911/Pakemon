@@ -1,6 +1,7 @@
 #include "TitleWindow.h"
 #include "ParentWindow.h"
 #include <DxLib.h>
+#include "KeyBoardTools.h"
 
 	//コンストラクタ
 	TitleWindow::TitleWindow(){
@@ -12,20 +13,24 @@
 		LoadDivGraph("Nyan_s.png", 6, 6, 1, 32, 20, Nyan);
 		TitleLogo	=	LoadGraph("title/title_logo_oic.png");
 		NyanTitle	=	LoadGraph("title/title_nyancat_oic.png");
-
+		frame = 0;
 	}
 
 	//繰り返し実行される
 	void TitleWindow::update(ParentWindow* parent){
 		//画面切り替えについて書<
 		//キー入力
-		GetHitKeyStateAll_2(key);
+		if(frame > 10){
+			KeyBoardTools::GetHitKeyStateAll_2(key);
+		}
 		if(key[KEY_INPUT_UP] == 1){
 			select_num--;
 		}
 		if(key[KEY_INPUT_DOWN] == 1){
 			select_num++;
 		}
+		
+		//Enter, Spaceが押されたら確定
 		if(key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_RETURN] == 1){
 			switch(select){
 				case START:
@@ -50,9 +55,9 @@
 		}
 		select = static_cast<STAT>(select_num);
 		
-		//Enter, Spaceが押されたら確定
-		
-		
+		if(frame < 60){
+			frame++;
+		}
 		//描画
 		render();
 	}

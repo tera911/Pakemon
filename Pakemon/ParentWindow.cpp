@@ -1,6 +1,8 @@
 #include "ParentWindow.h"
 #include "TitleWindow.h"
 #include "Nyancat.h"
+#include "ResultWindow.h"
+#include "OptionWindow.h"
 
 #define SAFE_DELETE(x)	{\
 	delete (x);\
@@ -32,9 +34,11 @@ int ParentWindow::update(){
 			break;
 			case RESULT:
 				SAFE_DELETE(mChild);
+				mChild = new ResultWindow();
 			break;
 			case OPTION:
 				SAFE_DELETE(mChild);
+				mChild = new OptionWindow();
 			break;
 			case EXIT:
 				return 1;

@@ -22,7 +22,7 @@ private:
 	int Nyan[6];
 	int TitleLogo;
 	int NyanTitle;
-
+	int frame;
 };
 
 #endif
