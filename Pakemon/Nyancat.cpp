@@ -1,3 +1,8 @@
+/**
+断ち切るのは弱さ！斬り開くは未来！
+心を貫く勇気の刃！
+キュアソード！
+*/
 #include "Nyancat.h"
 #include "GameMap.h"
 #include <DxLib.h>

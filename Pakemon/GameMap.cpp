@@ -34,13 +34,14 @@ void GameMap::render(){
 	}
 //	Animation();
 	//screenScroll_x(0.015f);
+	
 }
 void GameMap::render_block(int block_type, int x, int y){
 	if(block_type == 0){
 		//return;
 	}
 	int block_x, block_y;
-	block_x =  x * 32 - screen_x * 32;
+	block_x =  (x - screen_x) * 32;
 	block_y  = y * 32;
 	switch(block_type & 0x1FFF){	//AND演算でROUTERとSWITCHを除く
 		case ASHIBA:
@@ -51,6 +52,14 @@ void GameMap::render_block(int block_type, int x, int y){
 		break;
 		case ITEM:
 			DrawGraph(block_x, block_y, block_hatena, true);
+		break;
+		case SWITCH: 
+			//DrawModiGraph(block_x, block_y, block_x + 32, block_y, block_x + 32, block_y + 32, block_x, block_y + 32, block_switch, true); 
+			DrawGraph(block_x, block_y + 10, block_switch,true);
+		break;
+		case ROUTER:
+			//DrawModiGraph(block_x, block_y, block_x + 32, block_y, block_x + 32, block_y + 32, block_x, block_y + 32, block_router, true); 
+			DrawGraph(block_x, block_y + 5, block_router,true);
 		break;
 		case COIN_FTP:
 			DrawGraph(block_x, block_y, block_packet, true);
@@ -82,18 +91,11 @@ void GameMap::render_block(int block_type, int x, int y){
 		case ITEM_NORMAL:
 			DrawGraph(block_x, block_y, block_normal, true);
 		break;
-		case SWITCH: 
-			DrawModiGraph(block_x, block_y, block_x + 32, block_y, block_x + 32, block_y + 32, block_x, block_y + 32, block_switch, true); 
-		break;
-		case ROUTER:
-			DrawModiGraph(block_x, block_y, block_x + 32, block_y, block_x + 32, block_y + 32, block_x, block_y + 32, block_router, true); 
-		break;
 		default:
 #ifdef __DEBUG_
 			DrawString(block_x + 16, block_y + 16, "1", GetColor(255,255,255));
 			DrawFormatString(100, 90, GetColor(255,255,255), "screen_x = %f",screen_x);
 #endif
-			return;
 		break;
 	}
 }
@@ -102,10 +104,13 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		float nyan_x = nyan->getNyanX();
 		float nyan_y = nyan->getNyanY();
 		int tb[2], bb[2], cb[2],lb[2], rb[2];		//上、下、中央、左、右ブロック [x,y] 
-
+		float fcb_32[2];
 		//ブロックにめり込むのを防ぐ
 		cb[0] = round((nyan_x + screen_x * 32) / 32.0f);	//自キャラのX座標
 		cb[1] = round((nyan_y) / 32.0f);	//自キャラのY座標
+
+		fcb_32[0] = cb[0] * 32;	//cb[0] * 32 を事前に計算したやつ
+		fcb_32[1] = cb[1] * 32;	//cb[0] * 32 を事前に計算したやつ
 
 		tb[0] = cb[0];		//自キャラの上ブロックのx座標
 		tb[1] = cb[1] -1;	//自キャラの上ブロックのy座標
@@ -126,21 +131,21 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		//キャラクターがマップブロックから飛び出た場合
 
 		//上に飛び出てるか
-		if(cb[1] * 32 > nyan_y){
+		if(fcb_32[1] > nyan_y){
 			if(map[tb[0]][tb[1]] & ALL_HIT_BLOCK){
 				nyan->revisePosition(2, nyan_y - cb[1] * 32);	//位置修正
 			}
 			if(map[tb[0]][tb[1]] & ITEM){
 				if(map[tb[0]][tb[1]] & (ROUTER_FLAG & ~ITEM)){
 					map[tb[0]][tb[1]-1] = ROUTER;
-				}else{
+				}else if(map[tb[0]][tb[1]] & (SWITCH_FLAG & ~ITEM)){
 					map[tb[0]][tb[1]-1] = SWITCH;
 				}
 				map[tb[0]][tb[1]] = ITEM_NORMAL;
 			}
 		}
 		//下方向に飛び出た場合
-		if(cb[1] * 32 + 11 < nyan_y){	//本当は cb[1] * 32 + 32 < nyan_y + 32だけど高速化のため ;キャラクタのサイズが20のため + 12
+		if(fcb_32[1] + 11 < nyan_y){	//本当は cb[1] * 32 + 32 < nyan_y + 32だけど高速化のため ;キャラクタのサイズが20のため + 12
 			if(map[bb[0]][bb[1]] & ALL_HIT_BLOCK){
 				nyan->revisePosition(0, (cb[1] * 32 + 12) - nyan_y);	//位置修正
 				nyan->offFall();
@@ -151,13 +156,13 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			}
 		}
 		//左に飛び出た
-		if(cb[0] * 32 > (nyan_x + screen_x * 32)){
+		if(fcb_32[0] > (nyan_x + screen_x * 32)){
 			if(map[lb[0]][lb[1]] & ALL_HIT_BLOCK){
 				nyan->revisePosition(1, cb[0] * 32 - (nyan_x + screen_x * 32));	//位置修正
 			}
 		}
 		//右に飛び出た
-		if(cb[0] * 32 < (nyan_x + screen_x * 32)){
+		if(fcb_32[0] < (nyan_x + screen_x * 32)){
 			if(map[rb[0]][rb[1]] & ALL_HIT_BLOCK){
 				nyan->revisePosition(3, (nyan_x + screen_x * 32) - cb[0] * 32);	//位置修正
 			}
@@ -243,32 +248,6 @@ int GameMap::checkMapHit(Nyancat* nyan){
 #endif
 		return 0;
 	}
-int GameMap::checkMapHit1(float nyan_x, float nyan_y, int direction, float value){
-	int tb[2], bb[2], cb[2],lb[2], rb[2];		//上、下、中央、左、右ブロック [x,y] 
-	cb[0] = round(nyan_x / 32.0f);	//自キャラのX座標
-	cb[1] = round(nyan_y / 32.0f);	//自キャラのY座標
-		
-	tb[0] = cb[0];		//自キャラの上ブロックの座標
-	tb[1] = cb[1] -1;	//自キャラの上ブロックの座標
-		
-	bb[0] = cb[0];		//自キャラの上ブロックの座標
-	bb[1] = cb[1] +1;	//自キャラの上ブロックの座標
-
-	switch(direction){
-	case 0:
-		//上
-		if(map[tb[0]][tb[1]] == 'A' || map[tb[0]][tb[1]] == 'S' || map[tb[0]][tb[1]] == 'I'){
-				int next_value = nyan_y - cb[1] * 32;
-				if(next_value > value){
-					return next_value;
-				}else{
-					return value;
-				}
-			}
-	break;
-	}
-	return value;
-}
 void GameMap::screenScroll_x(float value){
 	if(screen_x < MAP_WIDTH * 6 - SCREEN_WIDTH){
 		move_screen = value;
@@ -292,4 +271,11 @@ void GameMap::Animation(){
 
 void GameMap::addAnimation(Effect *effect){
 	effectList.push_front(*effect);
+}
+
+void GameMap::nextSegment(){
+
+}
+void GameMap::switchAction(){
+
 }
