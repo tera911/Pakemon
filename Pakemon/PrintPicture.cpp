@@ -1,4 +1,8 @@
 #include "PrintPicture.h"
+#define SMALLWIDTH  7	// ¬‚³‚¢‰æ‘œ‚Ì‰¡•
+#define SMALLHEIGHT 7	// ¬‚³‚¢‰æ‘œ‚Ì‚‚³
+#define BIGWIDTH 14		//‘å‚«‚¢‰æ‘œ‚Ì‰¡•
+#define BIGHEIGHT 14	//‘å‚«‚¢‰æ‘œ‚Ì‚‚³
 
 PrintPicture::PrintPicture() {
 		LoadDivGraph( "font_number01_oic.png" , 10 , 10 , 1 , SMALLWIDTH , SMALLHEIGHT , spritNo ) ;
