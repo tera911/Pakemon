@@ -56,9 +56,11 @@
 	//•`‰æ—p
 	void TitleWindow::render(){
 		DrawString(200,200,"‚İ‚©‚ñ",GetColor(255,255,255));
-        DrawString( 330 , 420 , "START" , GetColor(255,255,255) );
-        DrawString( 330 , 440 , "OPTION" , GetColor(255,255,255) );
-        DrawString( 330 , 460 , "EXIT"   , GetColor(255,255,255) );
+		PrintPicture::instance()->StringDraw("START",330,420);
+       // DrawString( 330 , 440 , "OPTION" , GetColor(255,255,255) );
+        PrintPicture::instance()->StringDraw("OPTION",330,440);
+		//DrawString( 330 , 460 , "EXIT"   , GetColor(255,255,255) );
+		PrintPicture::instance()->StringDraw("EXIT",330,460);
 		switch(select){
 			//–îˆó‚ÌêŠ
 		case START:

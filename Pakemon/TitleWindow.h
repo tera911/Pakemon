@@ -2,6 +2,7 @@
 #define __WINDOW_TITLE_H_
 
 #include "Child.h"
+#include "PrintPicture.h"
 
 class ParentWindow;
 
@@ -18,6 +19,7 @@ private:
 	enum STAT {START = 0, OPTION = 1, EXIT = 2};
 	STAT select;
 	int select_num;
+	PrintPicture* printPic;
 };
 
 #endif
