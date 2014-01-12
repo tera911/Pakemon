@@ -52,7 +52,10 @@ Nyancat::Nyancat(){
 	}
 	void Nyancat::update(ParentWindow* parent){
 		if(goalFlag){
-			parent->moveTo(ParentWindow::TITLE);
+			parent->moveTo(ParentWindow::RESULT);
+		}
+		if(deadFlag){
+			parent->moveTo(ParentWindow::RESULT);
 		}
 		GetHitKeyStateAll(key);
 		if(key[KEY_INPUT_C] == 1){
@@ -122,12 +125,8 @@ Nyancat::Nyancat(){
 			for(int i=0;i<20;i++){
 			top+=1;
 			}
-			srand((unsigned) time(NULL));
-			voice=rand();
-			voice%=5;
-
-			/*printfDx("%d",voice);
-			voice=GetRand(6);*/
+			//printfDx("%d",voice);
+			voice=GetRand(6);
 			if(CheckSoundMem(sound[voice])==0){ 
 				PlaySoundMem(sound[voice],DX_PLAYTYPE_BACK);
 				

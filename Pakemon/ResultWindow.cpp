@@ -2,11 +2,15 @@
 #include "ParentWindow.h"
 #include <DxLib.h>
 #include "KeyBoardTools.h"
+#include "PrintPicture.h"
 
 //コンストラクタ
 ResultWindow::ResultWindow(){
 	ZeroMemory(key, sizeof(int) * 256);
 	frame = 0;
+	select = RETRY;
+	select_num = 0;
+	LoadDivGraph("Nyan_s.png", 6, 6, 1, 32, 20, Nyan);
 }
 
 //アップデータ　親から呼び出される関数
@@ -15,19 +19,51 @@ void ResultWindow::update(ParentWindow* parent){
 	if(frame > 10){
 		KeyBoardTools::GetHitKeyStateAll_2(key);
 	}
-	if(key[KEY_INPUT_SPACE] == 1){
-		parent->moveTo(ParentWindow::TITLE);
-	}
 	if(frame < 60){
 		frame++;
 	}
+	if(key[KEY_INPUT_UP] == 1){
+			select_num--;
+		}
+	if(key[KEY_INPUT_DOWN] == 1){
+			select_num++;
+		}
+	if(select_num < 0){
+			select_num = 1;
+		}else if(select_num > 1){
+			select_num = 0;
+		}
+		select = static_cast<TRY>(select_num);
+	if(key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_RETURN] == 1){
+			switch(select){
+				case RETRY:
+					//リスタート
+					parent->moveTo(ParentWindow::PLAY);
+				break;
+				case TITLE:
+					//TITLE
+					parent->moveTo(ParentWindow::TITLE);
+				break;
+			}
+		}
 
 	render();//描画
 }
 
 //描画用処理
 void ResultWindow::render(){
-	DrawString(200, 200, "MIKAN RESULT", GetColor(255,255,255));
+	PrintPicture::instance()->StringDraw("PLAYSCORE",270,100,3);
+	PrintPicture::instance()->StringDraw("RETRY",370,400,2);
+	PrintPicture::instance()->StringDraw("TITLE",370,440,2);
+	switch(select){
+			//矢印の場所
+		case RETRY:
+			DrawGraph(320, 400, Nyan[3], true);
+		break;
+		case TITLE:
+			DrawGraph(320, 440, Nyan[3], true);
+		break;
+		}
 }
 
 //デストラクタ いろいろ開放させたりする

@@ -13,6 +13,7 @@ public:
 private:
 	Child* mChild;
 	STAT nextSequence;
+
 };
 
 
