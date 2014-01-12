@@ -21,7 +21,6 @@
 #define CHIP_SIZE		(32)	//一つのチップのサイズ
 
 
-
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				LPSTR lpCmdLine, int nCmdShow ){
 	SetGraphMode(800, 600, 32, 60);	//
