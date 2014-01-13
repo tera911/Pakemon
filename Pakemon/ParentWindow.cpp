@@ -12,6 +12,9 @@
 ParentWindow::ParentWindow(){
 	moveTo(TITLE);
 	mChild = new TitleWindow();
+	score = 0;
+	time = 0;
+	goal = false;
 }
 ParentWindow::~ParentWindow(){
 
@@ -50,4 +53,22 @@ int ParentWindow::update(){
 
 void ParentWindow::moveTo(STAT stat){
 	nextSequence = stat;
+}
+
+void ParentWindow::registScore(int score, int time, bool goal){
+	this->score = score;
+	this->time = time;
+	this->goal = goal;
+}
+
+int ParentWindow::getScore(){
+	return score;
+}
+
+int ParentWindow::getRemainingTime(){
+	return time;
+}
+
+bool ParentWindow::isGoal(){
+	return goal;
 }

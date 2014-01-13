@@ -52,11 +52,13 @@ Nyancat::Nyancat(){
 	}
 	void Nyancat::update(ParentWindow* parent){
 		if(goalFlag){
+			parent->registScore(score, 0, true);
 			parent->moveTo(ParentWindow::RESULT);
 		}
-		/*if(deadFlag){
+		if(deadFlag){
+			parent->registScore(score, 0, false);
 			parent->moveTo(ParentWindow::RESULT);
-		}*/
+		}
 		GetHitKeyStateAll(key);
 		if(key[KEY_INPUT_C] == 1){
 			jump();

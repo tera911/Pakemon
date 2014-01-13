@@ -10,10 +10,16 @@ public:
 	~ParentWindow();
 	int update();
 	void moveTo(STAT);
+	void registScore(int score, int time, bool goal);
+	int getScore();
+	int getRemainingTime();
+	bool isGoal();
 private:
 	Child* mChild;
 	STAT nextSequence;
-
+	int score;
+	int time;
+	bool goal;
 };
 
 

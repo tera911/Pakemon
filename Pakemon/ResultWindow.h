@@ -18,7 +18,8 @@ private:
     TRY select;
     int select_num;
     int Nyan[6];
-
+	int score;
+	int length;	//ƒXƒRƒA‚ÌŒ…”
 };
 
 #endif
