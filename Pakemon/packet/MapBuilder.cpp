@@ -200,7 +200,7 @@ int MapBuilder::getMap(int distmap[][MAP_HEIGHT]){
 			distmap[x][y] = map[x][y];
 		}
 	}
-
+	pcap_close(fp);	//オープンしたパケットをクローズする
 	return 1;
 }
 
