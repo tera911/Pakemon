@@ -10,10 +10,10 @@
 		select = START;
 		select_num = 0;
 		//âÊëúì«Ç›çûÇ›
-		LoadDivGraph("Nyan_s.png", 6, 6, 1, 32, 20, Nyan);
-		TitleLogo	=	LoadGraph("title/title_logo_oic.png");
-		LoadDivGraph("title/title_nyancatrun_oic.png",6,6,1,320,320,NyanTitle);
-		team = LoadGraph("oic2c.class_oic.png");
+		LoadDivGraph("item/Nyan_s.png", 6, 6, 1, 32, 20, Nyan);
+		TitleLogo	=	LoadGraph("item/title_logo_oic.png");
+		LoadDivGraph("item/title_nyancatrun_oic.png",6,6,1,320,320,NyanTitle);
+		team = LoadGraph("item/oic2c.class_oic.png");
 		frame = 0;
 		untitti=0;
 	}

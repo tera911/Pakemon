@@ -10,9 +10,11 @@ ResultWindow::ResultWindow(){
 	frame = 0;
 	score = -1;
 	length = 0;
+	remainingTime = 0;
+	goal = false;
 	select = RETRY;
 	select_num = 0;
-	LoadDivGraph("Nyan_s.png", 6, 6, 1, 32, 20, Nyan);
+	LoadDivGraph("item/Nyan_s.png", 6, 6, 1, 32, 20, Nyan);
 }
 
 //アップデータ　親から呼び出される関数
@@ -54,8 +56,10 @@ void ResultWindow::update(ParentWindow* parent){
 	}
 	//スコア計算
 	if(score == -1){
-		score = parent->getScore() + (parent->getRemainingTime() * 100);
-		score = score + (parent->isGoal() ? 1000 : 0);	//ゴールなら+1000P
+		goal = parent->isGoal();
+		remainingTime = parent->getRemainingTime();
+		score = parent->getScore() + (remainingTime * 100);
+		score = score + (goal ? 1000 : 0);	//ゴールなら+1000P
 		for(int i = score; i > 0; i = i / 10){
 			length++;
 		}
@@ -65,11 +69,16 @@ void ResultWindow::update(ParentWindow* parent){
 
 //描画用処理
 void ResultWindow::render(){
-	PrintPicture::instance()->StringDraw("PLAYSCORE",270,100,3);
-	PrintPicture::instance()->NumDraw(score, (800 + 28 * (10 - length)) / 2, 170,3);
-
-	PrintPicture::instance()->StringDraw("RETRY",370,400,2);
-	PrintPicture::instance()->StringDraw("TITLE",370,440,2);
+	PrintPicture *print = PrintPicture::instance();
+	print->StringDraw("PLAYSCORE",270,100,3);
+	print->NumDraw(score, (800 + 28 * (10 - length)) / 2, 170,3);
+	print->StringDraw("REMAINING TIME ",400, 280, 2);
+	print->NumDraw(remainingTime, 600, 280, 2);
+	if(!goal){
+		PrintPicture::instance()->StringDraw("NYAN IS DEAD!!", 500, 300, 2);
+	}
+	print->StringDraw("RETRY",370,400,2);
+	print->StringDraw("TITLE",370,440,2);
 	switch(select){
 			//矢印の場所
 		case RETRY:

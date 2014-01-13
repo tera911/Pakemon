@@ -296,7 +296,7 @@ void GameMap::addAnimation(Effect *effect){
 
 void GameMap::nextSegment(Nyancat* nyan){
 	if(segment < 5){
-		screen_x = (segment+ 1) * MAP_WIDTH;
+		screen_x = (float)(segment+ 1) * MAP_WIDTH;
 		nyan->flyday();
 		nyan->onFall();
 	}

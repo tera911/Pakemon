@@ -19,6 +19,8 @@ private:
     int select_num;
     int Nyan[6];
 	int score;
+	int remainingTime;
+	bool goal;
 	int length;	//ƒXƒRƒA‚ÌŒ…”
 };
 

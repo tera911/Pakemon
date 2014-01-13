@@ -6,12 +6,12 @@
 #define LARGEWIDTH 28	//大きい画像の横幅
 #define LARGEHEIGHT 28	//大きい画像の高さ
 PrintPicture::PrintPicture() {
-		LoadDivGraph( "font_number01_oic.png" , 10 , 10 , 1 , SMALLWIDTH , SMALLHEIGHT , SmallSpritNo );
-		LoadDivGraph( "font_number02_oic.png" , 10 , 10 , 1 , MEDIUMWIDTH , MEDIUMHEIGHT , MediumSpritNo ) ;
-		LoadDivGraph( "font_number03_oic.png" , 10 , 10 , 1 , LARGEWIDTH , LARGEHEIGHT , LargeSpritNo ) ;
-		LoadDivGraph( "font_alphabet01_oic.png" , 26 , 26 , 1 , SMALLHEIGHT , SMALLHEIGHT , SmallSpritString );
-		LoadDivGraph( "font_alphabet02_oic.png" , 26 , 26 , 1 , MEDIUMWIDTH , MEDIUMHEIGHT , MediumSpritString );
-		LoadDivGraph( "font_alphabet03_oic.png" , 26 , 26 , 1 , LARGEWIDTH , LARGEHEIGHT , LargeSpritString );
+		LoadDivGraph( "item/font_number01_oic.png" , 10 , 10 , 1 , SMALLWIDTH , SMALLHEIGHT , SmallSpritNo );
+		LoadDivGraph( "item/font_number02_oic.png" , 10 , 10 , 1 , MEDIUMWIDTH , MEDIUMHEIGHT , MediumSpritNo ) ;
+		LoadDivGraph( "item/font_number03_oic.png" , 10 , 10 , 1 , LARGEWIDTH , LARGEHEIGHT , LargeSpritNo ) ;
+		LoadDivGraph( "item/font_alphabet01_oic.png" , 26 , 26 , 1 , SMALLHEIGHT , SMALLHEIGHT , SmallSpritString );
+		LoadDivGraph( "item/font_alphabet02_oic.png" , 26 , 26 , 1 , MEDIUMWIDTH , MEDIUMHEIGHT , MediumSpritString );
+		LoadDivGraph( "item/font_alphabet03_oic.png" , 26 , 26 , 1 , LARGEWIDTH , LARGEHEIGHT , LargeSpritString );
 	}
 
 // 数値をグラフィック表示する関数
