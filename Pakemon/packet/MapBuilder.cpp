@@ -10,7 +10,9 @@
 #define MAP_HEIGHT (18)
 
 PacketICMP packet;
-
+MapBuilder::MapBuilder(){
+	ZeroMemory(map, (MAP_WIDTH * 6 + 10) * MAP_HEIGHT * sizeof(int));
+}
 int MapBuilder::rand(struct ip_address ip, int mod, int seed = 0){
 	int ip1 = (int)ip.byte1 * ip.byte2;
 	int ip2 = (int)ip.byte3 * ip.byte4;
@@ -201,4 +203,7 @@ int MapBuilder::getMap(int distmap[][MAP_HEIGHT]){
 	}
 
 	return 1;
+}
+
+MapBuilder::~MapBuilder(){
 }
