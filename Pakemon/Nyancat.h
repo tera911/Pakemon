@@ -30,6 +30,7 @@ private:
 	char key[256];
 	bool goalFlag;
 	bool deadFlag;
+	int frame;
 public:
 	Nyancat();
 	~Nyancat();
