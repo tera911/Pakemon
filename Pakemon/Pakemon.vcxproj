@@ -74,7 +74,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Fps.cpp" />
-    <ClCompile Include="Fps.h" />
+    <ClInclude Include="Fps.h" />
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="KeyBoardTools.cpp" />
     <ClCompile Include="Nyancat.cpp" />

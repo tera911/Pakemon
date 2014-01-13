@@ -22,9 +22,6 @@
     <ClCompile Include="TitleWindow.cpp">
       <Filter>ソースファイル\Window</Filter>
     </ClCompile>
-    <ClCompile Include="Fps.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Pakemon_main.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -82,6 +79,9 @@
       <Filter>ヘッダーファイル\Window</Filter>
     </ClInclude>
     <ClInclude Include="KeyBoardTools.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Fps.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
