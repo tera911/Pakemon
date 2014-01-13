@@ -14,6 +14,11 @@ public :
 private:
 	int key[256];
 	int frame;	//フレームをカウントする用
+	enum TRY {RETRY = 0, TITLE = 1};
+    TRY select;
+    int select_num;
+    int Nyan[6];
+
 };
 
 #endif

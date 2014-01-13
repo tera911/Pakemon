@@ -21,8 +21,10 @@ private:
 	int select_num;
 	int Nyan[6];
 	int TitleLogo;
-	int NyanTitle;
+	int NyanTitle[6];
 	int frame;
+	int team;
+	int untitti;
 };
 
 #endif

@@ -3,14 +3,27 @@
 
 class PrintPicture{
 private:
-	int spritNo[10];
-	int spritString[26];
+	int SmallSpritNo[10];
+	int MediumSpritNo[10];
+	int LargeSpritNo[10];
+	
+	int SmallSpritString[26];
+	int MediumSpritString[26];
+	int LargeSpritString[26];
 	PrintPicture();
 public: 
 	static PrintPicture* instance(){
 		static PrintPicture printPicture;
 		return &printPicture;
 	}
-	void NumDraw(int num,int argx,int argy);
-	void StringDraw(char String[],int x,int y);
+
+	/*void SmallNumDraw(int num,int argx,int argy);
+	void MediumNumDraw(int num,int argx,int argy);
+	void LargeNumDraw(int num,int argx,int argy);
+	void SmallStringDraw(char String[],int x,int y);
+	void MediumStringDraw(char String[],int x,int y);*/
+
+	void NumDraw(int num,int argx,int argy,int size);
+	void StringDraw(char String[],int x,int y,int size);
+
 };

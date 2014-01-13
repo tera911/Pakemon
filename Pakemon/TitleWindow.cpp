@@ -12,8 +12,10 @@
 		//‰æ‘œ“Ç‚İ‚İ
 		LoadDivGraph("Nyan_s.png", 6, 6, 1, 32, 20, Nyan);
 		TitleLogo	=	LoadGraph("title/title_logo_oic.png");
-		NyanTitle	=	LoadGraph("title/title_nyancat_oic.png");
+		LoadDivGraph("title/title_nyancatrun_oic.png",6,6,1,320,320,NyanTitle);
+		team = LoadGraph("oic2c.class_oic.png");
 		frame = 0;
+		untitti=0;
 	}
 
 	//ŒJ‚è•Ô‚µÀs‚³‚ê‚é
@@ -55,7 +57,7 @@
 		}
 		select = static_cast<STAT>(select_num);
 		
-		if(frame < 60){
+		if(frame < 6){
 			frame++;
 		}
 		//•`‰æ
@@ -63,11 +65,24 @@
 	}
 	//•`‰æ—p
 	void TitleWindow::render(){
+		
+		if(frame==6){
+			if(untitti==5){
+				untitti=0;
+			}else
+			{
+				untitti++;
+			}
+			frame=0;
+		}
+		//printfDx("%d",frame);
+		
 		DrawGraph(126, 60, TitleLogo, true);	//ƒƒS
-		DrawGraph(240, 80, NyanTitle, true);	//‚É‚á‚ñ‚«‚á‚Á‚Æ
-		PrintPicture::instance()->StringDraw("START",	358,450);
-        PrintPicture::instance()->StringDraw("OPTION",	358,480);
-		PrintPicture::instance()->StringDraw("EXIT",	358,510);
+		DrawGraph(240, 80, NyanTitle[untitti], true);	//‚É‚á‚ñ‚«‚á‚Á‚Æ
+		DrawGraph(40,540,team,true);
+		PrintPicture::instance()->StringDraw("START",	358,450,2);
+        PrintPicture::instance()->StringDraw("OPTION",	358,480,2);
+		PrintPicture::instance()->StringDraw("EXIT",	358,510,2);
 		switch(select){
 			//–îˆó‚ÌêŠ
 		case START:

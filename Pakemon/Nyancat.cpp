@@ -52,8 +52,11 @@ Nyancat::Nyancat(){
 	}
 	void Nyancat::update(ParentWindow* parent){
 		if(goalFlag){
-			parent->moveTo(ParentWindow::TITLE);
+			parent->moveTo(ParentWindow::RESULT);
 		}
+		/*if(deadFlag){
+			parent->moveTo(ParentWindow::RESULT);
+		}*/
 		GetHitKeyStateAll(key);
 		if(key[KEY_INPUT_C] == 1){
 			jump();
@@ -106,13 +109,13 @@ Nyancat::Nyancat(){
 		DrawFormatString(500, 100, 0, "nyan_y = %f", nyan_y);
 		//スコア表示
 		//DrawFormatString(100, 50, GetColor(255,255,255), "SCORE : %d", score);
-		PrintPicture::instance()->NumDraw(score,400,0);
+		PrintPicture::instance()->NumDraw(score,400,0,3);
 		//自キャラのポート番号表示
 		if(nyan_port != 0){
 			if(nyan_port==443){
-				PrintPicture::instance()->NumDraw(nyan_port, (int)(nyan_x + 20.0f),(int)(nyan_y - 10.0f));
+				PrintPicture::instance()->NumDraw(nyan_port, (int)(nyan_x + 20.0f),(int)(nyan_y - 10.0f),1);
 			}else{
-				PrintPicture::instance()->NumDraw(nyan_port, (int)(nyan_x + 15.0f),(int)(nyan_y - 10.0f));
+				PrintPicture::instance()->NumDraw(nyan_port, (int)(nyan_x + 15.0f),(int)(nyan_y - 10.0f),1);
 				}
 			}
 	}
@@ -122,12 +125,8 @@ Nyancat::Nyancat(){
 			for(int i=0;i<20;i++){
 			top+=1;
 			}
-			srand((unsigned) time(NULL));
-			voice=rand();
-			voice%=5;
-
-			/*printfDx("%d",voice);
-			voice=GetRand(6);*/
+			//printfDx("%d",voice);
+			voice=GetRand(6);
 			if(CheckSoundMem(sound[voice])==0){ 
 				PlaySoundMem(sound[voice],DX_PLAYTYPE_BACK);
 				
