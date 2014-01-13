@@ -4,7 +4,6 @@
 #define WPCAP
 #define HAVE_REMOTE
 
-
 #include <WinSock2.h>
 #include "Nyancat.h"
 #include <DxLib.h>

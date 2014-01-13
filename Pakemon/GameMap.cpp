@@ -8,7 +8,7 @@
 #include <list>
 
 using namespace std;
-#define __DEBUG_	//デバッグ時のみ
+#define __DEBUG__	//デバッグ時のみ
 
 GameMap::GameMap(){
 		segment = -1;

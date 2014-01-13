@@ -50,6 +50,7 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AdditionalIncludeDirectories>C:\Program Files (x86)\WinPcap\WpdPack\Include;C:\Users\b2142\Documents\WpdPack\Include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__DEBUG_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -72,6 +73,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Fps.cpp" />
     <ClCompile Include="Fps.h" />
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="KeyBoardTools.cpp" />
