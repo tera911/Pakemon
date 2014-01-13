@@ -7,9 +7,9 @@ private:
 	int MediumSpritNo[10];
 	int LargeSpritNo[10];
 	
-	int SmallSpritString[26];
-	int MediumSpritString[26];
-	int LargeSpritString[26];
+	int SmallSpritString[27];
+	int MediumSpritString[27];
+	int LargeSpritString[27];
 	PrintPicture();
 public: 
 	static PrintPicture* instance(){
