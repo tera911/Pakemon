@@ -7,11 +7,11 @@
 #define LARGEHEIGHT 28	//大きい画像の高さ
 PrintPicture::PrintPicture() {
 		LoadDivGraph( "item/font_number01_oic.png" , 10 , 10 , 1 , SMALLWIDTH , SMALLHEIGHT , SmallSpritNo );
-		LoadDivGraph( "item/font_number02_oic.png" , 10 , 10 , 1 , MEDIUMWIDTH , MEDIUMHEIGHT , MediumSpritNo ) ;
-		LoadDivGraph( "item/font_number03_oic.png" , 10 , 10 , 1 , LARGEWIDTH , LARGEHEIGHT , LargeSpritNo ) ;
-		LoadDivGraph( "item/font_alphabet01_oic.png" , 26 , 26 , 1 , SMALLHEIGHT , SMALLHEIGHT , SmallSpritString );
-		LoadDivGraph( "item/font_alphabet02_oic.png" , 26 , 26 , 1 , MEDIUMWIDTH , MEDIUMHEIGHT , MediumSpritString );
-		LoadDivGraph( "item/font_alphabet03_oic.png" , 26 , 26 , 1 , LARGEWIDTH , LARGEHEIGHT , LargeSpritString );
+		LoadDivGraph( "item/font_number02_oic.png" , 10 , 10 , 1 , MEDIUMWIDTH , MEDIUMHEIGHT , MediumSpritNo );
+		LoadDivGraph( "item/font_number03_oic.png" , 10 , 10 , 1 , LARGEWIDTH , LARGEHEIGHT , LargeSpritNo );
+		LoadDivGraph( "item/font_alphabet01_oic.png" , 27 , 27 , 1 , SMALLHEIGHT , SMALLHEIGHT , SmallSpritString );
+		LoadDivGraph( "item/font_alphabet02_oic.png" , 27 , 27 , 1 , MEDIUMWIDTH , MEDIUMHEIGHT , MediumSpritString );
+		LoadDivGraph( "item/font_alphabet03_oic.png" , 27 , 27 , 1 , LARGEWIDTH , LARGEHEIGHT , LargeSpritString );
 	}
 
 // 数値をグラフィック表示する関数
@@ -63,6 +63,9 @@ PrintPicture::PrintPicture() {
 		if('A'<=String[i]&&String[i]<='Z'){
 			DrawGraph( i*SMALLWIDTH + x , y , SmallSpritString[String[i]-'A' ], TRUE ) ;
 			}
+		if('?'==String[i]){
+				DrawGraph(i*SMALLWIDTH+x,y,SmallSpritString[26],TRUE);
+			}
 		}
 		break;
 	case 2:
@@ -70,6 +73,9 @@ PrintPicture::PrintPicture() {
 		for(i= 0;i<Length;i++){
 		if('A'<=String[i]&&String[i]<='Z'){
 			DrawGraph( i*MEDIUMWIDTH + x , y , MediumSpritString[String[i]-'A' ], TRUE ) ;
+		}
+		if('?'==String[i]){
+				DrawGraph(i*MEDIUMWIDTH+x,y,MediumSpritString[26],TRUE);
 			}
 		}
 		break;
@@ -78,6 +84,9 @@ PrintPicture::PrintPicture() {
 		for(i= 0;i<Length;i++){
 		if('A'<=String[i]&&String[i]<='Z'){
 			DrawGraph( i*LARGEWIDTH + x , y , LargeSpritString[String[i]-'A' ], TRUE ) ;
+			}
+		if('?'==String[i]){
+				DrawGraph(i*LARGEWIDTH+x,y,LargeSpritString[26],TRUE);
 			}
 		}
 		break;

@@ -72,12 +72,12 @@ void ResultWindow::render(){
 	PrintPicture *print = PrintPicture::instance();
 	print->StringDraw("PLAYSCORE",270,100,3);
 	print->NumDraw(score, (800 + 28 * (10 - length)) / 2, 170,3);
-	print->StringDraw("REMAINING TIME ",400, 280, 2);
-	print->NumDraw(remainingTime, 600, 280, 2);
+	print->StringDraw("REMAINING TIME",400, 280, 2);
+	print->NumDraw(remainingTime, 630, 280, 2);
 	if(!goal){
 		PrintPicture::instance()->StringDraw("NYAN IS DEAD!!", 500, 300, 2);
 	}
-	print->StringDraw("RETRY",370,400,2);
+	print->StringDraw("RETRY?",370,400,2);
 	print->StringDraw("TITLE",370,440,2);
 	switch(select){
 			//–îˆó‚ÌêŠ
