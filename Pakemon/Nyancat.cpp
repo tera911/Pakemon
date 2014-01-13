@@ -49,6 +49,7 @@ Nyancat::Nyancat(){
 		leftflag = false;
 		goalFlag = false;
 		deadFlag = false;
+		frame=0;
 	}
 	void Nyancat::update(ParentWindow* parent){
 		if(goalFlag){
@@ -57,6 +58,10 @@ Nyancat::Nyancat(){
 		/*if(deadFlag){
 			parent->moveTo(ParentWindow::RESULT);
 		}*/
+		frame++;
+		if(frame>=9000){
+			parent->moveTo(ParentWindow::RESULT);
+		}
 		GetHitKeyStateAll(key);
 		if(key[KEY_INPUT_C] == 1){
 			jump();
@@ -108,8 +113,8 @@ Nyancat::Nyancat(){
 		//y座標位置調整
 		DrawFormatString(500, 100, 0, "nyan_y = %f", nyan_y);
 		//スコア表示
-		//DrawFormatString(100, 50, GetColor(255,255,255), "SCORE : %d", score);
-		PrintPicture::instance()->NumDraw(score,250, 15, 2);
+		PrintPicture::instance()->StringDraw("SCORE",150,0,2);
+		PrintPicture::instance()->NumDraw(score,250, 0, 2);
 		//自キャラのポート番号表示
 		if(nyan_port != 0){
 			if(nyan_port==443){
@@ -118,6 +123,8 @@ Nyancat::Nyancat(){
 				PrintPicture::instance()->NumDraw(nyan_port, (int)(nyan_x + 15.0f),(int)(nyan_y - 10.0f),1);
 				}
 			}
+		PrintPicture::instance()->StringDraw("TIME",600,0,2);
+		PrintPicture::instance()->NumDraw(150-frame/60,700,0,2);
 	}
 	void Nyancat::jump(){
 		if(!fall){
@@ -129,7 +136,6 @@ Nyancat::Nyancat(){
 			voice=GetRand(6);
 			if(CheckSoundMem(sound[voice])==0){ 
 				PlaySoundMem(sound[voice],DX_PLAYTYPE_BACK);
-				
 			}
 		}
 	}
