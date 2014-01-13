@@ -10,6 +10,16 @@
 using namespace std;
 #define __DEBUG__	//デバッグ時のみ
 
+struct Point{
+	int x0;	//左上
+	int y0;
+	int x1;	//右上
+	int y1;
+	int x2;	//右下
+	int y2;
+	int x3;	//左下
+	int y3;
+};
 GameMap::GameMap(){
 		segment = -1;
 		screen_x = 0;
@@ -35,7 +45,6 @@ void GameMap::render(){
 //	Animation();
 	//screenScroll_x(0.015f);
 	segment = (int)screen_x / MAP_WIDTH;
-	
 }
 void GameMap::render_block(int block_type, int x, int y){
 	if(block_type == 0){
@@ -167,8 +176,78 @@ int GameMap::checkMapHit(Nyancat* nyan){
 				nyan->revisePosition(3, (nyan_x + screen_x * 32.0f) - cb[0] * 32.0f);	//位置修正
 			}
 		}
-		//自キャラがブロックにめり込んだ場合　
+		//自キャラがブロックにめり込んだ場合ver2
 		if(map[cb[0]][cb[1]] & ALL_HIT_BLOCK){
+			//プレイヤの座標
+			struct Point nyanP	= {	(int)nyan_x,		(int)nyan_y, 
+									(int)nyan_x + 32,	(int)nyan_y, 
+									(int)nyan_x + 32,	(int)nyan_y + 32, 
+									(int)nyan_x,		(int)nyan_y + 32, };
+			//ブロックの座標
+			struct Point block	= {	(cb[0] - ceill(screen_x) + 1) * 32,				cb[1] * 32,
+									(cb[0] - ceill(screen_x) + 1) * 32 + 32,		cb[1] * 32, 
+									(cb[0] - ceill(screen_x) + 1) * 32 + 32,		cb[1] * 32 + 32, 
+									(cb[0] - ceill(screen_x) + 1) * 32,				cb[1] * 32 + 32};
+			struct Point block_center = {	(cb[0] - ceill(screen_x) + 1)  * 32 + 16, cb[1] * 32 + 16,
+											(cb[0] - ceill(screen_x) + 1)  * 32 + 16, cb[1] * 32 + 16,
+											(cb[0] - ceill(screen_x) + 1)  * 32 + 16, cb[1] * 32 + 16, 
+											(cb[0] - ceill(screen_x) + 1)  * 32 + 16, cb[1] * 32 + 16
+										};
+
+			//第何象限か振り分ける
+			//第１象限
+			/*if(nyan.x0 >= block_center.x0 || nyan.y0 >= block_center.y0){
+				printfDx("はいったーー！！！");
+			}
+			//第２象限
+			if(nyan.x1 <= block_center.x0 && nyan.y1 >= block_center.y0){
+				printfDx("はいったーー！！！");
+			}
+			//第３象限
+			if(nyan.x2 <= block_center.x0 && nyan.y2 <= block_center.y0){
+				printfDx("はいったーー！！！");
+			}
+			//第４象限
+			if(nyan.x3 >= block_center.x0 && nyan.y3 <= block_center.y0){
+				printfDx("はいったーー！！！");
+			}*/
+			//第１象限、第４象限
+			if(nyanP.x0 >= block_center.x0){
+				nyan->revisePosition(0,3);
+				//第１象限
+				if(nyanP.y0 >= block_center.y0){
+					nyan->revisePosition(1,3);
+					nyan->revisePosition(2,3);
+					printfDx("はいったーー！！！");
+				}
+				if(nyanP.y3 <= block_center.y0){//第４象限
+					nyan->revisePosition(0,3);
+					nyan->revisePosition(1,3);
+					printfDx("はいったーー！！！");
+				}
+			}
+			//第２、３象限
+			if(nyanP.x1 <= block_center.x0){
+				nyan->revisePosition(3,3);
+				if(nyanP.y1 >= block_center.y0){//第２象限
+					nyan->revisePosition(2,3);
+					nyan->revisePosition(3,3);
+					//printfDx("はいったーー！！！");
+				}
+				if(nyanP.y2 <= block_center.y0){//第３象限
+					printfDx("はいったーー！！！");
+					nyan->revisePosition(0,3);
+					nyan->revisePosition(3,3);
+				}
+			}
+			//printfDx("hit %.4f?\n",powf(block.x0,2 - nyan.x2) + powf(block.y0 - nyan.y2, 2));
+			if(powf(nyanP.x2 - block.x0,2) + powf(nyanP.y2 - block.y0, 2) == 0){
+				OutputDebugString("接触");
+			}
+		}
+
+		//自キャラがブロックにめり込んだ場合　
+	/*	if(map[cb[0]][cb[1]] & ALL_HIT_BLOCK){
 			float block_pos[2];
 			block_pos[0] = (float)(cb[0] * 32 + 16);	//ブロックの中心座標 x
 			block_pos[1] = (float)(cb[1] * 32 + 20);	//ブロックの中心座標 y
@@ -182,7 +261,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			}else if(block_pos[0] < (nyan_x + 32 + screen_x * 32)){	//左
 				nyan->revisePosition(1, (nyan_x + 32 + screen_x * 32) - block_pos[0]);
 			}
-		}
+		}*/
 
 		//アイテムを取得した処理
 		if(map[cb[0]][cb[1]] & DROPITEM){
@@ -262,7 +341,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		}
 		
 #ifdef __DEBUG_
-		//DrawBox((int)(cb[0] - screen_x) * 32, cb[1] * 32, (int)(cb[0] - screen_x) *32 + 32, cb[1] * 32 + 32, GetColor(200,0,0),true);
+		DrawBox((int)(cb[0] - screen_x) * 32, cb[1] * 32, (int)(cb[0] - screen_x) *32 + 32, cb[1] * 32 + 32, GetColor(200,0,0),true);
 		if(map[cb[0]][cb[1]] != 0){
 			DrawString(500, 100, "接触", GetColor(255,255,255));
 		}
