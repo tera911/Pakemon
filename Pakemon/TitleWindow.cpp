@@ -57,24 +57,23 @@
 		}
 		select = static_cast<STAT>(select_num);
 		
-		if(frame < 6){
+		if(frame < 48){
 			frame++;
+		}else{
+			frame = 12;
 		}
 		//ï`âÊ
 		render();
 	}
 	//ï`âÊóp
 	void TitleWindow::render(){
-		
-		if(frame==6){
-			if(untitti==5){
-				untitti=0;
-			}else
-			{
-				untitti++;
+		if(frame % 6 == 0){
+			untitti++;
+			if(untitti > 5){
+				untitti = 0;
 			}
-			frame=0;
 		}
+		
 		//printfDx("%d",frame);
 		
 		DrawGraph(126, 60, TitleLogo, true);	//ÉçÉS
