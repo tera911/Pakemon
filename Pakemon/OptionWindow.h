@@ -14,6 +14,13 @@ public :
 private:
 	int key[256];
 	int frame;	//フレームをカウントする用
+	enum packet{ICMP = 0,HTTP=1,TITLE=2};
+	packet select;
+	int select_num;
+	int Nyan[6];
+	int NyanBig[6];
+	int i;
+
 };
 
 #endif

@@ -120,8 +120,8 @@ Nyancat::Nyancat(){
 		DrawFormatString(500, 100, 0, "nyan_y = %f", nyan_y);
 #endif
 		//スコア表示
-		PrintPicture::instance()->StringDraw("SCORE",150,25,2);
-		PrintPicture::instance()->NumDraw(score,300, 25, 2);
+		PrintPicture::instance()->StringDraw("SCORE",350,25,2);
+		PrintPicture::instance()->NumDraw(score,450, 25, 2);
 		//自キャラのポート番号表示
 		if(nyan_port != 0){
 			if(nyan_port==443){
@@ -130,8 +130,8 @@ Nyancat::Nyancat(){
 				PrintPicture::instance()->NumDraw(nyan_port, (int)(nyan_x + 15.0f),(int)(nyan_y - 10.0f),1);
 				}
 			}
-		PrintPicture::instance()->StringDraw("TIME",600,0,2);
-		PrintPicture::instance()->NumDraw(150 - frame / 60 ,700,0,2);
+		PrintPicture::instance()->StringDraw("TIME",600,25,2);
+		PrintPicture::instance()->NumDraw(150 - frame / 60 ,700,25,2);
 	}
 	void Nyancat::jump(){
 		if(!fall){
