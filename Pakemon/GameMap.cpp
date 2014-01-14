@@ -47,14 +47,26 @@ void GameMap::render(){
 	//screenScroll_x(0.015f);
 	segment = (int)screen_x / MAP_WIDTH;
 	PrintPicture *pp = PrintPicture::instance();
-	pp->NumDraw(172,20, 15,1);
-	pp->StringDraw(".",41,15,1); 
-	pp->NumDraw(16,48, 15,1);
-	pp->StringDraw(".",62,15,1); 
-	pp->NumDraw(0 ,69, 15,1);
-	pp->StringDraw(".",76,15,1);
-	pp->NumDraw( 32 * segment,97, 15,1);
-	pp->StringDraw("/28" ,118, 15,1);
+	pp->NumDraw(172,31,25,1);
+	pp->StringDraw(".",39,27,1); 
+	pp->NumDraw(16,50, 25,1);
+	pp->StringDraw(".",60,27,1); 
+	pp->NumDraw(0 ,66, 25,1);
+	pp->StringDraw(".",76,27,1);
+	pp->NumDraw(000,97, 25,1);
+	/*pp->NumDraw( 32 * segment,97, 25,1);*/
+	pp->StringDraw("/" ,108, 25,1);
+	pp->NumDraw(28,130,25,1);
+
+	/*pp->NumDraw(172,30,25,2);
+	pp->StringDraw(".",47,27,2); 
+	pp->NumDraw(16,68, 25,2);
+	pp->StringDraw(".",84,27,2);
+	pp->NumDraw(0 ,95, 25,2);
+	pp->StringDraw(".",110,27,2);
+	pp->NumDraw( 32 * segment,118, 25,2);
+	pp->StringDraw("/" ,130, 25,2);
+	pp->NumDraw(28,163,25,2);*/
 	
 }
 void GameMap::render_block(int block_type, int x, int y){
