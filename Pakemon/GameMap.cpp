@@ -181,8 +181,8 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			//プレイヤの座標
 			struct Point nyanP	= {	(int)nyan_x,		(int)nyan_y, 
 									(int)nyan_x + 32,	(int)nyan_y, 
-									(int)nyan_x + 32,	(int)nyan_y + 32, 
-									(int)nyan_x,		(int)nyan_y + 32, };
+									(int)nyan_x + 32,	(int)nyan_y + 12, 
+									(int)nyan_x,		(int)nyan_y + 12, };
 			//ブロックの座標
 			struct Point block	= {	(cb[0] - ceill(screen_x) + 1) * 32,				cb[1] * 32,
 									(cb[0] - ceill(screen_x) + 1) * 32 + 32,		cb[1] * 32, 
