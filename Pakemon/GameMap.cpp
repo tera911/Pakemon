@@ -45,6 +45,16 @@ void GameMap::render(){
 //	Animation();
 	//screenScroll_x(0.015f);
 	segment = (int)screen_x / MAP_WIDTH;
+	PrintPicture *pp = PrintPicture::instance();
+	pp->NumDraw(172,20, 15,1);
+	pp->StringDraw(".",41,15,1); 
+	pp->NumDraw(16,48, 15,1);
+	pp->StringDraw(".",62,15,1); 
+	pp->NumDraw(0 ,69, 15,1);
+	pp->StringDraw(".",76,15,1);
+	pp->NumDraw( 32 * segment,97, 15,1);
+	pp->StringDraw("/28" ,118, 15,1);
+	
 }
 void GameMap::render_block(int block_type, int x, int y){
 	if(block_type == 0){
@@ -144,7 +154,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		//上に飛び出てるか
 		if(fcb_32[1] > nyan_y){
 			if(map[tb[0]][tb[1]] & ALL_HIT_BLOCK){
-				nyan->revisePosition(2, nyan_y - cb[1] * 32);	//位置修正
+				nyan->revisePosition(2, cb[1] * 32 - nyan_y);	//位置修正
 			}
 			if(map[tb[0]][tb[1]] & ITEM){
 				if(map[tb[0]][tb[1]] & (ROUTER_FLAG & ~ITEM)){
@@ -158,7 +168,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		//下方向に飛び出た場合
 		if(fcb_32[1] + 11 < nyan_y){	//本当は cb[1] * 32 + 32 < nyan_y + 32だけど高速化のため ;キャラクタのサイズが20のため + 12
 			if(map[bb[0]][bb[1]] & ALL_HIT_BLOCK){
-				nyan->revisePosition(0, (cb[1] * 32 + 12) - nyan_y);	//位置修正
+				nyan->revisePosition(0, nyan_y - (cb[1] * 32 + 12));	//位置修正
 				nyan->offFall();
 			}else{
 				nyan->onFall();
@@ -212,18 +222,17 @@ int GameMap::checkMapHit(Nyancat* nyan){
 				printfDx("はいったーー！！！");
 			}*/
 			//第１象限、第４象限
-			if(nyanP.x0 >= block_center.x0){
+			if(nyanP.x0 <= block_center.x0){
 				nyan->revisePosition(0,3);
 				//第１象限
 				if(nyanP.y0 >= block_center.y0){
-					nyan->revisePosition(1,3);
-					nyan->revisePosition(2,3);
-					printfDx("はいったーー！！！");
-				}
-				if(nyanP.y3 <= block_center.y0){//第４象限
 					nyan->revisePosition(0,3);
 					nyan->revisePosition(1,3);
 					printfDx("はいったーー！！！");
+				}
+				if(nyanP.y3 <= block_center.y0){//第４象限
+					nyan->revisePosition(0,12);
+					nyan->revisePosition(1,3);
 				}
 			}
 			//第２、３象限
@@ -232,11 +241,11 @@ int GameMap::checkMapHit(Nyancat* nyan){
 				if(nyanP.y1 >= block_center.y0){//第２象限
 					nyan->revisePosition(2,3);
 					nyan->revisePosition(3,3);
-					//printfDx("はいったーー！！！");
+					printfDx("はいったーー！！！");
 				}
 				if(nyanP.y2 <= block_center.y0){//第３象限
-					printfDx("はいったーー！！！");
-					nyan->revisePosition(0,3);
+					//printfDx("はいったーー！！！");
+					nyan->revisePosition(0,12);
 					nyan->revisePosition(3,3);
 				}
 			}

@@ -100,10 +100,13 @@ Nyancat::Nyancat(){
 		nyan_y += GA;
 		if(left > 0){
 			left -= 0.5;
-			
+		}else{
+			left = 0;
 		}
 		if(right > 0){
 			right -= 0.5;
+		}else{
+			right = 0;
 		}
 		if(top > 0){
 			onFall();
@@ -147,11 +150,11 @@ Nyancat::Nyancat(){
 		nyan_y +=1;
 	}
 	void Nyancat::moveLeft(){
-		left = 3;
+		left = 3.2;
 		leftflag=true;
 	}
 	void Nyancat::moveRight(){
-		right = 3;
+		right = 3.2;
 		leftflag=false;
 	}
 	void Nyancat::grabity(){
@@ -204,13 +207,13 @@ Nyancat::Nyancat(){
 	void Nyancat::revisePosition(int direction, float value){
 		switch(direction){
 		case 0:
-			nyan_y = nyan_y + value;
+			nyan_y = nyan_y - value;
 		break;
 		case 1:
 			nyan_x = nyan_x + value;
 		break;
 		case 2:
-			nyan_y = nyan_y - value;
+			nyan_y = nyan_y + value;
 		break;
 		case 3:
 			nyan_x = nyan_x - value;
