@@ -124,7 +124,7 @@ void GameMap::render_block(int block_type, int x, int y){
 int GameMap::checkMapHit(Nyancat* nyan){
 		float nyan_x = nyan->getNyanX();
 		float nyan_y = nyan->getNyanY();
-		int tb[2], bb[2], cb[2],lb[2], rb[2];		//上、下、中央、左、右ブロック [x,y] 
+		int tb[2], bb[2], cb[2],lb[2], rb[2], rbb[2], lbb[2];		//上、下、中央、左、右ブロック [x,y] 　右斜め下 左斜め下
 		float fcb_32[2];
 		//ブロックにめり込むのを防ぐ
 		cb[0] = round((nyan_x + screen_x * 32) / 32);	//自キャラのX座標
@@ -142,8 +142,16 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		lb[0] = cb[0] -1;	//自キャラの左ブロックのx座標
 		lb[1] = cb[1];		//自キャラの左ブロックのy座標
 
-		rb[0] = cb[0] + 1;	//自キャラの左ブロックのx座標
-		rb[1] = cb[1];		//自キャラの左ブロックのy座標
+		rb[0] = cb[0] + 1;	//自キャラの右ブロックのx座標
+		rb[1] = cb[1];		//自キャラの右ブロックのy座標
+
+		rbb[0] = rb[0];		//自キャラの右斜め下ブロックx
+		rbb[1] = bb[1];		//自キャラの右斜め下ブロックy
+
+		lbb[0] = lb[0];		//自キャラの左斜め下ブロックx
+		lbb[1] = bb[1];		//自キャラの左斜め下ブロックy
+
+		
 #ifdef __DEBUG_
 		DrawFormatString(600,70, GetColor(0,0,0), "x = %d",cb[0]);
 		DrawFormatString(600,90, GetColor(0,0,0), "y = %d",cb[1]);
@@ -195,112 +203,26 @@ int GameMap::checkMapHit(Nyancat* nyan){
 									(int)nyan_x + 32,	(int)nyan_y + 12, 
 									(int)nyan_x,		(int)nyan_y + 12, };
 			//ブロックの座標
-			struct Point block	= {	(cb[0] - ceill(screen_x) + 1) * 32,				cb[1] * 32,
-									(cb[0] - ceill(screen_x) + 1) * 32 + 32,		cb[1] * 32, 
-									(cb[0] - ceill(screen_x) + 1) * 32 + 32,		cb[1] * 32 + 32, 
-									(cb[0] - ceill(screen_x) + 1) * 32,				cb[1] * 32 + 32};
-			struct Point block_center = {	(cb[0] - ceill(screen_x) + 1)  * 32 + 16, cb[1] * 32 + 16,
-											(cb[0] - ceill(screen_x) + 1)  * 32 + 16, cb[1] * 32 + 16,
-											(cb[0] - ceill(screen_x) + 1)  * 32 + 16, cb[1] * 32 + 16, 
-											(cb[0] - ceill(screen_x) + 1)  * 32 + 16, cb[1] * 32 + 16
+			struct Point block	= {	(cb[0] - (int)ceill(screen_x) + 1) * 32,				cb[1] * 32,
+									(cb[0] - (int)ceill(screen_x) + 1) * 32 + 32,		cb[1] * 32, 
+									(cb[0] - (int)ceill(screen_x) + 1) * 32 + 32,		cb[1] * 32 + 32, 
+									(cb[0] - (int)ceill(screen_x) + 1) * 32,				cb[1] * 32 + 32};
+			struct Point block_center = {	(cb[0] - (int)ceill(screen_x) + 1)  * 32 + 16, cb[1] * 32 + 16,
+											(cb[0] - (int)ceill(screen_x) + 1)  * 32 + 16, cb[1] * 32 + 16,
+											(cb[0] - (int)ceill(screen_x) + 1)  * 32 + 16, cb[1] * 32 + 16, 
+											(cb[0] - (int)ceill(screen_x) + 1)  * 32 + 16, cb[1] * 32 + 16
 										};
 
 			//第何象限か振り分ける
 			//3,4
 			if(nyanP.y3 >= block.y0 && nyanP.y3 < block_center.y0){
-				//3
-				if(nyanP.x1 >= block.x0){
-					nyan->revisePosition(0, nyanP.y3 + GRAVITY - block.y0);	//上に押し上げる
-					nyan->revisePosition(3, nyanP.x1 - block.x0);			//左にずらす
-				}
-				//4
-				if(nyanP.x0 <= block.x1){
-					nyan->revisePosition(0, nyanP.y3 + GRAVITY - block.y0);	//上に押し上げる
-					nyan->revisePosition(1, block.x1 - nyanP.x0);			//右にずらす
-				}
+				nyan->revisePosition(0, (float)nyanP.y3 + GRAVITY - block.y0);	//上に押し上げる
 			}
 			//1,2
-			if(nyanP.y0 <= block.y3 && nyanP.y0 > block_center.y0){
-				//2
-				if(nyanP.x1 >= block.x0){
-					nyan->revisePosition(2, block.y3 - nyanP.y0);			//下に押し上げる
-					nyan->revisePosition(3, nyanP.x1 - block.x0);			//左にずらす
-				}
-				//1
-				if(nyanP.x0 <= block.x1){
-					nyan->revisePosition(2, block.y3 - nyanP.y0);			//下に押し上げる
-					nyan->revisePosition(1, block.x1 - nyanP.x0);			//右にずらす
-				}
-			}
-			
-			//第１象限
-			/*if(nyan.x0 >= block_center.x0 || nyan.y0 >= block_center.y0){
-				printfDx("はいったーー！！！");
-			}
-			//第２象限
-			if(nyan.x1 <= block_center.x0 && nyan.y1 >= block_center.y0){
-				printfDx("はいったーー！！！");
-			}
-			//第３象限
-			if(nyan.x2 <= block_center.x0 && nyan.y2 <= block_center.y0){
-				printfDx("はいったーー！！！");
-			}
-			//第４象限
-			if(nyan.x3 >= block_center.x0 && nyan.y3 <= block_center.y0){
-				printfDx("はいったーー！！！");
-			}*/
-			//第１象限、第４象限
-		/*	if(nyanP.x0 >= block_center.x0){
-				nyan->revisePosition(0,3);
-				//第１象限
-				if(nyanP.y0 >= block_center.y0){
-					nyan->revisePosition(0,3);
-					nyan->revisePosition(1,3);
-					printfDx("はいったーー！！！");
-				}
-				if(nyanP.y3 <= block_center.y0){//第４象限
-					printfDx("はいったーー！！！");
-					nyan->revisePosition(0,12);
-					nyan->revisePosition(1,3);
-				}
-			}
-			//第２、３象限
-			if(nyanP.x1 <= block_center.x0){
-				nyan->revisePosition(3,3);
-				if(nyanP.y1 >= block_center.y0){//第２象限
-					nyan->revisePosition(2,3);
-					nyan->revisePosition(3,3);
-					printfDx("はいったーー！！！");
-				}
-				if(nyanP.y2 <= block_center.y0){//第３象限
-					printfDx("はいったーー！！！");
-					nyan->revisePosition(0,12);
-					nyan->revisePosition(3,3);
-				}
-			}
-			*/
-			//printfDx("hit %.4f?\n",powf(block.x0,2 - nyan.x2) + powf(block.y0 - nyan.y2, 2));
-			if(powf(nyanP.x2 - block.x0,2) + powf(nyanP.y2 - block.y0, 2) == 0){
-				OutputDebugString("接触");
+			if(nyanP.y0 <= block.y3 && nyanP.y0 + 12 > block_center.y0){
+				nyan->revisePosition(2, (float)block.y3 - nyanP.y0);			//下に押し上げる
 			}
 		}
-
-		//自キャラがブロックにめり込んだ場合　
-	/*	if(map[cb[0]][cb[1]] & ALL_HIT_BLOCK){
-			float block_pos[2];
-			block_pos[0] = (float)(cb[0] * 32 + 16);	//ブロックの中心座標 x
-			block_pos[1] = (float)(cb[1] * 32 + 20);	//ブロックの中心座標 y
-		
-			if(block_pos[1] > nyan_y + 32){		//上
-				nyan->revisePosition(0, block_pos[1] - (nyan_y + 32));
-			}else if(block_pos[1] < nyan_y){	//下
-				nyan->revisePosition(2, nyan_y - block_pos[1]);
-			}else if(block_pos[0] > (nyan_x + screen_x * 32)){		//右
-				nyan->revisePosition(3, block_pos[0] - (nyan_x + screen_x * 32));
-			}else if(block_pos[0] < (nyan_x + 32 + screen_x * 32)){	//左
-				nyan->revisePosition(1, (nyan_x + 32 + screen_x * 32) - block_pos[0]);
-			}
-		}*/
 
 		//アイテムを取得した処理
 		if(map[cb[0]][cb[1]] & DROPITEM){
@@ -380,7 +302,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		}
 		
 #ifdef __DEBUG_
-		//DrawBox((int)(cb[0] - screen_x) * 32, cb[1] * 32, (int)(cb[0] - screen_x) *32 + 32, cb[1] * 32 + 32, GetColor(200,0,0),true);
+		DrawBox((int)(cb[0] - ceill(screen_x)) * 32, cb[1] * 32, (int)(cb[0] - ceill(screen_x)) *32 + 32, cb[1] * 32 + 32, GetColor(200,0,0),true);
 		if(map[cb[0]][cb[1]] != 0){
 			DrawString(500, 100, "接触", GetColor(255,255,255));
 		}

@@ -89,7 +89,6 @@ Nyancat::Nyancat(){
 		{
 			DrawGraph((int)nyan_x, (int)nyan_y, handle[3], true);
 		}
-		
 		nyan_x -= left;
 		nyan_x += right;
 		nyan_y -= top;
@@ -117,7 +116,8 @@ Nyancat::Nyancat(){
 	
 #ifdef __DEBUG_
 		//y座標位置調整
-		DrawFormatString(500, 100, 0, "nyan_y = %f", nyan_y);
+		DrawFormatString(500, 30, 0, "nyan_y = %f", nyan_y);
+		DrawFormatString(500, 50, 0, "nyan_x = %f", nyan_x);
 #endif
 		//スコア表示
 		PrintPicture::instance()->StringDraw("SCORE",150,25,2);
@@ -198,6 +198,7 @@ Nyancat::Nyancat(){
 	void Nyancat::offFall(){
 		fall = false;
 	}
+	//自由落下かどうか
 	bool Nyancat::isMoveNyan(){
 		return (fall);
 	}
@@ -210,13 +211,13 @@ Nyancat::Nyancat(){
 			nyan_y = nyan_y - value;
 		break;
 		case 1:
-			nyan_x = nyan_x + value;
+			nyan_x = nyan_x + value ;
 		break;
 		case 2:
-			nyan_y = nyan_y + value;
+			nyan_y = nyan_y + value - GA;
 		break;
 		case 3:
-			nyan_x = nyan_x - value;
+			nyan_x = nyan_x - value ;
 		break;
 		}
 	}
