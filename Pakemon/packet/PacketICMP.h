@@ -17,7 +17,7 @@ public:
 		}
 	}
 	ip_header* getPacket(){
-		return &icmp[300];
+		return &icmp[400];
 	};
 };
 #endif
