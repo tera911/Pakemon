@@ -9,6 +9,7 @@
 
 using namespace std;
 #define __DEBUG__	//デバッグ時のみ
+#define GRAVITY (12) //重量九
 
 struct Point{
 	int x0;	//左上
@@ -205,6 +206,33 @@ int GameMap::checkMapHit(Nyancat* nyan){
 										};
 
 			//第何象限か振り分ける
+			//3,4
+			if(nyanP.y3 >= block.y0 && nyanP.y3 < block_center.y0){
+				//3
+				if(nyanP.x1 >= block.x0){
+					nyan->revisePosition(0, nyanP.y3 + GRAVITY - block.y0);	//上に押し上げる
+					nyan->revisePosition(3, nyanP.x1 - block.x0);			//左にずらす
+				}
+				//4
+				if(nyanP.x0 <= block.x1){
+					nyan->revisePosition(0, nyanP.y3 + GRAVITY - block.y0);	//上に押し上げる
+					nyan->revisePosition(1, block.x1 - nyanP.x0);			//右にずらす
+				}
+			}
+			//1,2
+			if(nyanP.y0 <= block.y3 && nyanP.y0 > block_center.y0){
+				//2
+				if(nyanP.x1 >= block.x0){
+					nyan->revisePosition(2, block.y3 - nyanP.y0);			//下に押し上げる
+					nyan->revisePosition(3, nyanP.x1 - block.x0);			//左にずらす
+				}
+				//1
+				if(nyanP.x0 <= block.x1){
+					nyan->revisePosition(2, block.y3 - nyanP.y0);			//下に押し上げる
+					nyan->revisePosition(1, block.x1 - nyanP.x0);			//右にずらす
+				}
+			}
+			
 			//第１象限
 			/*if(nyan.x0 >= block_center.x0 || nyan.y0 >= block_center.y0){
 				printfDx("はいったーー！！！");
@@ -222,7 +250,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 				printfDx("はいったーー！！！");
 			}*/
 			//第１象限、第４象限
-			if(nyanP.x0 <= block_center.x0){
+		/*	if(nyanP.x0 >= block_center.x0){
 				nyan->revisePosition(0,3);
 				//第１象限
 				if(nyanP.y0 >= block_center.y0){
@@ -231,6 +259,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 					printfDx("はいったーー！！！");
 				}
 				if(nyanP.y3 <= block_center.y0){//第４象限
+					printfDx("はいったーー！！！");
 					nyan->revisePosition(0,12);
 					nyan->revisePosition(1,3);
 				}
@@ -244,11 +273,12 @@ int GameMap::checkMapHit(Nyancat* nyan){
 					printfDx("はいったーー！！！");
 				}
 				if(nyanP.y2 <= block_center.y0){//第３象限
-					//printfDx("はいったーー！！！");
+					printfDx("はいったーー！！！");
 					nyan->revisePosition(0,12);
 					nyan->revisePosition(3,3);
 				}
 			}
+			*/
 			//printfDx("hit %.4f?\n",powf(block.x0,2 - nyan.x2) + powf(block.y0 - nyan.y2, 2));
 			if(powf(nyanP.x2 - block.x0,2) + powf(nyanP.y2 - block.y0, 2) == 0){
 				OutputDebugString("接触");
@@ -350,7 +380,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		}
 		
 #ifdef __DEBUG_
-		DrawBox((int)(cb[0] - screen_x) * 32, cb[1] * 32, (int)(cb[0] - screen_x) *32 + 32, cb[1] * 32 + 32, GetColor(200,0,0),true);
+		//DrawBox((int)(cb[0] - screen_x) * 32, cb[1] * 32, (int)(cb[0] - screen_x) *32 + 32, cb[1] * 32 + 32, GetColor(200,0,0),true);
 		if(map[cb[0]][cb[1]] != 0){
 			DrawString(500, 100, "接触", GetColor(255,255,255));
 		}
