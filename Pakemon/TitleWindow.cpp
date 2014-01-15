@@ -16,7 +16,7 @@
 		team = LoadGraph("item/oic2c.class_oic.png");
 		frame = 0;
 		untitti=0;
-		PlaySoundMem(BGM,DX_PLAYTYPE_LOOP);
+		BGM=LoadSoundMem("Nyan.ogg");
 	}
 
 	//繰り返し実行される
@@ -32,7 +32,6 @@
 		if(key[KEY_INPUT_DOWN] == 1){
 			select_num++;
 		}
-			PlaySoundMem(BGM,DX_PLAYTYPE_LOOP);
 		//Enter, Spaceが押されたら確定
 		if(key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_RETURN] == 1){
 			switch(select){
@@ -50,8 +49,6 @@
 				break;
 			}
 		}
-		//BGM=LoadSoundMem("Nyan.mp3");
-		//PlaySoundMem(BGM,DX_PLAYTYPE_LOOP);
 		if(select_num < 0){
 			select_num = 2;
 		}else if(select_num > 2){
@@ -63,6 +60,10 @@
 			frame++;
 		}else{
 			frame = 12;
+		}
+		if(CheckSoundMem(BGM)==0){
+			ChangeVolumeSoundMem(80,BGM) ;
+				PlaySoundMem(BGM,DX_PLAYTYPE_LOOP);
 		}
 		//描画
 		render();
@@ -108,5 +109,5 @@ int TitleWindow::GetHitKeyStateAll_2(int KeyStateBuf[]){
 
 	//デストラクタ
 	TitleWindow::~TitleWindow(){
-
+		StopSoundMem(BGM);
 	}
