@@ -16,6 +16,7 @@
 		team = LoadGraph("item/oic2c.class_oic.png");
 		frame = 0;
 		untitti=0;
+		PlaySoundMem(BGM,DX_PLAYTYPE_LOOP);
 	}
 
 	//åJÇËï‘Çµé¿çsÇ≥ÇÍÇÈ
@@ -31,7 +32,7 @@
 		if(key[KEY_INPUT_DOWN] == 1){
 			select_num++;
 		}
-		
+			PlaySoundMem(BGM,DX_PLAYTYPE_LOOP);
 		//Enter, SpaceÇ™âüÇ≥ÇÍÇΩÇÁämíË
 		if(key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_RETURN] == 1){
 			switch(select){
@@ -49,7 +50,8 @@
 				break;
 			}
 		}
-		
+		BGM=LoadSoundMem("Nyan.mp3");
+		PlaySoundMem(BGM,DX_PLAYTYPE_LOOP);
 		if(select_num < 0){
 			select_num = 2;
 		}else if(select_num > 2){
@@ -73,9 +75,7 @@
 				untitti = 0;
 			}
 		}
-		
 		//printfDx("%d",frame);
-		
 		DrawGraph(126, 60, TitleLogo, true);	//ÉçÉS
 		DrawGraph(240, 80, NyanTitle[untitti], true);	//Ç…Ç·ÇÒÇ´Ç·Ç¡Ç∆
 		DrawGraph(40,540,team,true);

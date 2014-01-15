@@ -25,6 +25,7 @@ private:
 	int frame;
 	int team;
 	int untitti;
+	int BGM;
 };
 
 #endif
