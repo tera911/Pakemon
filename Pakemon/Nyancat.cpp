@@ -150,11 +150,11 @@ Nyancat::Nyancat(){
 		nyan_y +=1;
 	}
 	void Nyancat::moveLeft(){
-		left = 3.2;
+		left = 3.2f;
 		leftflag=true;
 	}
 	void Nyancat::moveRight(){
-		right = 3.2;
+		right = 3.2f;
 		leftflag=false;
 	}
 	void Nyancat::grabity(){
@@ -239,7 +239,9 @@ Nyancat::Nyancat(){
 	void Nyancat::changePortNumber(int port){
 		nyan_port = port;
 	}
-	//セグメント移動用
+	int Nyancat::getPortNumber(){
+		return nyan_port;
+	}
 	//ニャンキャットの位置を左上にする
 	void Nyancat::flyday(){
 		nyan_x = 100;

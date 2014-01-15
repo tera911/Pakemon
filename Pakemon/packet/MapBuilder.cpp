@@ -61,8 +61,8 @@ int MapBuilder::randblock(struct ip_address ip, int seed = 0){
 	 8,8,8,8,8,//‚Í‚Ä‚ÈƒuƒƒbƒN or áŠQ•¨ 23/100
 	 8,8,8,8,8,8,8,8,8,8,//áŠQ•¨ 
 	 5,5,5,5,5,//áŠQ•¨‚Q’i–Ú
-	 10,10,0
-
+	 10,10,
+	 0			//FW
 	};
 
 	
@@ -106,13 +106,13 @@ void MapBuilder::buildMap(ip_header* ih, int size){
 						if(fw_create){
 							for(int y = 0; y < MAP_HEIGHT; y++){
 								for(int fx = x -2; fx < x; fx++){
-									map[fx][y] = ASHIBA | acceptBlock;
+									map[fx][y] = ASHIBA | acceptBlock | BLOCK_FW;
 								}
 							}
 							fw = true;
 						}
 					}else{
-						map[x][pos] = BLOCK_NONE;
+						map[x][pos] = 0;
 					}
 				}else{
 					int random = 0;

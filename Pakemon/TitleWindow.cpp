@@ -50,8 +50,8 @@
 				break;
 			}
 		}
-		BGM=LoadSoundMem("Nyan.mp3");
-		PlaySoundMem(BGM,DX_PLAYTYPE_LOOP);
+		//BGM=LoadSoundMem("Nyan.mp3");
+		//PlaySoundMem(BGM,DX_PLAYTYPE_LOOP);
 		if(select_num < 0){
 			select_num = 2;
 		}else if(select_num > 2){

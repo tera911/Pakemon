@@ -45,8 +45,9 @@ void GameMap::render(){
 			if(map[x][y] & COIN_ALL && map[x][y] & ASHIBA){
 				render_fw(map[x][y], x, y);
 				break;
+			}else{
+				render_block(map[x][y], x, y);
 			}
-			render_block(map[x][y], x, y);
 		}
 	}
 //	Animation();
@@ -91,19 +92,42 @@ void GameMap::render(){
 }
 void GameMap::render_fw(int block_type, int x, int y){
 	BLOCK block = static_cast<BLOCK>(block_type & ASHIBA);
-	for(int fy = y; y < MAP_HEIGHT; y++){
-		render_block(ASHIBA, x, y);
+	for(int fy = y; fy < MAP_HEIGHT; fy++){
+		render_block(map[x][fy], x, fy);		//ブロック表示
+		if(x % 2 == 0){							//炎表示用処理
+			if(map[x][fy] != 0){
+				fy % 4 == 0 ? render_block(BLOCK_FIRE, x, fy) : "" ;
+			}
+		}else{									//炎表示用処理
+			if(map[x][fy] != 0){
+				fy % 3 == 0 ? render_block(BLOCK_FIRE, x, fy) : "" ;
+			}
+		}
 	}
-	if( x % 2 == 0){
-		render_block(BLOCK_FIRE, x, 1);
-		render_block(BLOCK_FIRE, x, 6);
-		render_block(BLOCK_FIRE, x, 9);
-		render_block(BLOCK_FIRE, x, 14);
-	}else{
-		render_block(BLOCK_FIRE, x, 1);
-		render_block(BLOCK_FIRE, x, 3);
-		render_block(BLOCK_FIRE, x, 8);
-		render_block(BLOCK_FIRE, x, 12);
+	if(map[x - 1][10] == block_type){
+		int block_x =  (int)floor((x - screen_x) * 32);
+		int block_y  = y * 32;
+		PrintPicture::instance()->StringDraw("PORT", block_x - 30, 15 * 32, 2);	//ポート表示
+		switch(block_type & COIN_ALL){
+			case COIN_FTP:
+				PrintPicture::instance()->NumDraw(21, block_x, 13 * 32 + 16, 3);
+				break;
+			case COIN_SSH:
+				PrintPicture::instance()->NumDraw(22, block_x, 13 * 32 + 16, 3);
+				break;
+			case COIN_SMTP:
+				PrintPicture::instance()->NumDraw(25, block_x, 13 * 32 + 16, 3);
+				break;
+			case COIN_DNS:
+				PrintPicture::instance()->NumDraw(53, block_x, 13 * 32 + 16, 3);
+				break;
+			case COIN_HTTP:
+				PrintPicture::instance()->NumDraw(80, block_x, 13 * 32 + 16, 3);
+				break;
+			case COIN_HTTPS:
+				PrintPicture::instance()->NumDraw(443, block_x, 13 * 32 + 16, 3);
+				break;
+		}
 	}
 }
 void GameMap::render_block(int block_type, int x, int y){
@@ -168,7 +192,10 @@ void GameMap::render_block(int block_type, int x, int y){
 #endif
 		break;
 	}
-	if(block_type == BLOCK_FIRE && !(map[x][y] == BLOCK_NONE)){
+	if(block_type & BLOCK_FW){
+		DrawGraph(block_x, block_y, block_brick, true);
+	}
+	if(block_type == BLOCK_FIRE){
 		DrawGraph(block_x, block_y, block_fire32, true);
 	}
 }
@@ -215,7 +242,9 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		if(fcb_32[0] > (nyan_x + screen_x * 32)){
 			if(map[lb[0]][lb[1]] & ALL_HIT_BLOCK){
 				if(map[lb[0]][lb[1]] & COIN_ALL){
-					clear_fw(nyan, lb[0], lb[1]);
+					if(clear_fw(nyan, lb[0], lb[1])){
+						nyan->revisePosition(1, cb[0] * 32 - (nyan_x + screen_x * 32.0f));	//位置修正
+					}
 				}else{
 					nyan->revisePosition(1, cb[0] * 32 - (nyan_x + screen_x * 32.0f));	//位置修正
 				}
@@ -225,7 +254,9 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		if(fcb_32[0] < (nyan_x + screen_x * 32)){
 			if(map[rb[0]][rb[1]] & ALL_HIT_BLOCK){
 				if(map[rb[0]][rb[1]] & COIN_ALL){
-					clear_fw(nyan, rb[0], rb[1]);
+					if(clear_fw(nyan, rb[0], rb[1])){
+						nyan->revisePosition(3, (nyan_x + screen_x * 32.0f) - cb[0] * 32.0f);	//位置修正
+					}
 				}else{
 					nyan->revisePosition(3, (nyan_x + screen_x * 32.0f) - cb[0] * 32.0f);	//位置修正
 				}
@@ -282,16 +313,21 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			if(nyanP.y0 <= block.y3 && nyanP.y0 + 12 > block_center.y0){
 				nyan->revisePosition(2, (float)block.y3 - nyanP.y0);			//下に押し上げる
 			}
+
+			//FWの処理
+			if(map[cb[0]][cb[1]] & COIN_ALL){
+				clear_fw(nyan, cb[0], cb[1]);
+			}
 		}
 
 		//アイテムを取得した処理
 		if(map[cb[0]][cb[1]] & DROPITEM){
 			if(map[cb[0]][cb[1]] == SWITCH){
 				switchAction(nyan);
-				map[cb[0]][cb[1]] = BLOCK_NONE;
+				map[cb[0]][cb[1]] = 0;
 			}else if(map[cb[0]][cb[1]] == ROUTER){
 				nextSegment(nyan);
-				map[cb[0]][cb[1]] = BLOCK_NONE;
+				map[cb[0]][cb[1]] = 0;
 			}
 		}
 
@@ -306,7 +342,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		}
 
 		//自キャラがパケットを取得した場合
-		if(map[cb[0]][cb[1]] & COIN_ALL){
+		if(map[cb[0]][cb[1]] & COIN_ALL && !(map[cb[0]][cb[1]] & ASHIBA)){
 			nyan->sumScore(50);	//スコア加算
 
 			//自キャラのポート番号変更
@@ -362,7 +398,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 		}
 		
 #ifdef __DEBUG_
-		DrawBox((int)(cb[0] - ceill(screen_x)) * 32, cb[1] * 32, (int)(cb[0] - ceill(screen_x)) *32 + 32, cb[1] * 32 + 32, GetColor(200,0,0),true);
+		//DrawBox((int)(cb[0] - ceill(screen_x)) * 32, cb[1] * 32, (int)(cb[0] - ceill(screen_x)) *32 + 32, cb[1] * 32 + 32, GetColor(200,0,0),true);
 		if(map[cb[0]][cb[1]] != 0){
 			DrawString(500, 100, "接触", GetColor(255,255,255));
 		}
@@ -376,11 +412,39 @@ void GameMap::screenScroll_x(float value){
 }
 //左のx座標 右のx座標 y座標
 //これを指定するとFWを消す
-void GameMap::clear_fw(Nyancat* nyan, int x, int y){
-	for(int fy = y -1; fy >= 0; fy--){
-		map[x][fy] = BLOCK_NONE;
+int GameMap::clear_fw(Nyancat* nyan, int x, int y){
+	bool accept = false;
+	switch(map[x][0] & COIN_ALL){
+			case COIN_FTP:
+				if(nyan->getPortNumber() == 21) accept = true;
+				break;
+			case COIN_SSH:
+				if(nyan->getPortNumber() == 22) accept = true;
+				break;
+			case COIN_SMTP:
+				if(nyan->getPortNumber() == 25) accept = true;
+				break;
+			case COIN_DNS:
+				if(nyan->getPortNumber() == 53) accept = true;
+				break;
+			case COIN_HTTP:
+				if(nyan->getPortNumber() == 80) accept = true;
+				break;
+			case COIN_HTTPS:
+				if(nyan->getPortNumber() == 443) accept = true;
+				break;
 	}
-	nyan->onFall();
+	if(accept){
+		if(map[x][0] & BLOCK_FW){
+			map[x][0] = ASHIBA;
+			nyan->sumScore(250);
+		}
+		map[x][y] = 0;
+		nyan->onFall();
+		return 0;
+	}else{
+		return -1;
+	}
 }
 void GameMap::Animation(){
 	list<struct Effect>::iterator it = effectList.begin();

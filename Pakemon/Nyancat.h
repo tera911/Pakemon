@@ -63,7 +63,7 @@ public:
 
 	void sumScore(int value);
 	void changePortNumber(int port);
-	//セグメント移動用
+	int	 getPortNumber();
 	//ニャンキャットの位置を左上にする
 	void flyday();
 };
