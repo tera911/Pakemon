@@ -121,7 +121,7 @@ Nyancat::Nyancat(){
 #endif
 		//スコア表示
 		PrintPicture::instance()->StringDraw("SCORE",350,25,2);
-		PrintPicture::instance()->NumDraw(score,450, 25, 2);
+		PrintPicture::instance()->NumDraw(score,500, 25, 2);
 		//自キャラのポート番号表示
 		if(nyan_port != 0){
 			if(nyan_port==443){

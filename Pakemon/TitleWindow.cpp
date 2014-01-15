@@ -81,8 +81,7 @@
 		DrawGraph(40,540,team,true);
 		PrintPicture::instance()->StringDraw("START",	358,450,2);
         PrintPicture::instance()->StringDraw("OPTION",	358,480,2);
-		PrintPicture::instance()->StringDraw("AAAAAEXIT",	358,510,2);
-		PrintPicture::instance()->NumDraw(1111111,0,100,1);
+		PrintPicture::instance()->StringDraw("EXIT",	358,510,2);
 		switch(select){
 			//–îˆó‚ÌêŠ
 		case START:

@@ -59,11 +59,25 @@ void GameMap::render(){
 	pp->StringDraw(".",60,27,1); 
 	pp->NumDraw(0 ,66, 25,1);
 	pp->StringDraw(".",76,27,1);
-	pp->NumDraw(000,97, 25,1);
-	/*pp->NumDraw( 32 * segment,97, 25,1);*/
-	pp->StringDraw("/" ,108, 25,1);
-	pp->NumDraw(28,130,25,1);
-
+	int didit=Digit(32*segment);
+	switch (didit)
+		{
+		case 1:
+			pp->NumDraw( 32 * segment,83, 25,1);
+			pp->StringDraw("/" ,94, 25,1);
+			pp->NumDraw(28,109,25,1);
+			break;
+		case 2:
+			pp->NumDraw( 32 * segment,90, 25,1);
+			pp->StringDraw("/" ,101, 25,1);
+			pp->NumDraw(28,116,25,1);
+			break;
+		case 3:	
+			pp->NumDraw( 32 * segment,97, 25,1);
+			pp->StringDraw("/" ,108, 25,1);
+			pp->NumDraw(28,123,25,1);
+			break;
+	}
 	/*pp->NumDraw(172,30,25,2);
 	pp->StringDraw(".",47,27,2); 
 	pp->NumDraw(16,68, 25,2);
@@ -404,5 +418,17 @@ void GameMap::switchAction(Nyancat* nyan){
 				map[x][y] = 0;
 			}
 		}
+	}
+}
+
+int GameMap::Digit(int digit){
+	int i;
+	for(i=0;digit!=0;i++)
+		digit/=10;
+	if(i==0){
+		return 1;}
+	else
+	{
+		return i;
 	}
 }

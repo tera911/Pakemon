@@ -48,5 +48,6 @@ public:
 	void addAnimation(Effect *effect);
 	void nextSegment(Nyancat*);		//move to the next Segment!!!!!!!!!!
 	void switchAction(Nyancat*);	//スクリーンに映ってるパけっとを取得するん？
+	int Digit(int digit);
 };
 #endif
