@@ -23,7 +23,7 @@ struct Point{
 };
 GameMap::GameMap(){
 		segment = -1;
-		screen_x = 0;
+		screen_x = 1;
 		move_screen = 0;
 		screen_center_x = 12.0f * 32;
 		block_brick		= LoadGraph("./block/brick.png", true);
