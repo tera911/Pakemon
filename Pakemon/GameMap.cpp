@@ -436,7 +436,7 @@ int GameMap::clear_fw(Nyancat* nyan, int x, int y){
 	}
 	if(accept){
 		if(map[x][0] & BLOCK_FW){
-			map[x][0] = ASHIBA;
+			map[x][0] = map[x][0] ^ BLOCK_FW;
 			nyan->sumScore(250);
 		}
 		map[x][y] = 0;
