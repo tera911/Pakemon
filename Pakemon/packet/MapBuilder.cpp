@@ -61,7 +61,8 @@ int MapBuilder::randblock(struct ip_address ip, int seed = 0){
 	 8,8,8,8,8,//はてなブロック or 障害物 23/100
 	 8,8,8,8,8,8,8,8,8,8,//障害物 
 	 5,5,5,5,5,//障害物２段目
-	 10,10,10
+	 10,10,0
+
 	};
 
 	
@@ -71,17 +72,48 @@ int MapBuilder::randblock(struct ip_address ip, int seed = 0){
 
 void MapBuilder::buildMap(ip_header* ih, int size){
 	for(int seed = 0; seed < 6; seed++){
+		bool fw = false;
 		for(int i = 0; i < MAP_WIDTH; i++){
 			int x = i + MAP_WIDTH * seed;	//x座標
 			for(int k = 0; k < 10; k++){
 				char blockpos[18] = {0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
-				ip_address ip = ih->daddr;	
+				ip_address ip = ih->daddr;	//送信先ＩＰアドレスを使用
 				int pos = randblock(ip, seed);
 				if(map[x][pos] != 0){
 					break;
 				}
+
 				if(blockpos[pos] == 0){
-					map[x][pos] = BLOCK_NONE;
+					if(!fw && x > 30){	//FWがまだ生成されていない かつ　x座標が30以上なら
+						/*  FW作成 
+						FWが生成できるか近くにあるパケットファイルを検索する
+						FW生成予定位置から6 x MAP_HEIGHTの間に
+						コインがあった場合のみFWを生成する。
+						コインはFWから遠い位置から検索される。見つかったらその時点で検索を終了しFWを生成する
+キャーｯ　ふぁいあーうぉーるきちゃうっ＞＜ */
+						bool fw_create = false;
+						int	 acceptBlock;
+						for(int y =  0; y < MAP_HEIGHT; y++){		
+							for(int fx = x - 6; fx < x - 2; fx++){	
+								if(map[fx][y] & COIN_ALL){
+									acceptBlock = map[fx][y];
+									fw_create = true;
+									break;
+								}
+							}
+							if(fw_create) break;
+						}
+						if(fw_create){
+							for(int y = 0; y < MAP_HEIGHT; y++){
+								for(int fx = x -2; fx < x; fx++){
+									map[fx][y] = ASHIBA | acceptBlock;
+								}
+							}
+							fw = true;
+						}
+					}else{
+						map[x][pos] = BLOCK_NONE;
+					}
 				}else{
 					int random = 0;
 					switch(pos){

@@ -33,6 +33,8 @@ GameMap::GameMap(){
 		block_ware		= LoadGraph("./block/ware.png", true);
 		block_router	= LoadGraph("./block/router.png", true);
 		block_switch	= LoadGraph("./block/switch.png", true);
+		block_fire32	= LoadGraph("./block/fire_32.png", true);
+		block_fire64	= LoadGraph("./block/fire_64.png", true);
 		MapBuilder builder;
 		builder.getMap(map);
 	}
@@ -40,6 +42,10 @@ void GameMap::render(){
 	int size = (int)floor(screen_x);
 	for(int x = size; x < SCREEN_WIDTH + size +1; x++){
 		for(int y = 0; y < MAP_HEIGHT; y++){
+			if(map[x][y] & COIN_ALL && map[x][y] & ASHIBA){
+				render_fw(map[x][y], x, y);
+				break;
+			}
 			render_block(map[x][y], x, y);
 		}
 	}
@@ -68,6 +74,23 @@ void GameMap::render(){
 	pp->StringDraw("/" ,130, 25,2);
 	pp->NumDraw(28,163,25,2);*/
 	
+}
+void GameMap::render_fw(int block_type, int x, int y){
+	BLOCK block = static_cast<BLOCK>(block_type & ASHIBA);
+	for(int fy = y; y < MAP_HEIGHT; y++){
+		render_block(ASHIBA, x, y);
+	}
+	if( x % 2 == 0){
+		render_block(BLOCK_FIRE, x, 1);
+		render_block(BLOCK_FIRE, x, 6);
+		render_block(BLOCK_FIRE, x, 9);
+		render_block(BLOCK_FIRE, x, 14);
+	}else{
+		render_block(BLOCK_FIRE, x, 1);
+		render_block(BLOCK_FIRE, x, 3);
+		render_block(BLOCK_FIRE, x, 8);
+		render_block(BLOCK_FIRE, x, 12);
+	}
 }
 void GameMap::render_block(int block_type, int x, int y){
 	if(block_type == 0){
@@ -131,6 +154,9 @@ void GameMap::render_block(int block_type, int x, int y){
 #endif
 		break;
 	}
+	if(block_type == BLOCK_FIRE && !(map[x][y] == BLOCK_NONE)){
+		DrawGraph(block_x, block_y, block_fire32, true);
+	}
 }
 
 int GameMap::checkMapHit(Nyancat* nyan){
@@ -171,6 +197,26 @@ int GameMap::checkMapHit(Nyancat* nyan){
 #endif
 		
 		//キャラクターがマップブロックから飛び出た場合
+		//左に飛び出た
+		if(fcb_32[0] > (nyan_x + screen_x * 32)){
+			if(map[lb[0]][lb[1]] & ALL_HIT_BLOCK){
+				if(map[lb[0]][lb[1]] & COIN_ALL){
+					clear_fw(nyan, lb[0], lb[1]);
+				}else{
+					nyan->revisePosition(1, cb[0] * 32 - (nyan_x + screen_x * 32.0f));	//位置修正
+				}
+			}
+		}
+		//右に飛び出た
+		if(fcb_32[0] < (nyan_x + screen_x * 32)){
+			if(map[rb[0]][rb[1]] & ALL_HIT_BLOCK){
+				if(map[rb[0]][rb[1]] & COIN_ALL){
+					clear_fw(nyan, rb[0], rb[1]);
+				}else{
+					nyan->revisePosition(3, (nyan_x + screen_x * 32.0f) - cb[0] * 32.0f);	//位置修正
+				}
+			}
+		}
 
 		//上に飛び出てるか
 		if(fcb_32[1] > nyan_y){
@@ -193,18 +239,6 @@ int GameMap::checkMapHit(Nyancat* nyan){
 				nyan->offFall();
 			}else{
 				nyan->onFall();
-			}
-		}
-		//左に飛び出た
-		if(fcb_32[0] > (nyan_x + screen_x * 32)){
-			if(map[lb[0]][lb[1]] & ALL_HIT_BLOCK){
-				nyan->revisePosition(1, cb[0] * 32 - (nyan_x + screen_x * 32.0f));	//位置修正
-			}
-		}
-		//右に飛び出た
-		if(fcb_32[0] < (nyan_x + screen_x * 32)){
-			if(map[rb[0]][rb[1]] & ALL_HIT_BLOCK){
-				nyan->revisePosition(3, (nyan_x + screen_x * 32.0f) - cb[0] * 32.0f);	//位置修正
 			}
 		}
 		//自キャラがブロックにめり込んだ場合ver2
@@ -326,7 +360,14 @@ void GameMap::screenScroll_x(float value){
 		move_screen = value;
 	}
 }
-
+//左のx座標 右のx座標 y座標
+//これを指定するとFWを消す
+void GameMap::clear_fw(Nyancat* nyan, int x, int y){
+	for(int fy = y -1; fy >= 0; fy--){
+		map[x][fy] = BLOCK_NONE;
+	}
+	nyan->onFall();
+}
 void GameMap::Animation(){
 	list<struct Effect>::iterator it = effectList.begin();
 	while(it != effectList.end()){
@@ -353,11 +394,12 @@ void GameMap::nextSegment(Nyancat* nyan){
 		nyan->onFall();
 	}
 }
+//スイッチを取得した場合
 void GameMap::switchAction(Nyancat* nyan){
 	int size = (int)floor(screen_x);
 	for(int x = size; x < SCREEN_WIDTH + size; x++){
 		for(int y = 0; y < MAP_HEIGHT; y++){
-			if(map[x][y] & COIN_ALL){
+			if(map[x][y] & COIN_ALL && !(map[x][y] & ASHIBA)){	//コインかつ足場じゃない場合のみ
 				nyan->sumScore(50);
 				map[x][y] = 0;
 			}
