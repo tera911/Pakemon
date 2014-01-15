@@ -31,6 +31,7 @@ private:
 	bool goalFlag;
 	bool deadFlag;
 	int frame;
+	int BGM;
 public:
 	Nyancat();
 	~Nyancat();

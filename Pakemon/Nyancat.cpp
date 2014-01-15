@@ -50,6 +50,7 @@ Nyancat::Nyancat(){
 		goalFlag = false;
 		deadFlag = false;
 		frame=0;
+		BGM = LoadSoundMem("NyanEX.ogg");
 	}
 	void Nyancat::update(ParentWindow* parent){
 		if(goalFlag){
@@ -73,6 +74,10 @@ Nyancat::Nyancat(){
 		}
 		if(key[KEY_INPUT_RIGHT] == 1){
 			moveRight();
+		}
+		if(CheckSoundMem(BGM)==0){
+			ChangeVolumeSoundMem(80,BGM) ;
+				PlaySoundMem(BGM,DX_PLAYTYPE_LOOP);
 		}
 		render();
 	}
@@ -249,4 +254,5 @@ Nyancat::Nyancat(){
 	}
 	Nyancat::~Nyancat(){
 		SAFE_DELETE(nowMap);
+		StopSoundMem(BGM);
 	}
