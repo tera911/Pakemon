@@ -4,7 +4,7 @@
 #include "KeyBoardTools.h"
 
 	//コンストラクタ
-	TitleWindow::TitleWindow(){
+	TitleWindow::TitleWindow(ParentWindow* parent){
 		ZeroMemory(key, sizeof(int)	*	256);
 		arrow_y = 200;
 		select = START;
@@ -16,7 +16,8 @@
 		team = LoadGraph("item/oic2c.class_oic.png");
 		frame = 0;
 		untitti=0;
-		BGM=LoadSoundMem("Nyan.ogg");
+		BGM=parent->getTITLEBGM();
+		
 	}
 
 	//繰り返し実行される

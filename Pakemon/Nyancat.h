@@ -33,7 +33,7 @@ private:
 	int frame;
 	int BGM;
 public:
-	Nyancat();
+	Nyancat(ParentWindow* parent);
 	~Nyancat();
 	void update(ParentWindow*);
 	void render();

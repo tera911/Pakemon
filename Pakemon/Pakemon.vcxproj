@@ -82,12 +82,10 @@
     <ClCompile Include="Nyancat.cpp" />
     <ClCompile Include="OptionWindow.cpp" />
     <ClCompile Include="packet\MapBuilder.cpp" />
-    <ClCompile Include="Pakemon.cpp" />
     <ClCompile Include="Pakemon_main.cpp" />
     <ClCompile Include="ParentWindow.cpp" />
     <ClCompile Include="PrintPicture.cpp" />
     <ClCompile Include="ResultWindow.cpp" />
-    <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Child.h" />
@@ -98,7 +96,6 @@
     <ClInclude Include="packet\MapBuilder.h" />
     <ClInclude Include="packet\packet.h" />
     <ClInclude Include="packet\PacketICMP.h" />
-    <ClInclude Include="Pakemon.h" />
     <ClInclude Include="ParentWindow.h" />
     <ClInclude Include="PrintPicture.h" />
     <ClCompile Include="TitleWindow.cpp" />

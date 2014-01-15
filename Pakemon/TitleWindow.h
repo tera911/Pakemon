@@ -8,7 +8,7 @@ class ParentWindow;
 
 class TitleWindow : public Child{
 public:
-	TitleWindow();
+	TitleWindow(ParentWindow* parent);
 	~TitleWindow();
 	void update(ParentWindow* parent);
 	void render();

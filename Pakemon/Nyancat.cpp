@@ -15,7 +15,7 @@
 	(x) = 0;\
 }
 
-Nyancat::Nyancat(){
+Nyancat::Nyancat(ParentWindow* parent){
 		//Nyan‚Ì•`‰æ
 		LoadDivGraph("item/Nyan_s.png", 6, 6, 1, 32, 20, handle);
 
@@ -50,7 +50,7 @@ Nyancat::Nyancat(){
 		goalFlag = false;
 		deadFlag = false;
 		frame=0;
-		BGM = LoadSoundMem("NyanEX.ogg");
+		BGM = parent->getGAMEBGM();
 	}
 	void Nyancat::update(ParentWindow* parent){
 		if(goalFlag){

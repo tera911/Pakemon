@@ -14,12 +14,16 @@ public:
 	int getScore();
 	int getRemainingTime();
 	bool isGoal();
+	int getTITLEBGM();
+	int getGAMEBGM();
 private:
 	Child* mChild;
 	STAT nextSequence;
 	int score;
 	int time;
 	bool goal;
+	int TITLEBGM;
+	int GAMEBGM;
 };
 
 
