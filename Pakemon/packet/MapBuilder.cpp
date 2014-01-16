@@ -207,7 +207,8 @@ int MapBuilder::getMap(int distmap[][MAP_HEIGHT], const char filter[]){
 	int count = 0;
 	while(count < packetCount){
 		if(pcap_next_ex(handle, &header, &pkt_data) < 0){
-			exit(0);
+			packetCount = 0;
+			break;
 		}
 		count++;
 	}
