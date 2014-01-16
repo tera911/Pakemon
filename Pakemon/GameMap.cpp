@@ -343,7 +343,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 
 		//自キャラがパケットを取得した場合
 		if(map[cb[0]][cb[1]] & COIN_ALL && !(map[cb[0]][cb[1]] & ASHIBA)){
-			nyan->sumScore(50);	//スコア加算
+			nyan->sumScore(100);	//スコア加算
 
 			//自キャラのポート番号変更
 			int block = map[cb[0]][cb[1]];
@@ -478,7 +478,7 @@ void GameMap::switchAction(Nyancat* nyan){
 	for(int x = size; x < SCREEN_WIDTH + size; x++){
 		for(int y = 0; y < MAP_HEIGHT; y++){
 			if(map[x][y] & COIN_ALL && !(map[x][y] & ASHIBA)){	//コインかつ足場じゃない場合のみ
-				nyan->sumScore(50);
+				nyan->sumScore(80);
 				map[x][y] = 0;
 			}
 		}
