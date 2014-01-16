@@ -80,14 +80,18 @@ Nyancat::Nyancat(ParentWindow* parent){
 				PlaySoundMem(BGM,DX_PLAYTYPE_LOOP);
 		}
 		render();
+		if(key[KEY_INPUT_X]&&key[KEY_INPUT_C]){
+			deadFlag=true;
+		}
 	}
+		
 	void Nyancat::render(){
 		if(nowMap == NULL){
 			return;
 		}
 		nowMap->render();
 		nowMap->checkMapHit(this);
-		if(left){
+		if(leftflag){
 			DrawTurnGraph((int)nyan_x, (int)nyan_y,handle[3],true);
 		}
 		else
