@@ -9,11 +9,11 @@
 OptionWindow::OptionWindow(){
 	ZeroMemory(key, sizeof(int) * 256);
 	frame = 0;
-	select=ICMP;
 	select_num = 0;
 	LoadDivGraph("item/Nyan_s.png", 6, 6, 1, 32, 20, Nyan);
 	LoadDivGraph("item/title_nyancatrun_oic.png",6,6,1,320,320,NyanBig);
 	i=0;
+	//パケットのステータス
 }
 
 //親クラス（スーパクラス）から呼び出される関数でゲソ
@@ -41,9 +41,11 @@ void OptionWindow::update(ParentWindow* parent){
 		switch(select){
 			case ICMP:
 				//ICMPを選んだ際の処理
+				parent->moveTo(ParentWindow::PLAY_ICMP);
 			break;
 			case HTTP:
 				//HTTPを選んだ際の処理
+				parent->moveTo(ParentWindow::PLAY_HTTP);
 				break;
 			case TITLE:
 				//TITLE

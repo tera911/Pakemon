@@ -33,7 +33,7 @@ private:
 	int frame;
 	int BGM;
 public:
-	Nyancat(ParentWindow* parent);
+	Nyancat(ParentWindow* parent, int packetType);
 	~Nyancat();
 	void update(ParentWindow*);
 	void render();

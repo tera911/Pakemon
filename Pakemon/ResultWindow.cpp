@@ -46,7 +46,7 @@ void ResultWindow::update(ParentWindow* parent){
 		switch(select){
 			case RETRY:
 				//リスタート
-				parent->moveTo(ParentWindow::PLAY);
+				parent->moveTo(ParentWindow::OPTION);
 			break;
 			case TITLE:
 				//TITLE

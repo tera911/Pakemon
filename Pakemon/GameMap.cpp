@@ -21,7 +21,7 @@ struct Point{
 	int x3;	//ç∂â∫
 	int y3;
 };
-GameMap::GameMap(){
+GameMap::GameMap(int packetType){
 		segment = -1;
 		screen_x = 1;
 		move_screen = 0;
@@ -36,7 +36,11 @@ GameMap::GameMap(){
 		block_fire32	= LoadGraph("./block/fire_32.png", true);
 		block_fire64	= LoadGraph("./block/fire_64.png", true);
 		MapBuilder builder;
-		builder.getMap(map);
+		if(packetType == 0){	//ICMP
+			builder.getMap(map, "icmp");
+		}else{					//HTTP
+			builder.getMap(map, "http");
+		}
 	}
 void GameMap::render(){
 	int size = (int)floor(screen_x);

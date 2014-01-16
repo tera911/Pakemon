@@ -37,7 +37,7 @@ private:
 public:
 	int map[MAP_WIDTH * 6 + 10][MAP_HEIGHT];
 	float screen_x;
-	GameMap();
+	GameMap(int);
 	void render();
 	void render_block(int block_type, int x, int y);
 	void render_fw(int block_type, int x, int y);

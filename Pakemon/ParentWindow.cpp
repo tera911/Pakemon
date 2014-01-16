@@ -33,9 +33,13 @@ int ParentWindow::update(){
 				SAFE_DELETE(mChild);
 				mChild = new TitleWindow(this);
 			break;
-			case PLAY:
+			case PLAY_ICMP:
 				SAFE_DELETE(mChild);
-				mChild = new Nyancat(this);
+				mChild = new Nyancat(this, 0);
+			break;
+			case PLAY_HTTP:
+				SAFE_DELETE(mChild);
+				mChild = new Nyancat(this, 1);
 			break;
 			case RESULT:
 				SAFE_DELETE(mChild);

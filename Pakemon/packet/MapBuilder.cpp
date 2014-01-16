@@ -4,7 +4,7 @@
 #include <pcap.h>
 
 #define LINE_LEN 16
-#define PACKET_FILE "icmpPacket.pcap"
+#define PACKET_FILE "10m.pcap"
 
 #define MAP_WIDTH (35)
 #define MAP_HEIGHT (18)
@@ -184,61 +184,30 @@ void MapBuilder::buildMap(ip_header* ih, int size){
 		}
 	}
 }
-void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_char *pkt_data){
-	ip_header *ih;
-	tcp_header *th;
-	u_int ip_len;
-	u_short sport,dport;
-	ih = (ip_header *)(pkt_data + 14);
-	
-	ip_len = (ih->ver_ihl & 0xf) * 4;
-	th = (tcp_header *)((u_char *)ih + ip_len);
 
-
-	packet.addPacket(ih);//パケットを保存
-
-	/*sport = ntohs( th->sport);
-	dport = ntohs( th->dport);
-
-	 printf("%d.%d.%d.%d.%d -> %d.%d.%d.%d.%d\n",
-        ih->saddr.byte1,
-        ih->saddr.byte2,
-        ih->saddr.byte3,
-        ih->saddr.byte4,
-        sport,
-        ih->daddr.byte1,
-        ih->daddr.byte2,
-        ih->daddr.byte3,
-        ih->daddr.byte4,
-        dport);*/
-}
-
-
-int MapBuilder::getMap(int distmap[][MAP_HEIGHT]){
+int MapBuilder::getMap(int distmap[][MAP_HEIGHT], const char filter[]){
 	pcap_t * handle;
 	struct pcap_pkthdr *header;
 	const u_char *pkt_data;
 	char errbuf[PCAP_ERRBUF_SIZE];
-	struct ip_header ip_headers[MAP_WIDTH * MAP_HEIGHT * 6];
+	struct ip_header ip_headers[MAP_WIDTH * MAP_HEIGHT * 6 + 100];
 
 	//フィルター処理
 	bpf_program fp;
 	char filter_exp[] = "icmp";
-	bpf_u_int32 mask;
-	bpf_u_int32 net;
 
 	if((handle = pcap_open_offline(PACKET_FILE, errbuf)) == NULL){
 		return 0;
 	}
-	pcap_compile(handle, &fp, filter_exp, 0, 0);
+	pcap_compile(handle, &fp, filter, 0, 0);
 	pcap_setfilter(handle, &fp);
 	
 
 	struct ip_header *ip = ip_headers;
 	//pcap_loop(fp, 0, packet_handler, NULL);
-	for(int i = 0; i < MAP_WIDTH * MAP_HEIGHT * 6 + 100;i++){
+	for(int i = 0; i < MAP_WIDTH * MAP_HEIGHT * 6;i++){
 		if(pcap_next_ex(handle, &header, &pkt_data)  > 0){
-			(ip_header *)(pkt_data + 14);
+		//	(ip_header *)(pkt_data + 14);
 			//memcpy((void*)(ip + i) ,(void*)(pkt_data+ 14), sizeof(ip_header));
 			memcpy((void*)ip++, (void*)((ip_header*)(pkt_data + 14)), sizeof(ip_header));
 		}else{

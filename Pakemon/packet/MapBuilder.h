@@ -18,7 +18,7 @@ public:
 				ROUTER_FLAG = 0x2008, SWITCH_FLAG = 0x4008,BLOCK_FW = 0x8000, ALL_HIT_BLOCK = 0x1E};
 	MapBuilder();
 	void buildMap(ip_header* ih, int size);
-	int getMap(int distmap[][MAP_HEIGHT]);
+	int getMap(int distmap[][MAP_HEIGHT], const char filter[]);
 	void showMap();
 	~MapBuilder();
 };
