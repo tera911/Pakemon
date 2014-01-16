@@ -79,7 +79,7 @@ void ResultWindow::render(){
 	print->StringDraw("PLAYSCORE",270,100,3);
 	print->NumDraw(score, (800 + 28 * (10 - length)) / 2, 170,3);
 	print->StringDraw("REMAINING TIME",300, 280, 2);
-	print->NumDraw(remainingTime, 430, 280, 2);
+	print->NumDraw(remainingTime, 530, 280, 2);
 	DrawGraph(500,400,staffs,true);
 	if(!goal){
 		PrintPicture::instance()->StringDraw("NYAN IS DEAD!!", 400, 300, 2);
