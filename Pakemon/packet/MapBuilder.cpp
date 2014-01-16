@@ -191,6 +191,7 @@ int MapBuilder::getMap(int distmap[][MAP_HEIGHT], const char filter[]){
 	const u_char *pkt_data;
 	char errbuf[PCAP_ERRBUF_SIZE];
 	struct ip_header ip_headers[MAP_WIDTH * MAP_HEIGHT * 6 + 100];
+	static int packetCount = 0;
 
 	//フィルター処理
 	bpf_program fp;
@@ -202,6 +203,14 @@ int MapBuilder::getMap(int distmap[][MAP_HEIGHT], const char filter[]){
 	pcap_compile(handle, &fp, filter, 0, 0);
 	pcap_setfilter(handle, &fp);
 	
+	//パケット進める
+	int count = 0;
+	while(count < packetCount){
+		if(pcap_next_ex(handle, &header, &pkt_data) < 0){
+			exit(0);
+		}
+		count++;
+	}
 
 	struct ip_header *ip = ip_headers;
 	//pcap_loop(fp, 0, packet_handler, NULL);
@@ -210,6 +219,7 @@ int MapBuilder::getMap(int distmap[][MAP_HEIGHT], const char filter[]){
 		//	(ip_header *)(pkt_data + 14);
 			//memcpy((void*)(ip + i) ,(void*)(pkt_data+ 14), sizeof(ip_header));
 			memcpy((void*)ip++, (void*)((ip_header*)(pkt_data + 14)), sizeof(ip_header));
+			packetCount++;
 		}else{
 			break;
 		}
