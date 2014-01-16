@@ -22,6 +22,7 @@ private:
 	int remainingTime;
 	bool goal;
 	int length;	//ƒXƒRƒA‚ÌŒ…”
+	int staffs;
 };
 
 #endif
