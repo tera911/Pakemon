@@ -215,24 +215,45 @@ void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_cha
 
 
 int MapBuilder::getMap(int distmap[][MAP_HEIGHT]){
-	pcap_t * fp;
+	pcap_t * handle;
+	struct pcap_pkthdr *header;
+	const u_char *pkt_data;
 	char errbuf[PCAP_ERRBUF_SIZE];
+	struct ip_header ip_headers[MAP_WIDTH * MAP_HEIGHT * 6];
 
-	if((fp = pcap_open_offline(PACKET_FILE, errbuf)) == NULL){
+	//フィルター処理
+	bpf_program fp;
+	char filter_exp[] = "icmp";
+	bpf_u_int32 mask;
+	bpf_u_int32 net;
+
+	if((handle = pcap_open_offline(PACKET_FILE, errbuf)) == NULL){
 		return 0;
 	}
+	pcap_compile(handle, &fp, filter_exp, 0, 0);
+	pcap_setfilter(handle, &fp);
+	
 
-	pcap_loop(fp, 0, packet_handler, NULL);
-	
-	
-	buildMap(packet.getPacket(), 1000);
+	struct ip_header *ip = ip_headers;
+	//pcap_loop(fp, 0, packet_handler, NULL);
+	for(int i = 0; i < MAP_WIDTH * MAP_HEIGHT * 6 + 100;i++){
+		if(pcap_next_ex(handle, &header, &pkt_data)  > 0){
+			(ip_header *)(pkt_data + 14);
+			//memcpy((void*)(ip + i) ,(void*)(pkt_data+ 14), sizeof(ip_header));
+			memcpy((void*)ip++, (void*)((ip_header*)(pkt_data + 14)), sizeof(ip_header));
+		}else{
+			break;
+		}
+	}
+
+	buildMap(ip_headers, MAP_WIDTH * MAP_HEIGHT * 6);
 
 	for(int y = 0; y < MAP_HEIGHT; y++){
 		for(int x = 0; x < MAP_WIDTH * 6 + 10; x++){
 			distmap[x][y] = map[x][y];
 		}
 	}
-	pcap_close(fp);	//オープンしたパケットをクローズする
+	pcap_close(handle);	//オープンしたパケットをクローズする
 	return 1;
 }
 
