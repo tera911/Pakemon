@@ -43,6 +43,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)DxLib;$(MSBuildProgramFile32)Microsoft SDKs\Windows\v7.0A\Include;D:\lib\WpdPack\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)DxLib;$(MSBuildProgramFile32)Microsoft SDKs\Windows\v7.0A\Lib;D:\lib\WpdPack\Lib;$(LibraryPath)</LibraryPath>
+    <EmbedManifest>false</EmbedManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -101,6 +102,9 @@
     <ClCompile Include="TitleWindow.cpp" />
     <ClInclude Include="ResultWindow.h" />
     <ClInclude Include="TitleWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
