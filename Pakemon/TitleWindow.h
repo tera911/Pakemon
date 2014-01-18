@@ -16,7 +16,7 @@ public:
 private:
 	int key[256];
 	float arrow_y;
-	enum STAT {START = 0, OPTION = 1, EXIT = 2};
+	enum STAT {START = 0, EXIT = 1};
 	STAT select;
 	int select_num;
 	int Nyan[6];

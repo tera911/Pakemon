@@ -5,7 +5,7 @@ class Child;
 
 class ParentWindow{
 public:
-	enum STAT {TITLE, PLAY, RESULT, OPTION, EXIT};
+	enum STAT {TITLE, PLAY_ICMP, PLAY_HTTP, RESULT, OPTION, EXIT};
 	ParentWindow();
 	~ParentWindow();
 	int update();

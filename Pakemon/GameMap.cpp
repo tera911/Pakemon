@@ -21,7 +21,7 @@ struct Point{
 	int x3;	//左下
 	int y3;
 };
-GameMap::GameMap(){
+GameMap::GameMap(int packetType){
 		segment = -1;
 		screen_x = 1;
 		move_screen = 0;
@@ -36,7 +36,11 @@ GameMap::GameMap(){
 		block_fire32	= LoadGraph("./block/fire_32.png", true);
 		block_fire64	= LoadGraph("./block/fire_64.png", true);
 		MapBuilder builder;
-		builder.getMap(map);
+		if(packetType == 0){	//ICMP
+			builder.getMap(map, "icmp");
+		}else{					//HTTP
+			builder.getMap(map, "http");
+		}
 	}
 void GameMap::render(){
 	int size = (int)floor(screen_x);
@@ -52,7 +56,6 @@ void GameMap::render(){
 	}
 //	Animation();
 	//screenScroll_x(0.015f);
-	segment = (int)screen_x / MAP_WIDTH;
 	PrintPicture *pp = PrintPicture::instance();
 	pp->NumDraw(172,31,25,1);
 	pp->StringDraw(".",39,27,1); 
@@ -343,7 +346,7 @@ int GameMap::checkMapHit(Nyancat* nyan){
 
 		//自キャラがパケットを取得した場合
 		if(map[cb[0]][cb[1]] & COIN_ALL && !(map[cb[0]][cb[1]] & ASHIBA)){
-			nyan->sumScore(100);	//スコア加算
+			nyan->sumScore(80);	//スコア加算
 
 			//自キャラのポート番号変更
 			int block = map[cb[0]][cb[1]];
@@ -396,6 +399,8 @@ int GameMap::checkMapHit(Nyancat* nyan){
 			if(move_screen < 0.01f){move_screen = 0.0f;}
 			screen_x	= screen_x + move_screen;
 		}
+
+		segment = (int)(screen_x + (nyan_x / 32)) / MAP_WIDTH; //せぐめんとの計算
 		
 #ifdef __DEBUG_
 		//DrawBox((int)(cb[0] - ceill(screen_x)) * 32, cb[1] * 32, (int)(cb[0] - ceill(screen_x)) *32 + 32, cb[1] * 32 + 32, GetColor(200,0,0),true);
@@ -467,7 +472,10 @@ void GameMap::addAnimation(Effect *effect){
 
 void GameMap::nextSegment(Nyancat* nyan){
 	if(segment < 5){
-		screen_x = (float)(segment+ 1) * MAP_WIDTH;
+		screen_x = (segment + 1) * MAP_WIDTH;
+		for(int i = 0; map[(int)screen_x][0] != 0; i++){	//転送先にFWブロックがある場合
+			screen_x = screen_x + 1;
+		}
 		nyan->flyday();
 		nyan->onFall();
 	}

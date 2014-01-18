@@ -102,4 +102,7 @@
       <UniqueIdentifier>{6f7efb6d-bcde-4ee5-b72f-bb471da52c44}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\Resource.rc" />
+  </ItemGroup>
 </Project>

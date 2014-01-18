@@ -15,7 +15,7 @@
 	(x) = 0;\
 }
 
-Nyancat::Nyancat(ParentWindow* parent){
+Nyancat::Nyancat(ParentWindow* parent, int packetType){
 		//Nyanの描画
 		LoadDivGraph("item/Nyan_s.png", 6, 6, 1, 32, 20, handle);
 
@@ -35,7 +35,7 @@ Nyancat::Nyancat(ParentWindow* parent){
 		GA = 0;
 
 		//マップの初期化
-		nowMap = new GameMap();
+		nowMap = new GameMap(packetType);
 	
 		//音楽のロード
 		sound[0]	=	LoadSoundMem( "nyanVoice\\nyan01.wav" ) ;
@@ -175,7 +175,7 @@ Nyancat::Nyancat(ParentWindow* parent){
 	}
 	void Nyancat::reset(){
 		SAFE_DELETE(nowMap);
-		nowMap = new GameMap();
+		nowMap = new GameMap(0);
 		//デフォルトの座標
 		nyan_x = 200;
 		nyan_y = 0;

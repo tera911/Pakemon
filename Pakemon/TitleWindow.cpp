@@ -38,10 +38,6 @@
 			switch(select){
 				case START:
 					//スタート
-					parent->moveTo(ParentWindow::PLAY);
-				break;
-				case OPTION:
-					//オプション
 					parent->moveTo(ParentWindow::OPTION);
 				break;
 				case EXIT:
@@ -51,8 +47,8 @@
 			}
 		}
 		if(select_num < 0){
-			select_num = 2;
-		}else if(select_num > 2){
+			select_num = 1;
+		}else if(select_num > 1){
 			select_num = 0;
 		}
 		select = static_cast<STAT>(select_num);
@@ -82,18 +78,14 @@
 		DrawGraph(240, 80, NyanTitle[untitti], true);	//にゃんきゃっと
 		DrawGraph(40,540,team,true);
 		PrintPicture::instance()->StringDraw("START",	358,450,2);
-        PrintPicture::instance()->StringDraw("OPTION",	358,480,2);
-		PrintPicture::instance()->StringDraw("EXIT",	358,510,2);
+		PrintPicture::instance()->StringDraw("EXIT",	358,480,2);
 		switch(select){
 			//矢印の場所
 		case START:
 			DrawGraph(300, 445, Nyan[3], true);
 		break;
-		case OPTION:
-			DrawGraph(300, 475, Nyan[3], true);
-		break;
 		case EXIT:
-			DrawGraph(300, 505, Nyan[3], true);
+			DrawGraph(300, 475, Nyan[3], true);
 		break;
 		}
 	}
