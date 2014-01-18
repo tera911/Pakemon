@@ -4,7 +4,7 @@
 #include <pcap.h>
 
 #define LINE_LEN 16
-#define PACKET_FILE "10m.pcap"
+#define PACKET_FILE "201401171400.dump"
 
 #define MAP_WIDTH (35)
 #define MAP_HEIGHT (18)
@@ -180,6 +180,9 @@ void MapBuilder::buildMap(ip_header* ih, int size){
 					break;
 				}
 				ih++;
+				/*if(x % 16 == 0){
+					map[x][11] = ASHIBA;
+				}*/
 			}
 		}
 	}
